@@ -1,0 +1,2238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, user-scalable=no">
+  
+  <title>TPG - offer follow up summary - list of applicants</title>
+
+  <!-- App favicon -->
+  <link rel="shortcut icon" href="<?php echo base_url(); ?>assets/images/favicon.ico">
+
+  <!-- css -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.4/css/select.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedcolumns/4.0.2/css/fixedColumns.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/datetime/1.1.2/css/dataTables.dateTime.min.css">
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/resources/syntax/shCore.css">
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/icons.min.css">
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/editor.dataTables.min.css">
+
+  <!-- Summernote css -->
+  <link href="<?php echo base_url(); ?>assets/css/summernote-lite.css" rel="stylesheet" type="text/css" />
+
+  <style type="text/css" class="init">
+  #showCol
+  {
+    color: #4e718d;
+    text-decoration: none;
+    background-color: transparent;
+    -webkit-text-decoration-skip: objects;
+  }
+  #showCol:hover
+  {
+    cursor: pointer;
+    text-shadow: 1px 1px #05243b;
+  }
+  a 
+  {
+    color: #426ca9;
+    text-decoration: none;
+    background-color: transparent;
+  }
+  a:hover 
+  {
+    color: #648ac3;
+    text-decoration: none;
+  }
+  
+  button.dt-button.disabled
+  {
+    pointer-events: none;
+  }
+  button.dt-button, div.dt-button
+  {
+    background-color: transparent;
+    background-image: none;
+    padding: 0.5em 1em;
+    margin-right: 0.5em;
+    font-size: 1em;
+    border: 1px solid lightgray;
+    color: gray;
+  }
+  div.dt-button-collection button.dt-button.active:not(.disabled)
+  {
+    background-color: #ff8f3f;
+    background: #ff8f3f;
+    color: #fff;
+  }
+  button.dt-button:hover:not(.disabled)
+  {
+    background-color: transparent;
+    background: #fff;
+    color: gray;
+    border: 1px solid lightgray;
+  }
+  button.dt-button.active:focus:not(.disabled), button.dt-button:focus:not(.disabled)
+  {
+    background-color: transparent;
+    background: #ff9f3f !important;
+    color: #fff;
+    border: 1px solid lightgray;
+  }
+  button.btn-outline-new
+  {
+    background-color: transparent;
+    color: #2B7954;
+    border: 1px solid;
+    background-image: none;
+    border-color: #2B7954; 
+    font-size: 1em;
+    border-radius: 4px;
+  }
+  button.btn-outline-new:focus-within:not(.disabled)
+  {
+    color: #fff;
+    background-color: #2B7954;
+    background: #2B7954;
+  }
+  button.btn-outline-new:focus:not(.disabled)
+  {
+    color: #fff;
+    background-color: #2B7954;
+    background: #2B7954;
+    border: 1px solid #2B7954;
+  }
+  button.btn-outline-new:active:not(.disabled)
+  {
+    color: #fff;
+    background-color: #2B7954;
+    background: #2B7954;
+  }
+  button.btn-outline-new:hover:not(.disabled)
+  {
+    color: #fff;
+    font-size: larger;
+    background: #2B7954; 
+    border: 1px solid #2B7954;
+    background-color: #2B7954;
+  }
+  button.btn-outline-custom
+  {
+    background-color: transparent;
+    border: 1px solid;
+    background-image: none;
+    color: #39afd1;
+    border-color: #39afd1; 
+    border: 1px solid;
+    font-size: 1em;
+    border-radius: 4px;
+  }
+  button.btn-outline-custom:active:not(.disabled), div.dt-button:active:not(.disabled)
+  {
+    color: #fff;
+    background: #179dc3;
+    background-color: #179dc3;
+  }
+  button.btn-outline-custom:focus-within:not(.disabled)
+  {
+    color: #fff;
+    background-color: #39afd1;
+    background: #39afd1;
+  }
+  button.btn-outline-custom:focus:not(.disabled)
+  {
+    color: #fff;
+    background-color: #39afd1;
+    background: #39afd1;
+    border: 1px solid #39afd1;
+  }
+  button.btn-outline-custom:hover:not(.disabled), div.dt-button:hover:not(.disabled)
+  {
+    color: #fff;
+    font-size: larger;
+    background: #2991ae; 
+    border: 1px solid #2991ae;
+    background-color: #2991ae;
+  }
+  button.btn-outline-red
+  {
+    background-color: transparent;
+    color: #ff1010;
+    border: 1px solid;
+    background-image: none;
+    border-color: #ff1010; 
+    font-size: 1em;
+    border-radius: 4px;
+  }
+  button.btn-outline-red:active:not(.disabled)
+  {
+    color: #fff;
+    background-color: #eaeaea;
+    background: #eaeaea;
+  }
+  button.btn-outline-red:focus-within:not(.disabled)
+  {
+    color: #fff;
+    background-color: #eaeaea;
+    background: #eaeaea;
+  }
+  button.btn-outline-red:focus:not(.disabled)
+  {
+    color: #fff;
+    background-color: #eaeaea;
+    background: #eaeaea;
+    border: 1px solid #eaeaea;
+  }
+  button.btn-outline-red:hover:not(.disabled)
+  {
+    color: #fff;
+    font-size: larger;
+    background: #ff1010; 
+    border: 1px solid #ff1010;
+    background-color: #ff1010;
+  }
+  button.btn-outline-edit
+  {
+    color: #ff8f3f;
+    border: 1px solid;
+    background-color: transparent;
+    background-image: none;
+    border-color: #ff8f3f; 
+    font-size: 1em;
+    border-radius: 4px;
+  }
+  button.btn-outline-edit:active:not(.disabled)
+  {
+    color: #fff;
+    background-color: #ffa566;
+    background: #ffa566;
+  }
+  button.btn-outline-edit:focus-within:not(.disabled)
+  {
+    color: #fff;
+    background-color: #ffa566;
+    background: #ffa566;
+  }
+  button.btn-outline-edit:focus:not(.disabled)
+  {
+    color: #fff;
+    background-color: #ffa566;
+    background: #ffa566;
+    border: 1px solid #ffa566;
+  }
+  button.btn-outline-edit:hover:not(.disabled)
+  {
+    color: #fff;
+    font-size: larger;
+    background-color: #ffa566;
+    background: #ffa566;
+    border: 1px solid #ffa566;
+  }
+
+  div.DTE_Field_Type_textarea textarea 
+  {
+    column-width: 120;
+  }
+ 
+  th.inlineEdit
+  {
+    background-color: lightyellow;
+  }
+
+  div.DTE_Body div.DTE_Body_Content div.DTE_Field 
+  {
+    padding: 1px 5%;
+  }
+
+  table.dataTable.compact tr.selected td.select-checkbox:after, table.dataTable.compact tr.selected th.select-checkbox:after
+  {
+    margin-top:  -25px;
+    margin-left:  -5px;
+  }
+
+  table.dataTable tr.selected td.select-checkbox:after
+  {
+    content:  '\2714';
+  }
+
+  table.dataTable tbody tr.selected>*, table.dataTable.display>tbody>tr.odd.selected>*, table.dataTable.display>tbody>tr.even.selected>*
+  {
+    box-shadow: inset 0 0 0 9999px rgba(176, 190, 211, 0.94);
+    color:  #fff;
+  }
+
+  .text-Q { 
+    color: #F5C9ED }
+
+  .text-T { 
+    color: #B0FF08 }
+
+  .text-W { 
+    color: #FFFF00 }
+
+  .text-I { 
+    color: #00FFFF }
+
+  </style>  
+  <!-- css end -->
+
+<!-- App js -->
+  <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script type="text/javascript" language="javascript" src="<?php echo base_url(); ?>assets/js/jquery-ui.js"></script>
+  <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+  <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.colVis.min.js"></script>
+  <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+  <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/select/1.3.4/js/dataTables.select.min.js"></script>
+  <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/datetime/1.1.2/js/dataTables.dateTime.min.js"></script>
+  <script type="text/javascript" language="javascript" src="<?php echo base_url(); ?>assets/js/dataTables.editor.js"></script>
+  <script type="text/javascript" language="javascript" src="<?php echo base_url(); ?>assets/js/ellipsis.js"></script>
+  <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/fixedcolumns/4.0.2/js/dataTables.fixedColumns.min.js"></script>
+  <script type="text/javascript" language="javascript" src="<?php echo base_url(); ?>assets/js/editor.autoComplete.js"></script>
+  <script type="text/javascript" language="javascript" src="<?php echo base_url(); ?>assets/resources/syntax/shCore.js"></script>
+  <script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.min.js"></script>
+  <!-- Summernote js -->
+  <script src="<?php echo base_url(); ?>assets/js/summernote-lite.min.js"></script>
+  <!-- js ends -->
+
+<script type="text/javascript" language="javascript" class="init">
+ 
+var editorInline, editorAcceptDate, editorRejectDate, editorDepositDate, editorReply, editorAll, editorExtDeadline, editorColor1, editorColor2;
+var table;
+
+// Custom filtering for currCode
+$.fn.dataTable.ext.search.push (
+  function ( settings, data, dataIndex ) 
+  {
+    var codeList = $('#showCurrCode').val() || [];
+    var currCode = data[6];
+
+    var batchNoList = $('#showBatchNo').val() || [];
+    var batchNo = data[1];
+
+    var planTitleList = $('#showPlanTitle').val() || [];
+    var planTitle = data[9];
+
+    if (((codeList.length == 0) || codeList.includes (currCode)) &&
+        ((batchNoList.length == 0) || batchNoList.includes (batchNo)) &&
+        ((planTitleList.length == 0) || planTitleList.includes (planTitle)))
+    {
+      return true;
+    }
+    else
+      return false;
+  }
+);
+
+$(document).ready(function() 
+{
+  var selected = [];    // selected row ID (data.DT_RowId)
+  var viewNo = 0;
+  var selectPage = false;
+
+  // editor for inline editing
+  editorInline = new $.fn.dataTable.Editor( 
+  {
+    ajax: "<?php echo base_url('summary/followupPage')?>",
+    table: "#offSummary",
+    fields: [ 
+      {
+        type: "text",
+        label: "Remarks",
+        name: "offerFollowup.deptRemarks",
+      },
+      {
+        type: "text",
+        label: "Remarks",
+        name: "offerFollowup.facRemarks",
+      },
+    ]
+  } );
+
+  // editor for color code editing
+  editorColor1 = new $.fn.dataTable.Editor( 
+  {
+    ajax: "<?php echo base_url('summary/followupPage')?>",
+    table: "#offSummary",
+    fields: [ 
+      {
+        label: "color 1",
+        name: "importApplication.colorCodeDeptUse",
+        type: "select",
+        options: [
+            { label: "no color", value: null },
+            { label: "red bookmark", value: "R" },
+            { label: "green bookmark", value: "G" },
+            { label: "grey bookmark", value: "D" },
+            { label: "orange bookmark", value: "E" },
+            { label: "blue bookmark", value: "B" },
+            { label: "pink bookmark", value: "Q" },
+            { label: "neon green bookmark", value: "T" },
+            { label: "neon yellow bookmark", value: "W" },
+            { label: "neon blue bookmark", value: "I" },
+            { label: "red asterisk", value: "A" },
+            { label: "green asterisk", value: "C" },
+            { label: "grey asterisk", value: "F" },
+            { label: "orange asterisk", value: "H" },
+            { label: "blue asterisk", value: "J" },
+            { label: "pink asterisk", value: "U" },
+            { label: "neon yellow asterisk", value: "O" },
+            { label: "red arrow", value: "K" },
+            { label: "green arrow", value: "L" },
+            { label: "grey arrow", value: "M" },
+            { label: "orange arrow", value: "N" },
+            { label: "blue arrow", value: "P" },
+            { label: "pink arrow", value: "S" },
+            { label: "neon green arrow", value: "V" },
+            { label: "neon yellow arrow", value: "Y" },
+            { label: "neon blue arrow", value: "Z" },
+        ],
+        def: null
+      },
+    ]
+  } );
+
+  editorColor2 = new $.fn.dataTable.Editor( 
+  {
+    ajax: "<?php echo base_url('summary/followupPage')?>",
+    table: "#offSummary",
+    fields: [ 
+      {
+        label: "color 2",
+        name: "importApplication.colorCodeDeptUse2",
+        type: "select",
+        options: [
+            { label: "no color", value: null },
+            { label: "red bookmark", value: "R" },
+            { label: "green bookmark", value: "G" },
+            { label: "grey bookmark", value: "D" },
+            { label: "orange bookmark", value: "E" },
+            { label: "blue bookmark", value: "B" },
+            { label: "pink bookmark", value: "Q" },
+            { label: "neon green bookmark", value: "T" },
+            { label: "neon yellow bookmark", value: "W" },
+            { label: "neon blue bookmark", value: "I" },
+            { label: "red asterisk", value: "A" },
+            { label: "green asterisk", value: "C" },
+            { label: "grey asterisk", value: "F" },
+            { label: "orange asterisk", value: "H" },
+            { label: "blue asterisk", value: "J" },
+            { label: "pink asterisk", value: "U" },
+            { label: "neon yellow asterisk", value: "O" },
+            { label: "red arrow", value: "K" },
+            { label: "green arrow", value: "L" },
+            { label: "grey arrow", value: "M" },
+            { label: "orange arrow", value: "N" },
+            { label: "blue arrow", value: "P" },
+            { label: "pink arrow", value: "S" },
+            { label: "neon green arrow", value: "V" },
+            { label: "neon yellow arrow", value: "Y" },
+            { label: "neon blue arrow", value: "Z" },
+        ],
+        def: null
+      },
+    ]
+  } );
+
+  // editor for reply status
+  editorReply = new $.fn.dataTable.Editor( 
+  {
+    ajax: "<?php echo base_url('summary/followupPage')?>",
+    table: "#offSummary",
+    fields: [ 
+      {
+        type: "readonly",
+        label: "Application number",
+        name: "offerFollowup.appNo",
+        attr: {
+          disabled: "true",
+        }
+      },
+      {
+        label: "Recommendation",
+        name: "importApplication.recommendation",
+        attr: {
+          disabled: "true",
+        },
+        data: function (data, type, set) 
+        {
+          var value = data.importApplication.recommendation;
+          if (value == 'C')
+            return "Conditional";
+          else if (value == 'CF')
+            return "Conditional to Firm";
+          else if (value == 'F')
+            return "Firm";
+          else
+            return "unknown";
+        }
+      },
+      {
+        label: "Sent date",
+        name: "offerFollowup.sentDate1",
+        attr: {
+          disabled: "true",
+        },
+      },
+      {
+        label: "Sent date (Conditional to Firm)",
+        name: "offerFollowup.sentDate2",
+        attr: {
+          disabled: "true",
+        },
+      },
+      {
+        label: "Final status",
+        name: "offerFollowup.finalStatus",
+        type: "select",
+        options: [
+            { label: "-- Select one --", value: null },
+            { label: "Accept", value: "A" },
+            { label: "Reject", value: "R" },
+            { label: "Accept then reject", value: "S" },
+            { label: "Reply slip no reply, assume decline", value: "D" },
+            { label: "No reply, finally rejected by system", value: "T" },
+            { label: "Withdrawn before sending out offer letter", value: "W" },
+            { label: "Accept, could not fulfill condition, eligible for refund", value: "B" },
+            { label: "Accept, could not fulfill condition, not eligible for refund", value: "C" },
+            { label: "Other", value: "O" },
+        ],
+        def: null
+      },
+    ]
+  } );
+
+  // editor for bubble editing
+  editorDepositDate = new $.fn.dataTable.Editor( 
+  {
+    ajax: "<?php echo base_url('summary/followupPage')?>",
+    table: "#offSummary",
+    fields: [
+      {
+        type: "readonly",
+        label: "Application number",
+        name: "offerFollowup.appNo",
+        attr: {
+          disabled: "true",
+        }
+      },
+      {
+        label: "Recommendation",
+        name: "importApplication.recommendation",
+        attr: {
+          disabled: "true",
+        },
+        data: function (data, type, set) 
+        {
+          var value = data.importApplication.recommendation;
+          if (value == 'C')
+            return "Conditional";
+          else if (value == 'CF')
+            return "Conditional to Firm";
+          else if (value == 'F')
+            return "Firm";
+          else
+            return "unknown";
+        }
+      },
+      {
+        label: "Deposit date",
+        name: "offerFollowup.depositDate1",
+        type: "datetime",
+        def: function () { return new Date(); }
+      },
+      {
+        label: "Deposit amount",
+        name: "offerFollowup.depositAmount1",
+        multiEditable: false
+      },
+      {
+        label: "Deposit date (Conditional to Firm)",
+        name: "offerFollowup.depositDate2",
+        type: "datetime",
+        def: function () { return new Date(); }
+      },
+      {
+        label: "Deposit amount (Conditional to Firm)",
+        name: "offerFollowup.depositAmount2",
+        multiEditable: false
+      },
+    ]
+  } );
+
+  // editor for bubble editing
+  editorAcceptDate = new $.fn.dataTable.Editor( 
+  {
+    ajax: "<?php echo base_url('summary/followupPage')?>",
+    table: "#offSummary",
+    fields: [
+      {
+        label: "Application number",
+        name: "offerFollowup.appNo",
+        attr: {
+          disabled: "true",
+        }
+      },
+      {
+        label: "Recommendation",
+        name: "importApplication.recommendation",
+        attr: {
+          disabled: "true",
+        },
+        data: function (data, type, set) 
+        {
+          var value = data.importApplication.recommendation;
+          if (value == 'C')
+            return "Conditional";
+          else if (value == 'CF')
+            return "Conditional to Firm";
+          else if (value == 'F')
+            return "Firm";
+          else
+            return "unknown";
+        }
+      },
+      {
+        label: "Accept received date",
+        name: "offerFollowup.acceptRcvdDate1",
+        type: "datetime",
+        def: function () { return new Date(); }
+      },
+      {
+        label: "Accept date (Conditional to Firm)",
+        name: "offerFollowup.acceptRcvdDate2",
+        type: "datetime",
+        def: function () { return new Date(); }
+      },
+    ]
+  } );
+
+  // editor for extendedDeadline
+  editorTickExtDeadline = new $.fn.dataTable.Editor( 
+  {
+    ajax: "<?php echo base_url('summary/followupPage')?>",
+    table: "#offSummary",
+    fields: [ 
+      {
+        label: "Grant extended deadline for outstanding documents",
+        name: "offerFollowup.extendedDeadline",
+        type: "checkbox",
+        separator: "|",
+        options: [
+            { label: "", value: "Y" },
+        ],
+      },
+    ]
+  } );
+
+  // editor for inline editing
+  editorExtDeadline = new $.fn.dataTable.Editor( 
+  {
+    ajax: "<?php echo base_url('summary/followupPage')?>",
+    table: "#offSummary",
+    fields: [
+      {
+        label: "Application number",
+        name: "offerFollowup.appNo",
+        attr: {
+          disabled: "true",
+        }
+      },
+      {
+        label: "Recommendation",
+        name: "importApplication.recommendation",
+        attr: {
+          disabled: "true",
+        },
+        data: function (data, type, set) 
+        {
+          var value = data.importApplication.recommendation;
+          if (value == 'C')
+            return "Conditional";
+          else if (value == 'CF')
+            return "Conditional to Firm";
+          else if (value == 'F')
+            return "Firm";
+          else
+            return "unknown";
+        }
+      },
+      {
+        label: "Grant extended deadline for outstanding documents",
+        name: "offerFollowup.extendedDeadline",
+        type: "checkbox",
+        separator: "|",
+        options: [
+            { label: "", value: "Y" },
+        ],
+      },
+      {
+        label: "Outstanding document deadline",
+        name: "offerFollowup.outstandingDocDeadline",
+        type: "datetime",
+        def: function () { return new Date(); }
+      },
+    ]
+  } );
+
+  // editor for bubble editing
+  editorRejectDate = new $.fn.dataTable.Editor( 
+  {
+    ajax: "<?php echo base_url('summary/followupPage')?>",
+    table: "#offSummary",
+    fields: [
+      {
+        label: "Application number",
+        name: "offerFollowup.appNo",
+        attr: {
+          disabled: "true",
+        }
+      },
+      {
+        label: "Recommendation",
+        name: "importApplication.recommendation",
+        attr: {
+          disabled: "true",
+        },
+        data: function (data, type, set) 
+        {
+          var value = data.importApplication.recommendation;
+          if (value == 'C')
+            return "Conditional";
+          else if (value == 'CF')
+            return "Conditional to Firm";
+          else if (value == 'F')
+            return "Firm";
+          else
+            return "unknown";
+        }
+      },
+      {
+        label: "Reject received date",
+        name: "offerFollowup.rejectRcvdDate1",
+        type: "datetime",
+        def: function () { return new Date(); }
+      },
+      {
+        label: "Reject date (Conditional to Firm)",
+        name: "offerFollowup.rejectRcvdDate2",
+        type: "datetime",
+        def: function () { return new Date(); }
+      },
+
+      {
+        label: "Final status",
+        name: "offerFollowup.finalStatus",
+        type: "select",
+        options: [
+            { label: "-- Select one --", value: null },
+            { label: "Accept", value: "A" },
+            { label: "Reject", value: "R" },
+            { label: "Accept then reject", value: "S" },
+            { label: "Reply slip no reply, assume decline", value: "D" },
+            { label: "No reply, finally rejected by system", value: "T" },
+            { label: "Withdrawn before sending out offer letter", value: "W" },
+            { label: "Accept, could not fulfill condition, eligible for refund", value: "B" },
+            { label: "Accept, could not fulfill condition, not eligible for refund", value: "C" },
+            { label: "Other", value: "O" },
+        ],
+        def: null
+      },
+    ]
+  } );
+
+  // editor for all  entries
+  editorAll = new $.fn.dataTable.Editor( 
+  {
+    ajax: "<?php echo base_url('summary/followupPage')?>",
+    table: "#offSummary",
+    fields: [ 
+      {
+        type: "readonly",
+        label: "Application number",
+        name: "offerFollowup.appNo",
+        attr: {
+          disabled: "true",
+        }
+      },
+      {
+        label: "Recommendation",
+        name: "importApplication.recommendation",
+        attr: {
+          disabled: "true",
+        },
+        data: function (data, type, set) 
+        {
+          var value = data.importApplication.recommendation;
+          if (value == 'C')
+            return "Conditional";
+          else if (value == 'CF')
+            return "Conditional to Firm";
+          else if (value == 'F')
+            return "Firm";
+          else
+            return "unknown";
+        }
+      },
+      {
+        label: "Sent date",
+        name: "offerFollowup.sentDate1",
+        attr: {
+          disabled: "true",
+        },
+      },
+      {
+        label: "Sent date (Conditional to Firm)",
+        name: "offerFollowup.sentDate2",
+        attr: {
+          disabled: "true",
+        },
+      },
+      {
+        label: "Accept received date",
+        name: "offerFollowup.acceptRcvdDate1",
+        type: "datetime",
+        def: function () { return new Date(); }
+      },
+      {
+        label: "Accept date (Conditional to Firm)",
+        name: "offerFollowup.acceptRcvdDate2",
+        type: "datetime",
+        def: function () { return new Date(); }
+      },
+      {
+        label: "Deposit date",
+        name: "offerFollowup.depositDate1",
+        type: "datetime",
+        def: function () { return new Date(); }
+      },
+      {
+        label: "Deposit amount",
+        name: "offerFollowup.depositAmount1",
+        multiEditable: false
+      },
+      {
+        label: "Deposit date (Conditional to Firm)",
+        name: "offerFollowup.depositDate2",
+        type: "datetime",
+        def: function () { return new Date(); }
+      },
+      {
+        label: "Deposit amount (Conditional to Firm)",
+        name: "offerFollowup.depositAmount2",
+        multiEditable: false
+      },
+      {
+        label: "Reject received date",
+        name: "offerFollowup.rejectRcvdDate1",
+        type: "datetime",
+        def: function () { return new Date(); }
+      },
+      {
+        label: "Reject date (Conditional to Firm)",
+        name: "offerFollowup.rejectRcvdDate2",
+        type: "datetime",
+        def: function () { return new Date(); }
+      },
+      {
+        label: "Final status",
+        name: "offerFollowup.finalStatus",
+        type: "select",
+        options: [
+            { label: "-- Select one --", value: null },
+            { label: "Accept", value: "A" },
+            { label: "Reject", value: "R" },
+            { label: "Accept then reject", value: "S" },
+            { label: "Reply slip no reply, assume decline", value: "D" },
+            { label: "No reply, finally rejected by system", value: "T" },
+            { label: "Withdrawn before sending out offer letter", value: "W" },
+            { label: "Accept, could not fulfill condition, eligible for refund", value: "B" },
+            { label: "Accept, could not fulfill condition, not eligible for refund", value: "C" },
+            { label: "Other", value: "O" },
+        ],
+        def: null
+      },
+    ]
+  } );
+
+  // show or hide columns
+  $('a.toggleShowHide').on('click', function (e)
+  {
+    e.preventDefault ();
+
+    var column = table.column ( $(this).attr('data-column'));
+    column.visible (! column.visible());
+    if ($(this).hasClass("text-warning"))
+      $(this).removeClass ("text-warning");
+    else
+      $(this).addClass ("text-warning");
+    
+  } );
+
+  // only department can edit
+  <?php if ($pos == 'd' || $pos == 'E') { ?>
+
+    // Activate an bubble edit on click of a table cell (color code)
+    $('#offSummary').on( 'click', 'tbody td.TPcolor1BubbleEditable', function (e) 
+    {
+      editorColor1.inline( this, { 
+        onBlur: 'submit'
+      } );
+    } );
+
+    // Activate an bubble edit on click of a table cell (color code)
+    $('#offSummary').on( 'click', 'tbody td.TPcolor2BubbleEditable', function (e) 
+    {
+      editorColor2.inline( this, { 
+        onBlur: 'submit'
+      } );
+    } );
+
+  <?php } ?>
+
+  // Activate an inline edit on click of a table cell
+  $('#offSummary').on( 'click', 'tbody td.editable', function (e) 
+  {
+    <?php if ($pos == 'd') { ?>
+      editorInline.inline( this, { 
+        onBlur: 'submit'
+      } );
+    <?php } ?>
+  } );
+
+  // Activate an inline edit on click of a table cell
+  $('#offSummary').on( 'click', 'tbody td.FACeditable', function (e) 
+  {
+    <?php if ($pos == 'F' || $pos == 'A') { ?>
+      editorInline.inline( this, { 
+        onBlur: 'submit'
+      } );
+    <?php } ?>
+  } );
+
+  editorDepositDate.on( 'preSubmit', function ( e, o, action ) 
+  {
+    if ( action !== 'remove' ) 
+    {
+      var recommendation = this.field( 'importApplication.recommendation' );
+      var depositDate1 = this.field( 'offerFollowup.depositDate1' );
+      var depositDate2 = this.field( 'offerFollowup.depositDate2' );
+
+      // Only validate user input values
+      if (!depositDate1.val() && 
+           (recommendation.val() == 'F' || recommendation.val() == 'C' || recommendation.val() == 'CF'))
+        depositDate1.error( 'A date must be given' );
+
+      if (!depositDate2.val() && recommendation.val() == 'CF')
+        depositDate2.error( 'A date must be given' );
+        
+      // If any error was reported, cancel the submission so it can be corrected
+      if ( this.inError() ) 
+      {
+        return false;
+      }
+    }
+  } );
+
+  editorAcceptDate.dependent ( 'importApplication.recommendation', function (val) 
+  {
+    if (val == 'Conditional' || val == 'Firm')
+      return { show: ['offerFollowup.acceptRcvdDate1'], hide: ['offerFollowup.acceptRcvdDate2'] };
+    else if (val == 'Conditional to Firm')
+      return { show: ['offerFollowup.acceptRcvdDate1', 'offerFollowup.acceptRcvdDate2'] };
+    else 
+      return { hide: ['offerFollowup.acceptRcvdDate1', 'offerFollowup.acceptRcvdDate2'] };
+  });
+
+  editorRejectDate.dependent ( 'importApplication.recommendation', function (val) 
+  {
+    if (val == 'Conditional' || val == 'Firm')
+      return { show: ['offerFollowup.rejectRcvdDate1'], hide: ['offerFollowup.rejectRcvdDate2'] };
+    else if (val == 'Conditional to Firm')
+      return { show: ['offerFollowup.rejectRcvdDate1', 'offerFollowup.rejectRcvdDate2'] };
+    else 
+      return { hide: ['offerFollowup.rejectRcvdDate1', 'offerFollowup.rejectRcvdDate2'] };
+  });
+
+  editorDepositDate.dependent ( 'importApplication.recommendation', function (val) 
+  {
+    if (val == 'Conditional' || val == 'Firm')
+      return { show: ['offerFollowup.depositDate1', 'offerFollowup.depositAmount1'], hide: ['offerFollowup.depositDate2', 'offerFollowup.depositAmount2'] };
+    else if (val == 'Conditional to Firm')
+      return { show: ['offerFollowup.depositDate1', 'offerFollowup.depositAmount1', 'offerFollowup.depositDate2', 'offerFollowup.depositAmount2'] };
+    else 
+      return { hide: ['offerFollowup.depositDate1', 'offerFollowup.depositAmount1', 'offerFollowup.depositDate2', 'offerFollowup.depositAmount2'] };
+  });
+
+  editorAll.dependent ( 'importApplication.recommendation', function (val) 
+  {
+    if (val == 'Conditional' || val == 'Firm')
+      return { show: ['offerFollowup.depositDate1', 'offerFollowup.depositAmount1', 'offerFollowup.rejectRcvdDate1', 'offerFollowup.acceptRcvdDate1' ], hide: ['offerFollowup.depositDate2', 'offerFollowup.depositAmount2', 'offerFollowup.acceptRcvdDate2', 'offerFollowup.rejectRcvdDate2'] };
+    else if (val == 'Conditional to Firm')
+      return { show: ['offerFollowup.depositDate1', 'offerFollowup.depositAmount1', 'offerFollowup.depositDate2', 'offerFollowup.depositAmount2', 'offerFollowup.acceptRcvdDate1', 'offerFollowup.acceptRcvdDate2', 'offerFollowup.rejectRcvdDate1', 'offerFollowup.rejectRcvdDate2'] };
+    else 
+      return { hide: ['offerFollowup.depositDate1', 'offerFollowup.depositAmount1', 'offerFollowup.depositDate2', 'offerFollowup.depositAmount2', 'offerFollowup.rejectRcvdDate1', 'offerFollowup.rejectRcvdDate2', 'offerFollowup.acceptRcvdDate1', 'offerFollowup.acceptRcvdDate2'] };
+  });
+
+  // setup search text
+  $('#offSummary tfoot th').each(function () 
+  {
+    var title = $(this).text();
+  
+    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+  });
+
+  //datatables
+  table = $('#offSummary').DataTable(
+  { 
+    dom: "Blfrtip",
+    processing: true, //Feature control the processing indicator.
+    order: [], //Initial no order.
+    scrollX: true,  // horizontal scroll bar
+    scrollY: "500px", // vertical scrool bar
+    language: {
+      paginate: {
+        previous: "<i class='mdi mdi-chevron-left'>",
+        next: "<i class='mdi mdi-chevron-right'>",
+      }
+    },
+    // Load data for the table's content from an Ajax source
+    ajax: {
+      url: "<?php echo base_url('summary/followupPage')?>",
+      type: "POST"
+    },
+
+    lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+    
+    "drawCallback": function () {
+      selectPage = false;
+      $('.dataTables_paginate > .pagination').addClass('pagination-rounded');
+    },
+
+    fixedColumns: {
+      leftColumns: 6
+    },
+
+    columns: [
+      {
+        data: null,
+        defaultContent: '',
+        className: 'select-checkbox',
+        orderable: false
+      },
+      { name: "appBatch", data: "importApplication.batch",
+        render: function ( data, type, row ) {
+          if (data == '0')
+            return '';
+          else 
+            return data;
+        } 
+      },
+      {
+        name: "colorCode", className: 'colorBubbleEditable TPcolor1BubbleEditable', data: "importApplication.colorCodeDeptUse",
+        render: function ( data, type, row ) 
+        {
+          var display = '';
+          if (data == 'R')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-danger"></i></div>';
+          else if (data == 'G')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-success"></i></div>';
+          else if (data == 'D')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-secondary"></i></div>';
+          else if (data == 'E')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-warning"></i></div>';
+          else if (data == 'B')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-primary"></i></div>';
+          else if (data == 'Q')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-Q"></i></div>';
+          else if (data == 'T')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-T"></i></div>';
+          else if (data == 'W')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-W"></i></div>';
+          else if (data == 'I')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-I"></i></div>';
+          else if (data == 'A')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-asterisk text-danger"></i></div>';
+          else if (data == 'C')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-asterisk text-success"></i></div>';
+          else if (data == 'F')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-asterisk text-secondary"></i></div>';
+          else if (data == 'H')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-asterisk text-warning"></i></div>';
+          else if (data == 'J')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-asterisk text-primary"></i></div>';
+          else if (data == 'U')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-asterisk text-Q"></i></div>';
+          else if (data == 'O')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-asterisk text-W"></i></div>';
+          else if (data == 'K')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-danger"></i></div>';
+          else if (data == 'L')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-success"></i></div>';
+          else if (data == 'M')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-secondary"></i></div>';
+          else if (data == 'N')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-warning"></i></div>';
+          else if (data == 'P')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-primary"></i></div>';
+          else if (data == 'S')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-Q"></i></div>';
+          else if (data == 'V')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-T"></i></div>';
+          else if (data == 'Y')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-W"></i></div>';
+          else if (data == 'Z')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-I"></i></div>';
+          else
+            display = '';
+
+          if ( type === 'display' ) 
+          {
+            return display;
+          }
+          return data;
+        }
+      },
+      {
+        name: "colorCode2", className: 'colorBubbleEditable TPcolor2BubbleEditable', data: "importApplication.colorCodeDeptUse2",
+        render: function ( data, type, row ) 
+        {
+          var display = '';
+          if (data == 'R')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-danger"></i></div>';
+          else if (data == 'G')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-success"></i></div>';
+          else if (data == 'D')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-secondary"></i></div>';
+          else if (data == 'E')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-warning"></i></div>';
+          else if (data == 'B')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-primary"></i></div>';
+          else if (data == 'Q')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-Q"></i></div>';
+          else if (data == 'T')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-T"></i></div>';
+          else if (data == 'W')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-W"></i></div>';
+          else if (data == 'I')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-I"></i></div>';
+          else if (data == 'A')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-asterisk text-danger"></i></div>';
+          else if (data == 'C')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-asterisk text-success"></i></div>';
+          else if (data == 'F')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-asterisk text-secondary"></i></div>';
+          else if (data == 'H')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-asterisk text-warning"></i></div>';
+          else if (data == 'J')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-asterisk text-primary"></i></div>';
+          else if (data == 'U')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-asterisk text-Q"></i></div>';
+          else if (data == 'O')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-asterisk text-W"></i></div>';
+          else if (data == 'K')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-danger"></i></div>';
+          else if (data == 'L')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-success"></i></div>';
+          else if (data == 'M')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-secondary"></i></div>';
+          else if (data == 'N')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-warning"></i></div>';
+          else if (data == 'P')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-primary"></i></div>';
+          else if (data == 'S')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-Q"></i></div>';
+          else if (data == 'V')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-T"></i></div>';
+          else if (data == 'Y')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-W"></i></div>';
+          else if (data == 'Z')
+            display = '<div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-I"></i></div>';
+          else
+            display = '';
+
+          if ( type === 'display' ) 
+          {
+            return display;
+          }
+          return data;
+        }
+      },
+      { name: "appNo", data: "offerFollowup.appNo" },
+      { name: "appName", 
+        data: function ( data, type, val, meta ) 
+          {
+            var nameFilter, nameDisplay;
+
+            nameFilter = data.importApplication.surName.toUpperCase() + ' ' + data.importApplication.firstName;
+
+            if (data.importApplication.midName != null && data.importApplication.midName != '')
+              nameFilter = nameFilter + ' ' + data.importApplication.midName;
+
+            if (data.importApplication.chiName != null && data.importApplication.chiName != '')
+              nameFilter = nameFilter + ' (' + data.importApplication.chiName + ')';
+
+            nameDisplay = data.importApplication.title + ' ' + nameFilter;
+            if (type === 'filter' || type === 'sort') 
+            {
+              return nameFilter;
+            }
+            // other type use long data
+            return nameDisplay;
+          },
+      },
+      
+      { name: "currCode", data: "importApplication.currCode", className: 'currInfo' },
+      { name: "currTitle", data: "importApplication.currTitle", className: 'currInfo' },
+      { name: "planCode", data: "importApplication.acadPlanCode", className: 'currInfo' },
+      { name: "planTitle", data: "importApplication.acadPlanTitle", className: 'currInfo' },
+
+      { name: "appStudyMode", data: "importApplication.studyMode", className: 'currInfo',
+        render: function ( data, type, row ) 
+        {
+          if (data == 'F')
+            return 'full-time';
+          else if (data == 'P')
+            return 'part-time';
+          else
+            return '';
+        } 
+      },
+
+      { name: "appNeedVisa", data: "importApplication.needVisaOrEntryPermit", 
+        render: function ( data, type, row ) 
+        {
+          if (data == 'Y')
+            return 'yes';
+          else if (data == 'N')
+            return 'no';
+          else
+            return '';
+        } 
+      },
+
+      { name: "appIsLocal", data: "importApplication.isLocal", 
+        render: function ( data, type, row ) 
+        {
+          if (data == 'Y')
+            return 'local';
+          else if (data == 'N')
+            return 'non-local';
+          else
+            return '';
+        } 
+      },
+
+      { name: "typeCount", data: "offerFollowup.typeCount" },
+
+      { name: "appRecommendation", 
+        data: function ( data, type, val, meta ) 
+        {
+          var recommendationDisplay = '';
+          recommendationDisplay = formatDisplayLong (data.importApplication.recommendation, data.importApplication.offerDate1, data.importApplication.offerDate2);
+          return recommendationDisplay;
+        },
+      },
+
+      { data: "offerFollowup.deptRemarks", name: "deptRemarks",
+        className: 'editable' },
+
+      { data: "offerFollowup.facRemarks", name: "facRemarks",
+        className: 'FACeditable' },
+
+      { name: "viewRS",
+        data: function ( data, type, val, meta ) 
+        {
+          var display = '';
+          if ((data.offerFollowup.acceptRcvdDate1 != '' && data.offerFollowup.acceptRcvdDate1 != null) || (data.offerFollowup.rejectRcvdDate1 != '' && data.offerFollowup.rejectRcvdDate1 != null) || (data.offerFollowup.acceptRcvdDate2 != '' && data.offerFollowup.acceptRcvdDate2 != null) || (data.offerFollowup.rejectRcvdDate2 != '' && data.offerFollowup.rejectRcvdDate2 != null))
+            display = '<div class="d-flex justify-content-center"><button type="button" class="close viewRS"><i class="mdi mdi-file-document"></i></button></div>';
+          else
+            display = ''; 
+          return display;
+        }
+      },
+
+      { name: "issueDate",
+        data: function ( data, type, val, meta ) 
+        {
+          var issueDateDisplay = '';
+
+          issueDateDisplay = formatDisplayShort (data.importApplication.recommendation, data.offerFollowup.issueDate1, data.offerFollowup.issueDate2);
+          return issueDateDisplay;
+        },
+      },
+
+      { name: "letterSentDate",
+        data: function ( data, type, val, meta ) 
+        {
+          var sentDateDisplay = '';
+
+          sentDateDisplay = formatDisplayShort (data.importApplication.recommendation, data.offerFollowup.sentDate1, data.offerFollowup.sentDate2);
+          return sentDateDisplay;
+        },
+      },
+      
+      { name: "deadline",
+        data: function ( data, type, val, meta ) 
+        {
+          var deadlineDisplay = '';
+
+          deadlineDisplay = formatDisplayShort (data.importApplication.recommendation, data.offerFollowup.deadline1, data.offerFollowup.deadline2);
+          return deadlineDisplay;
+        },
+      },
+
+      { name: "acceptRcvdDate", className: 'FACacceptDateEditable',
+        data: function ( data, type, val, meta ) 
+        {
+          var rcvdDateDisplay = '';
+
+          rcvdDateDisplay = formatDisplayShort (data.importApplication.recommendation, data.offerFollowup.acceptRcvdDate1, data.offerFollowup.acceptRcvdDate2);
+          rcvdDateDisplay = '<div class="text-center">'+rcvdDateDisplay+'</div>';
+          return rcvdDateDisplay;
+        },
+        editField: [ 
+          'offerFollowup.appNo', 
+          'importApplication.recommendation', 
+          'offerFollowup.acceptRcvdDate1', 
+          'offerFollowup.acceptRcvdDate2',
+        ]
+      },
+
+      { name: "RSverified", data: function ( data, type, val, meta ) 
+        {
+          var RSdisplay = '';
+          var RSverified1 = data.offerFollowup.RSverified1;
+          var RSverified2 = data.offerFollowup.RSverified2;
+          var RSverified = '';
+          var recommendation = data.importApplication.recommendation;
+
+          if (recommendation == 'C' || recommendation == 'F')
+            RSverified = RSverified1;
+          else if (recommendation == 'CF')
+            RSverified = RSverified2;
+          else if (recommendation == 'R')
+            RSdisplay = 'n/a';
+
+          if (RSverified == 'N')
+            RSdisplay = "waiting for applicant";
+          else if (RSverified == 'U')
+            RSdisplay = 'RS received';
+          else if (RSverified == 'D')
+            RSdisplay = 'RS deadline passed';
+          else if (RSverified == 'F')
+            RSdisplay = 'followup marked';
+          else if (RSverified == 'E')
+            RSdisplay = 'deadline extended';
+          else if (RSverified == 'P')
+            RSdisplay = 'payment not ok';
+          else if (RSverified == 'C')
+            RSdisplay = 'RS and payment confirmed';
+
+          return RSdisplay;
+        }
+      },
+
+      { name: "rejectRcvdDate", className: 'FACrejectDateEditable',
+        data: function ( data, type, val, meta ) 
+        {
+          var rcvdDateDisplay = '';
+
+          rcvdDateDisplay = formatDisplayShort (data.importApplication.recommendation, data.offerFollowup.rejectRcvdDate1, data.offerFollowup.rejectRcvdDate2);
+          rcvdDateDisplay = '<div class="text-center">'+rcvdDateDisplay+'</div>';
+          return rcvdDateDisplay;
+        },
+        editField: [ 
+          'offerFollowup.appNo', 
+          'importApplication.recommendation', 
+          'offerFollowup.rejectRcvdDate1', 
+          'offerFollowup.rejectRcvdDate2',
+          'offerFollowup.finalStatus', 
+        ]
+      },
+
+      { name: "depositDate", className: 'FACdepositDateEditable',
+        data: function ( data, type, val, meta ) 
+        {
+          var depositDateDisplay = '';
+
+          depositDateDisplay = formatDisplayShort (data.importApplication.recommendation, data.offerFollowup.depositDate1, data.offerFollowup.depositDate2);
+          return depositDateDisplay;
+        },
+        editField: [ 
+          'offerFollowup.appNo', 
+          'importApplication.recommendation', 
+          'offerFollowup.depositDate1', 
+          'offerFollowup.depositAmount1', 
+          'offerFollowup.depositDate2',
+          'offerFollowup.depositAmount2', 
+        ]
+      },
+
+      { name: "depositAmount", className: 'FACdepositAmountEditable',
+        data: function ( data, type, val, meta ) 
+        {
+          var depositAmountDisplay = '';
+
+          depositAmountDisplay = formatCurrencyShort (data.importApplication.recommendation, data.offerFollowup.depositAmount1, data.offerFollowup.depositAmount2);
+          return depositAmountDisplay;
+        },
+        editField: [ 
+          'offerFollowup.appNo', 
+          'importApplication.recommendation', 
+          'offerFollowup.depositDate1', 
+          'offerFollowup.depositAmount1', 
+          'offerFollowup.depositDate2',
+          'offerFollowup.depositAmount2', 
+        ]
+      },
+
+      { name: "extDocDeadline", className: 'extDocEditable',
+        data: function ( data, type, val, meta ) 
+        {
+          var dateDisplay = data.offerFollowup.outstandingDocDeadline;
+
+          if (dateDisplay != null && dateDisplay != '')
+            dateDisplay = '<div class="text-center">'+dateDisplay+'</div>';
+          else
+            dateDisplay = '';
+          
+          return dateDisplay;
+        },
+        editField: [ 
+          'offerFollowup.appNo', 
+          'importApplication.recommendation', 
+          'offerFollowup.extendedDeadline', 
+          'offerFollowup.outstandingDocDeadline', 
+        ]
+      },
+
+      { data: "offerFollowup.extendedDeadline", className: 'dt-body-center', 
+        render: function ( data, type, row ) 
+        {
+          if ( type === 'display' ) 
+          {
+            return '<input type="checkbox" class="editor-deadline" <?php if ($pos != 'd') echo "disabled"; ?> >';
+          }
+          return data;
+        } 
+      },
+
+      { name: "finalStatus", data: "offerFollowup.finalStatus", className: 'FACfinalStatusEditable',
+        render: function ( data, type, row ) 
+        {
+          if (data == 'A')
+            return 'accept';
+          else if (data == 'R')
+            return 'reject';
+          else if (data == 'S')
+            return 'accept then reject';
+          else if (data == 'D')
+            return 'reply slip no reply, assume decline';
+          else if (data == 'T')
+            return 'no reply, finally rejected by system';
+          else if (data == 'W')
+            return 'withdrawn before sending out offer letter';
+          else if (data == 'B')
+            return 'accept, could not fulfill condition, eligible for refund';
+          else if (data == 'C')
+            return 'accept, could not fulfill condition, not eligible for refund';
+          else if (data == 'O')
+            return 'other';
+          else
+            return '';
+        },
+        editField: [ 
+          'offerFollowup.appNo', 
+          'importApplication.recommendation', 
+          'offerFollowup.finalStatus', 
+        ]
+      },
+
+      { name: "appEmail", data: "importApplication.email" },
+      
+      { name: "appMobile", data: "importApplication.mobileOrPager" },
+
+    ],
+    select: { 
+      style: 'multi+shift',
+      selector: 'td:first-child'
+    },
+    buttons: [
+
+      {
+        extend: "selected", text: 'view reply slip', name: 'viewRS',
+        className: 'btn-outline-custom',
+        action: function ( e, dt, node, config ) {
+          var rows = table.rows( { selected: true } ).data();
+          var viewNoList = new Array ();
+
+          $.each(rows, function() 
+          {
+            var appNo = this['offerFollowup']['appNo'];
+            viewNoList.push (appNo);
+          });
+          $('#appNo').val(viewNoList);
+          $('#goView')[0].click();
+        }
+      },
+
+      {
+        extend: "selected", text: 'upload reply slip and payment proof', name: 'uploadPayment',
+        className: 'btn-outline-custom',
+        action: function ( e, dt, node, config ) 
+        {
+          var rows = table.rows( { selected: true } ).data();
+          var appNoList = new Array ();
+
+          $.each(rows, function() 
+          {
+            var appNo = this['offerFollowup']['appNo'];
+            appNoList.push (appNo);
+          });
+          $('#appNoPayment').val(appNoList);
+          $("#uploadRS")[0].click();
+        }
+      },
+
+      {
+        extend: "selected", text: 'ack extended deadline (outstanding doc)', name: 'extDeadlineEmail',
+        className: 'btn-outline-custom',
+        action: function ( e, dt, node, config ) {
+          var rows = table.rows( { selected: true } ).data();
+          var appNoList = new Array ();
+          $.each(rows, function() 
+          {
+            var appNo = this['offerFollowup']['appNo'];
+            appNoList.push (appNo);
+          });
+          $('#appNoListExt').val(appNoList);
+          $('#goExtDeadlineEmail')[0].click();
+        }
+      },
+
+      {
+        extend: "selected", text: 'send email', name: 'sendEmail',
+        className: 'btn-outline-custom',
+        action: function ( e, dt, node, config ) {
+          var rows = table.rows( { selected: true } ).data();
+          var emaillist = new Array ();
+          var emaillistNo = new Array ();
+          var emaillistName = new Array ();
+          $.each(rows, function() 
+          {
+            var appNo = this['importApplication']['appNo'];
+            var surName = this['importApplication']['surName'];
+            var firstName = this['importApplication']['firstName'];
+            var midName = this['importApplication']['midName'];
+
+            if (firstName == null)
+              firstName = '';
+            if (midName == null)
+              midName = '';
+
+            var appName = $.trim (surName + ' ' + firstName + ' ' + midName);
+            var email = this['importApplication']['email'];
+            emaillist.push (email);
+            emaillistNo.push (appNo);
+            emaillistName.push (appName);
+          });
+          $('#appEmailList').val(emaillist);
+          $('#appNoList').val(emaillistNo);
+          $('#appNameList').val(emaillistName);
+          $('#goEmail')[0].click();
+        }
+      },
+      {
+        extend: 'copy', text: 'copy email address', name: 'copyEmail',
+        className: 'btn-outline-custom',
+        header: false,
+        title: null,
+        exportOptions: {
+         columns: 'appEmail:name',
+        }
+      },
+
+      {
+        extend: "colvisGroup", text: 'portal ready list', name: 'portalReady', className: 'btn-outline-custom',
+        action: function ( e, dt, node, config ) 
+        {
+          $('#goPortalReady')[0].click();
+        }
+      },
+
+      { extend: "excel", name: 'exportExcel', text: "export to excel" },
+
+      { 
+        extend: "colvisGroup", text: "refresh", className: 'btn-outline-custom',
+        action: function (e, dt, node, config) {
+          table.ajax.reload ();
+        }
+      },
+    ],
+    rowCallback: function (row, data) 
+    {
+      // Set the checked state of the checkbox in the table
+      $('input.editor-deadline', row).prop('checked', data.offerFollowup.extendedDeadline == "Y");
+    },
+
+    initComplete: function () 
+    {
+      // select search
+      this.api()
+          .columns([22])
+          .every(function () {
+              var column = this;
+              var select = $('<select><option value=""></option></select>')
+                  .appendTo($(column.footer()).empty())
+                  .on('change', function () {
+                      var val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+                      column.search(val ? '^' + val + '$' : '', true, false).draw();
+                  });
+
+              column
+                  .data()
+                  .unique()
+                  .sort()
+                  .each(function (d, j) {
+                      select.append('<option value="' + d + '">' + d + '</option>');
+                  });
+          });
+
+      // Apply the text search
+      this.api()
+          .columns([1,6,9])
+          .every(function () {
+              var that = this;
+
+              $('input', this.footer()).on('keyup change clear', function () {
+                  if (that.search() !== this.value) {
+                      that.search(this.value).draw();
+                  }
+              });
+          });
+    },
+
+  });
+
+  // init setting
+  table.button( 'copyEmail:name' ).disable();
+
+  // Event listener to the currCode filtering, redraw on input
+  $('#showCurrCode').change( function() 
+  {
+    table.draw();
+  } );
+
+  // Event listener to the batch number filtering, redraw on input
+  $('#showBatchNo').change( function() 
+  {
+    table.draw();
+  } );
+
+  // Event listener to the currCode filtering, redraw on input
+  $('#showPlanTitle').change( function() 
+  {
+    table.draw();
+  } );
+
+
+  <?php if ($dept != 'FAC') { ?>
+    table.button( 'portalReady:name' ).enable(false);
+  <?php } else { ?>
+    table.button( 'extDeadlineEmail:name' ).enable(false);
+  <?php } ?>
+    
+  // set visiblility of buttons
+  table.on( 'select deselect', function () 
+  {
+    var selectedRows = table.rows( { selected: true } ).count();
+
+    <?php if ($dept != 'FAC' && $pos == 'd') { ?>
+      table.button( 'extDeadlineEmail:name' ).enable( selectedRows > 0 );   // ack extend deadline
+    <?php } else { ?>
+      table.button( 'extDeadlineEmail:name' ).enable( false );   // ack 
+    <?php } ?>
+    <?php if ($dept == 'FAC' && $pos == 'A') { ?>
+      table.button( 'uploadPayment:name' ).enable( selectedRows == 1 );   // upload payment
+    <?php } else { ?>
+      table.button( 'uploadPayment:name' ).enable( false );   // upload payment proof
+    <?php } ?>
+
+    table.button( 'sendEmail:name' ).enable( selectedRows > 0 );   // send email
+    table.button( 'viewRS:name' ).enable( selectedRows > 0 );   // view RS
+    table.button( 'copyEmail:name' ).enable( selectedRows > 0 );   // copy to clipboard
+
+    } );
+
+  // hide column to start with
+  <?php if ($dept == 'ME' || $dept == 'CIVIL' || $dept == 'IMSE') { ?>
+    table.column ('planCode:name').visible(false);
+    table.column ('planTitle:name').visible(false);
+  <?php } else if ($dept == 'FAC') { ?>
+    table.column ('colorCode:name').visible(false);
+    table.column ('colorCode2:name').visible(false);
+  <?php } ?>    
+  <?php if ($currCodeLen == 1) { ?>
+    table.column ('currCode:name').visible(false);
+    table.column ('currTitle:name').visible(false);
+  <?php } ?>    
+  table.column ('appEmail:name').visible(false);
+  table.column ('appStudyMode:name').visible(false);
+  table.column ('appIsLocal:name').visible(false);
+  table.column ('appNeedVisa:name').visible(false);
+  table.column ('appMobile:name').visible(false);
+
+<?php if ($dept == 'FAC' && $pos != 'd') { ?>
+
+  // Activate an bubble edit on click of a table cell
+  $('#offSummary').on( 'click', 'tbody td.FACacceptDateEditable', function (e) 
+  {
+    editorAcceptDate.bubble( this, {title: 'Edit accept received date'} );
+  } );
+
+  // Activate an bubble edit on click of a table cell
+  $('#offSummary').on( 'click', 'tbody td.FACrejectDateEditable', function (e) 
+  {
+    editorRejectDate.bubble( this, {title: 'Edit reject received date'} );
+  } );  
+
+  // Activate an bubble edit on click of a table cell
+  $('#offSummary').on( 'click', 'tbody td.FACdepositDateEditable', function (e) 
+  {
+    editorDepositDate.bubble( this, {title: 'Edit deposit date'} );
+  } );
+
+  // Activate an bubble edit on click of a table cell
+  $('#offSummary').on( 'click', 'tbody td.FACdepositAmountEditable', function (e) 
+  {
+    editorDepositDate.bubble( this, {title: 'Edit deposit amount'} );
+  } );
+
+  // Activate an bubble edit on click of a table cell
+  $('#offSummary').on( 'click', 'tbody td.FACfinalStatusEditable', function (e) 
+  {
+    editorReply.bubble( this, {title: 'Edit applicant final status'} );
+  } );
+
+<?php } ?>
+<?php if ($dept != 'FAC' && $pos == 'd') { ?>
+
+  // Activate an bubble edit on click of a table cell
+  $('#offSummary').on( 'click', 'tbody td.extDocEditable', function (e) 
+  {
+    editorExtDeadline.bubble( this, {title: 'Edit deadline'} );
+  } );
+
+<?php } ?>
+
+  // view doc
+  $('#offSummary tbody').on('click', 'button.viewRS', function () 
+  {
+    var rowData = table.row( $(this).parents('tr') ).data();
+    viewNo = rowData.offerFollowup.appNo;
+    var viewNoList = new Array ();
+    viewNoList.push (viewNo);
+    $('#appNo').val(viewNoList);
+    $('#goView')[0].click();
+  } );
+
+  function formatDisplayShort (recommendation, date1, date2)
+  {
+    var display='';
+
+    if (date1 != '' && date1 != null)
+    {
+      if (recommendation == 'F' || recommendation == 'C')
+        display = date1;
+    }
+    if (date1 != '' && date1 != null && date2 != '' && date2 != null && recommendation == 'CF')
+    {
+      display = 'Conditional (' + date1 + ') to Firm (' + date2 + ')';
+    }  
+    
+    return display;
+  }
+
+  function formatCurrencyShort (recommendation, amount1, amount2)
+  {
+    var display='';
+
+    if (amount1 != 0 && amount1 != null)
+    {
+      if (recommendation == 'F' || recommendation == 'C')
+        display = amount1;
+    }
+    if (amount1 != 0 && amount1 != null && amount2 != 0 && amount2 != null && recommendation == 'CF')
+    {
+      display = 'Conditional (' + amount1 + ') to Firm (' + amount2 + ')';
+    }  
+    
+    return display;
+  }
+
+  function formatDisplayLong (recommendation, date1, date2)
+  {
+    var display='';
+
+    if (date1 != '' && date1 != null)
+    {
+      if (recommendation == 'F')
+        display = 'Firm (' + date1 + ')';
+      else if (recommendation == 'C')
+        display = 'Conditional (' + date1 + ')';
+      else if (recommendation == 'R')
+        display = 'Reject (' + date1 + ')';
+    }
+    if (date1 != '' && date1 != null && date2 != '' && date2 != null && recommendation == 'CF')
+    {
+      display = 'Conditional (' + date1 + ') to Firm (' + date2 + ')';
+    }  
+    
+    return display;
+  }
+
+  $('#offSummary').on('change', 'input.editor-deadline', function () 
+  {
+    editorTickExtDeadline
+      .edit($(this).closest('tr'), false)
+      .set( 'offerFollowup.extendedDeadline', $(this).prop( 'checked' ) ? "Y" : "N" )
+      .submit();
+  } );
+
+  // select whole page and marked checkboxes
+  $('#selectAll').on('click', function()
+  {
+    if (selectPage == false)    // not yet selected
+    {
+      table.rows( { page: 'current' } ).select();
+      selectPage = true;
+    }
+    else
+    {
+      table.rows( { page: 'current' } ).deselect();
+      selectPage = false;
+    }
+  });
+
+  // clear all marked checkboxes
+  $('#clearAll').on('click', function()
+  {
+    table.rows( { selected: true } ).deselect();
+  });
+
+  // setup popover for mode buttons
+  $('[data-toggle="popover"]').popover();   
+
+  // summernote email editor
+  $('#emailContent').summernote({
+    height: 200,   //set editable area's height
+    toolbar: [
+    ['style', ['bold', 'italic', 'underline']],
+    ['font', ['strikethrough', 'superscript', 'subscript']],
+    'fontsize',
+    ['color', ['color']],
+    'ul', 'ol', 'paragraph',
+  ]
+  });
+});
+</script>
+
+</head>
+
+<body>
+  <a name="top"></a>
+
+  <!-- email modal-->
+  <div id="emailModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="card">
+
+            <div class="card-body p-4">
+              <div class="text-center w-80 m-auto">
+                <h4 class="text-dark-50 text-center mt-0 font-weight-bold">email to these applicants</h4>
+              </div>
+
+              <form role="form" id="emailForm" action="<?php echo base_url(); ?>datable/emailAppList" target="_blank" method="POST">
+                <div class="row d-none">
+                  <input type="text" name="fromPage" id="fromPage" value="offerFollowup">
+                  <input type="text" name="appEmailList" id="appEmailList">
+                  <input type="text" name="appNameList" id="appNameList">
+                  <input type="text" name="appNoList" id="appNoList">
+                  <button id="goEmail" type="submit"></button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+
+  <!-- Begin page -->
+  <div class="wrapper">
+
+    <div class="content-page">
+      <div class="content">
+
+        <!-- include top bar later -->
+
+        <!-- Start Content-->
+        <div class="container-fluid">
+
+          <!-- start page title -->
+          <div class="row my-2">
+            <div class="col-12">
+              <div class="page-title-box">
+                <div class="page-title-right">
+                  <ol class="breadcrumb m-0 float-right">
+                    <li class="breadcrumb-item"><a href="<?php echo site_url('staffmain/main') ?>"><strong>Home</strong></a></li>
+                    <li class="breadcrumb-item active">Offer followup</li>
+                  </ol>
+                </div>
+                <h4 class="page-title">Offer followup</h4>
+              </div>
+            </div>
+          </div>     
+          <!-- end page title --> 
+
+          <div class="row">  <!-- hidden form -->
+            <form action="<?php echo base_url(); ?>offerLetter/uploadRS" method="POST">
+              <div class="row d-none">
+                <input type="text" name="appNoPayment" id="appNoPayment">
+                <button id="uploadRS" type="submit"></button>
+              </div>
+            </form>
+          </div>
+
+          <div class="row">  <!-- hidden form -->
+            <?php if ($pos == 'F' || $pos == 'A' || $pos == 'S') { ?>
+            <form action="<?php echo base_url(); ?>offerLetter/reviewRS" method="POST">
+            <?php } else { ?>
+            <form action="<?php echo base_url(); ?>offerLetter/reviewRS" target="_blank" method="POST">
+            <?php } ?>
+              <div class="row d-none">
+                <input type="text" name="appNo" id="appNo">
+                <button id="goView" type="submit"></button>
+              </div>
+            </form>
+          </div>
+
+          <div class="row">  <!-- hidden form -->
+            <form action="<?php echo base_url(); ?>staffmain/genPortalReadyList" target="_blank" method="POST">
+              <div class="row d-none">
+                <button id="goPortalReady" type="submit"></button>
+              </div>
+            </form>
+          </div>
+
+          <div class="row">  <!-- hidden form -->
+            <form action="<?php echo base_url(); ?>offerLetter/confirmExtDeadline" target="_blank" method="POST">
+              <div class="row d-none">
+                <input type="text" name="appNoListExt" id="appNoListExt">
+                <button id="goExtDeadlineEmail" type="submit"></button>
+              </div>
+            </form>
+          </div>
+
+          <div class="row">
+            <?php if ($currCodeLen > 1) { ?>
+            <div class="col-6"> <!-- 633 curr code, batch -->
+            <?php } else { ?>
+            <div class="col-4"> <!-- 444 curr code, batch -->
+            <?php } ?>
+              <div class="row">
+                <?php if ($currCodeLen > 1) { ?><!-- currCodeLen lg 1 -->
+
+                  <?php if ($planTitleLen > 0) { ?>
+                  <div class="col-4"><!-- with currCode, planTitle -->
+                  <?php } else { ?>
+                  <div class="col-6"><!-- with currCode, no planTitle -->
+                  <?php } ?>
+                        
+                    <div class="form-group">
+                      <label for="showCurrCode">show curriculum: (press ctrl to select / deselect more)</label>
+                      <select name="showCurrCode" id="showCurrCode" class="form-control" multiple>
+                        <?php foreach ($currCode as $key => $value) { ?>
+                          <option><?php echo $value; ?></option>
+                        <?php } ?>
+                      </select>
+                    </div>
+                  </div>
+                <?php } ?><!-- end currCodeLen lg 1 -->
+
+                <?php if ($planTitleLen > 0) { ?><!-- planTitleLen lg 1 -->
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="showPlanTitle">show plan title: (press ctrl to select / deselect more)</label>
+                      <select name="showPlanTitle" id="showPlanTitle" class="form-control" multiple>
+                        <?php foreach ($planTitle as $value) { ?>
+                          <option><?php echo $value; ?></option>
+                        <?php } ?>
+                      </select>
+                    </div>
+                  </div>
+                <?php } ?><!-- end planTitleLen lg 1 -->
+
+                <?php if ($currCodeLen > 1) { ?>
+                  <?php if ($planTitleLen > 0) { ?>
+                  <div class="col-4"><!-- with currCode, planTitle -->
+                  <?php } else { ?>
+                  <div class="col-6"><!-- with currCode, no planTitle -->
+                  <?php } ?>
+                <?php } else { ?>
+                  <div class="col-9"><!-- only batch no -->
+                <?php } ?>
+
+                  <?php if ($batchNoLen > 0) { ?>
+                    <div class="form-group">
+                      <label for="showBatchNo">show batch: (press ctrl to select / deselect more)</label>
+                      <select name="showBatchNo" id="showBatchNo" class="form-control" multiple>
+                        <?php foreach ($batchNoArray as $key => $value) { ?>
+                          <option><?php echo $value; ?></option>
+                        <?php } ?>
+                      </select>
+                    </div>
+                  <?php } ?>
+                </div>
+              </div>
+            </div>  <!-- end curr code, batch -->
+
+            <?php if ($currCodeLen > 1) { ?>
+            <div class="col-3"> <!-- 633 toggle buttons -->
+            <?php } else { ?>
+            <div class="col-4"> <!-- 444 toggle buttons -->
+            <?php } ?>
+
+            <div class="row">
+              <?php if ($dept != 'FAC') { ?>
+                <div class="col-6"><!-- color code meaning -->
+                <p>
+                  <table>
+                    <tr>
+                      <th>color</th><th>|</th><th>meaning</th>
+                    </tr>
+                    <?php $clen = count ($colorCodeArray); ?>
+                    <?php for ($i=0; $i<$clen; $i++) { ?>
+                      <?php if ($colorCodeArray[$i]['meaning'] != null && $colorCodeArray[$i]['meaning'] != '') { ?>
+                        <tr>
+                          <?php if ($colorCodeArray[$i]['color'] == 'R') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-danger"></i></div></td>
+                          <?php } else if ($colorCodeArray[$i]['color'] == 'E') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-warning"></i></div></td>
+                          <?php } else if ($colorCodeArray[$i]['color'] == 'D') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-secondary"></i></div></td>
+                          <?php } else if ($colorCodeArray[$i]['color'] == 'G') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-success"></i></div></td>
+                          <?php } else if ($colorCodeArray[$i]['color'] == 'B') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-primary"></i></div></td>
+                          <?php } else if ($colorCodeArray[$i]['color'] == 'Q') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-Q"></i></div></td>
+                          <?php } else if ($colorCodeArray[$i]['color'] == 'T') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-T"></i></div></td>
+                          <?php } else if ($colorCodeArray[$i]['color'] == 'W') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-W"></i></div></td>
+                          <?php } else if ($colorCodeArray[$i]['color'] == 'I') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-bookmark text-I"></i></div></td>
+                          <?php } else if ($colorCodeArray[$i]['color'] == 'A') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-asterisk text-danger"></i></div></td>
+                          <?php } else if ($colorCodeArray[$i]['color'] == 'C') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-asterisk text-success"></i></div></td>
+                          <?php } else if ($colorCodeArray[$i]['color'] == 'F') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-asterisk text-secondary"></i></div></td>
+                          <?php } else if ($colorCodeArray[$i]['color'] == 'H') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-asterisk text-warning"></i></div></td>
+                          <?php } else if ($colorCodeArray[$i]['color'] == 'J') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-asterisk text-primary"></i></div></td>
+                          <?php } else if ($colorCodeArray[$i]['color'] == 'U') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-asterisk text-Q"></i></div></td>
+                          <?php } else if ($colorCodeArray[$i]['color'] == 'O') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-asterisk text-W"></i></div></td>
+                          <?php } else if ($colorCodeArray[$i]['color'] == 'K') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-danger"></i></div></td>
+                          <?php } else if ($colorCodeArray[$i]['color'] == 'L') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-success"></i></div></td>
+                          <?php } else if ($colorCodeArray[$i]['color'] == 'M') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-secondary"></i></div></td>
+                          <?php } else if ($colorCodeArray[$i]['color'] == 'N') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-warning"></i></div></td>
+                          <?php } else if ($colorCodeArray[$i]['color'] == 'P') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-primary"></i></div></td>
+                          <?php } else if ($colorCodeArray[$i]['color'] == 'S') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-Q"></i></div></td>
+                          <?php } else if ($colorCodeArray[$i]['color'] == 'V') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-T"></i></div></td>
+                          <?php } else if ($colorCodeArray[$i]['color'] == 'Y') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-W"></i></div></td>
+                          <?php } else if ($colorCodeArray[$i]['color'] == 'Z') { ?>
+                            <td><div class="d-flex justify-content-center"><i class="mdi mdi-near-me text-I"></i></div></td>
+                          <?php } else { ?>
+                            <td><div class="d-flex justify-content-center">no</div></td>
+                          <?php } ?>
+                            <td></td>
+                            <td><?php echo $colorCodeArray[$i]['meaning']; ?></td>
+                        </tr>
+                      <?php } ?>
+                    <?php } ?>
+                  </table>
+                </p>
+                </div>
+              <?php } ?>
+
+              <?php if ($dept != 'FAC') { ?>
+                <div class="col-6">
+              <?php } else { ?>
+                <div class="col-12">  
+              <?php }  ?>
+                <p>Click to show / <span class="text-warning">hide</span> individual column:<br/>
+                  <a class="toggleShowHide <?php if ($currCodeLen == 1) echo 'text-warning'; ?>" id="showCol" data-column="6">curr code</a> -
+                  <a class="toggleShowHide <?php if ($currCodeLen == 1) echo 'text-warning'; ?>" id="showCol" data-column="7">curr title</a> -
+                  <a class="toggleShowHide <?php if ($dept == 'ME' || $dept == 'CIVIL' || $dept == 'IMSE') echo 'text-warning'; ?>" id="showCol" data-column="8">plan code</a> -
+                  <a class="toggleShowHide <?php if ($dept == 'ME' || $dept == 'CIVIL' || $dept == 'IMSE') echo 'text-warning'; ?>" id="showCol" data-column="9">plan title</a> -<br/>
+
+                  <a class="toggleShowHide text-warning" id="showCol" data-column="10">study mode</a> -
+                  <a class="toggleShowHide text-warning" id="showCol" data-column="11">need visa</a> -
+                  <a class="toggleShowHide text-warning" id="showCol" data-column="12">local</a> -<br/>
+
+                  <a class="toggleShowHide text-warning" id="showCol" data-column="28">email</a> -
+                  <a class="toggleShowHide text-warning" id="showCol" data-column="29">mobile</a> -
+                    
+                  <a class="toggleShowHide <?php if ($dept == 'FAC') echo 'text-warning'; ?>" id="showCol" data-column="2">color 1</a> -
+                  <a class="toggleShowHide <?php if ($dept == 'FAC') echo 'text-warning'; ?>" id="showCol" data-column="3">color 2</a><br/>
+                </p>
+                </div>
+              </div>
+            </div>   <!-- end toggle buttons -->
+
+            <?php if ($currCodeLen > 1) { ?>
+            <div class="col-3"> <!-- 633 quick message -->
+            <?php } else { ?>
+            <div class="col-4"> <!-- 444 quick message -->
+            <?php } ?>
+              <div class="text-left"><!-- quick messages -->
+                <p>////<strong>//// Note ////</strong>////
+                  <ul>
+                    <li>offer letter has already sent out</li>
+                    <li>faculty verify reply slip</li>
+                    <li>outstanding doc deadline: only dept can edit</li>
+                  </ul>
+                </p>
+              </div><!-- end quick messages -->
+            </div>
+          </div>
+
+          <div class="row">            
+            <div class="col-4">
+              <button class="btn btn-outline-custom" type="button" id="selectAll">this page select / deselect ALL</button>
+              <button class="btn btn-outline-custom" type="button" id="clearAll">clear ALL</button>
+            </div>
+            <div class="col-8"><!-- notice board area -->
+            </div>
+          </div>
+
+        <table id="offSummary" class="display compact nowrap" width="100%">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Batch</th>
+              <th <?php if ($pos == 'd') echo 'class="inlineEdit"'; ?>>color 1</th>
+              <th <?php if ($pos == 'd') echo 'class="inlineEdit"'; ?>>color 2</th>
+              <th>App No</th>
+              <th>Name</th>
+              <th>curr code</th><th>curr title</th>
+              <th>plan code</th><th>plan title</th><th>study mode</th>
+              <th>need visa</th>
+              <th>local</th>
+              <th>type</th>
+              <th>Recommendation (date)</th>
+              <th <?php if ($pos == 'd') echo 'class="inlineEdit"'; ?>>Remarks (by dept)</th>
+              <th <?php if ($pos == 'F' || $pos == 'A') echo 'class="inlineEdit"'; ?>>Remarks (by faculty)</th>
+              <th class="table-secondary">reply slip</th>
+              <th>letter date</th>
+              <th>letter sent / resent date</th>
+              <th>deadline</th>
+              <th <?php if ($pos == 'F' || $pos == 'A') echo 'class="inlineEdit"'; ?>>accept received date</th>
+              <th>reply slip status</th>
+              <th <?php if ($pos == 'F' || $pos == 'A') echo 'class="inlineEdit"'; ?>>reject received date</th>
+              <th <?php if ($pos == 'F' || $pos == 'A') echo 'class="inlineEdit"'; ?>>deposit date</th>
+              <th <?php if ($pos == 'F' || $pos == 'A') echo 'class="inlineEdit"'; ?>>deposit amount</th>
+              <th <?php if ($pos == 'd') echo 'class="inlineEdit"'; ?>>outstanding doc deadline</th>
+              <th <?php if ($pos == 'd') echo 'class="inlineEdit"'; ?>>extended deadline</th>
+              <th <?php if ($pos == 'F' || $pos == 'A') echo 'class="inlineEdit"'; ?>>final status</th>
+              <th>Email</th>
+              <th>Mobile</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td></td>
+              <td>Batch</td>
+              <td>color 1</td>
+              <td>color 2</td>
+              <td>App No</td>
+              <td>Name</td>
+              <td>curr code</td><td>curr title</td>
+              <td>plan code</td><td>plan title</td><td>study mode</td>
+              <td>need visa</td>
+              <td>local</td>
+              <td>type</td>
+              <td>Recommendation (date)</td>
+              <td>Remarks (by dept)</td>
+              <td>Remarks (by faculty)</td>
+              <th class="table-secondary">reply slip</td>
+              <td>letter date</td>
+              <td>letter sent / resent date</td>
+              <td>deadline</td>
+              <td>accept received date</td>
+              <td>reply slip status</td>
+              <td>reject received date</td>
+              <td>deposit date</td>
+              <td>deposit amount</td>
+              <td>outstanding doc deadline</td>
+              <td>extended deadline</td>
+              <td>final status</td>
+              <td>Email</td>
+              <td>Mobile</td>
+            </tr>
+          </tfoot>
+        </table>
+        </div>
+      </div>
+
+
+      <!-- Footer Start -->
+      <footer class="footer">
+        <div class="container-fluid">
+          <div class="row mt-5">
+            <div class="col-md-6">
+              <?php echo $currentYear; ?> © faculty of engineering, HKU
+            </div>
+            <div class="col-md-6">
+              <div class="text-md-right footer-links d-none d-md-block">
+                <a href="#top"><i class="mdi mdi-chevron-double-up h3"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+      <!-- end Footer -->
+
+    </div>
+  </div>
+
+
+  
+
+</body>
+</html>

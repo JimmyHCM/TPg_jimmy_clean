@@ -1,0 +1,12 @@
+RewriteEngine On
+
+RewriteCond %{SERVER_PORT} 80
+RewriteRule ^(.*)$ https://tpgadmission.engg.hku.hk/$1 [R,L]
+
+RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
+RewriteRule .* - [F]
+
+#This last condition enables access to the images and css folders, and the robots.txt file
+RewriteCond $1 !^(index\.php|images|assets|captchaImages|.*\.css|.*\.js|public|robots\.txt|viewing)
+RewriteRule ^(.*)$ /app/index.php/$1 [L]
+
