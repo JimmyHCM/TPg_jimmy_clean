@@ -73,11 +73,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
+// Local development credentials (AMPPS default). On the production host the
+// real scrubbed credentials should be supplied instead.
+$isLocalDev = (($_SERVER['HTTP_HOST'] ?? '') !== 'tpgadmission.engg.hku.hk');
+$dbUser = $isLocalDev ? 'root'  : 'YOUR_DB_USER';
+$dbPass = $isLocalDev ? 'mysql' : 'YOUR_DB_PASSWORD';
+
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
-	'username' => 'YOUR_DB_USER',
-	'password' => 'YOUR_DB_PASSWORD',
+	'username' => $dbUser,
+	'password' => $dbPass,
 	'database' => 'tpgFront',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -98,8 +104,8 @@ $db['default'] = array(
 $db['tpglog'] = array(
     'dsn'	=> '',
     'hostname' => 'localhost',
-    'username' => 'YOUR_DB_USER',
-    'password' => 'YOUR_DB_PASSWORD',
+    'username' => $dbUser,
+    'password' => $dbPass,
     'database' => 'tpglogFront',
     'dbdriver' => 'mysqli',
     'dbprefix' => '',

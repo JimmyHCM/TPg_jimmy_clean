@@ -1,5 +1,8 @@
 RewriteEngine On
 
+# Force HTTPS only on the production host. On localhost (any other host) this
+# rule is skipped, so plain http://localhost/... is no longer bounced to prod.
+RewriteCond %{HTTP_HOST} =tpgadmission.engg.hku.hk
 RewriteCond %{SERVER_PORT} 80
 RewriteRule ^(.*)$ https://tpgadmission.engg.hku.hk/$1 [R,L]
 
@@ -7,6 +10,8 @@ RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
 RewriteRule .* - [F]
 
 #This last condition enables access to the images and css folders, and the robots.txt file
+# Relative target (index.php instead of /app/index.php) works under both the
+# production /app/ dir and a local /TPg_jimmy_clean/ dir.
 RewriteCond $1 !^(index\.php|images|assets|captchaImages|.*\.css|.*\.js|public|robots\.txt|viewing)
-RewriteRule ^(.*)$ /app/index.php/$1 [L]
+RewriteRule ^(.*)$ index.php/$1 [L]
 

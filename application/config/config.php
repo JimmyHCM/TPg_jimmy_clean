@@ -26,7 +26,16 @@ date_default_timezone_set('Asia/Hong_Kong');
 |
 */
 ###$config['base_url'] = '';
-$config['base_url'] = 'https://tpgadmission.engg.hku.hk/app';
+// Production uses the fixed HKU URL; any other host (e.g. localhost during
+// local development) auto-detects the base URL from the current request.
+if (($_SERVER['HTTP_HOST'] ?? '') === 'tpgadmission.engg.hku.hk') {
+	$config['base_url'] = 'https://tpgadmission.engg.hku.hk/app';
+} else {
+	$scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+	$host   = $_SERVER['HTTP_HOST'] ?? 'localhost';
+	$dir    = trim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '')), '/');
+	$config['base_url'] = $scheme . '://' . $host . ($dir ? '/' . $dir : '') . '/';
+}
 $config['javascript_location'] = 'assets/js/jquery.min.js';
 $config['javascript_ajax_img'] = 'images/ajax-loader.gif';
 

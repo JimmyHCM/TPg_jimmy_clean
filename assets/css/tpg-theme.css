@@ -1,0 +1,220 @@
+/* =========================================================================
+   TPg Admission — fresh modern theme layer
+   Loaded AFTER app.min.css to override the base admin template.
+   HKU Faculty of Engineering brand: deep green + crest gold accent.
+   ========================================================================= */
+
+:root {
+  --tpg-green-900: #06301F;
+  --tpg-green-800: #08442F;
+  --tpg-green-700: #0B5C42;
+  --tpg-green-600: #0E6B4E;   /* primary */
+  --tpg-green-500: #18815F;
+  --tpg-green-100: #D9ECE3;
+  --tpg-green-50:  #EEF6F2;
+  --tpg-gold:      #C49A45;   /* crest gold accent */
+  --tpg-gold-soft: #E7D29A;
+  --tpg-ink:       #1B2A24;
+  --tpg-muted:     #667085;
+  --tpg-line:      #E4E9E7;
+  --tpg-bg:        #F4F7F6;
+  --tpg-radius-lg: 18px;
+  --tpg-radius:    12px;
+  --tpg-radius-sm: 10px;
+  --tpg-shadow:    0 18px 48px -24px rgba(8, 68, 47, 0.45);
+  --tpg-shadow-sm: 0 4px 16px -8px rgba(8, 68, 47, 0.30);
+  --tpg-font:      'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* ---- Base typography ------------------------------------------------ */
+body,
+.font-family-base {
+  font-family: var(--tpg-font);
+  color: var(--tpg-ink);
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.1px;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: var(--tpg-font);
+  color: var(--tpg-ink);
+  font-weight: 700;
+}
+
+a { color: var(--tpg-green-600); }
+a:hover { color: var(--tpg-green-800); }
+
+/* ---- Brand colour overrides ----------------------------------------- */
+.bg-primary { background-color: var(--tpg-green-600) !important; }
+.text-primary { color: var(--tpg-green-600) !important; }
+.bg-soft-primary { background-color: var(--tpg-green-50) !important; }
+.badge-primary { background-color: var(--tpg-green-600); }
+
+/* ---- Buttons -------------------------------------------------------- */
+.btn {
+  border-radius: var(--tpg-radius-sm);
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  padding: 0.55rem 1.25rem;
+  transition: transform .12s ease, box-shadow .12s ease, background-color .12s ease;
+}
+.btn-primary,
+.btn-primary:focus {
+  background-color: var(--tpg-green-600);
+  border-color: var(--tpg-green-600);
+  box-shadow: var(--tpg-shadow-sm);
+}
+.btn-primary:hover {
+  background-color: var(--tpg-green-700);
+  border-color: var(--tpg-green-700);
+  transform: translateY(-1px);
+}
+.btn-primary:active { background-color: var(--tpg-green-800) !important; transform: translateY(0); }
+.btn-success { background-color: var(--tpg-green-600); border-color: var(--tpg-green-600); }
+.btn-success:hover { background-color: var(--tpg-green-700); border-color: var(--tpg-green-700); }
+.btn-outline-primary { color: var(--tpg-green-600); border-color: var(--tpg-green-600); }
+.btn-outline-primary:hover { background-color: var(--tpg-green-600); border-color: var(--tpg-green-600); }
+.btn-lg { padding: 0.8rem 1.5rem; font-size: 1rem; }
+
+/* full-width primary action used on submit screens */
+.tpg-btn-block { width: 100%; }
+
+/* ---- Cards ---------------------------------------------------------- */
+.card {
+  border: none;
+  border-radius: var(--tpg-radius-lg);
+  box-shadow: var(--tpg-shadow);
+  overflow: hidden;
+}
+.card-header {
+  border-bottom: 1px solid var(--tpg-line);
+  background-color: #fff;
+}
+
+/* ---- Form controls -------------------------------------------------- */
+.form-control,
+.custom-select {
+  border-radius: var(--tpg-radius-sm);
+  border: 1.5px solid var(--tpg-line);
+  padding: 0.6rem 0.85rem;
+  height: auto;
+  color: var(--tpg-ink);
+  transition: border-color .12s ease, box-shadow .12s ease;
+}
+.form-control:focus,
+.custom-select:focus {
+  border-color: var(--tpg-green-500);
+  box-shadow: 0 0 0 3px rgba(14, 107, 78, 0.14);
+}
+label { font-weight: 600; color: var(--tpg-ink); margin-bottom: .35rem; }
+.text-muted { color: var(--tpg-muted) !important; }
+
+/* file inputs */
+input[type="file"] {
+  border-radius: var(--tpg-radius-sm);
+  border: 1.5px dashed var(--tpg-green-100);
+  background: var(--tpg-green-50);
+  padding: 0.5rem;
+}
+
+/* ---- Alerts --------------------------------------------------------- */
+.alert { border: none; border-radius: var(--tpg-radius); font-weight: 500; }
+.alert-danger  { background: #FDECEC; color: #B42318; }
+.alert-success { background: var(--tpg-green-50); color: var(--tpg-green-700); }
+.alert-info    { background: #EAF2FB; color: #1357A6; }
+.alert-warning { background: #FDF6E7; color: #92611A; }
+
+/* =========================================================================
+   AUTH / CENTERED-CARD PAGES  (login, captcha, OTP, survey, PICS, reply...)
+   ========================================================================= */
+.tpg-auth-body {
+  min-height: 100vh;
+  background:
+    radial-gradient(1200px 600px at 12% -10%, rgba(196,154,69,0.18), transparent 60%),
+    radial-gradient(1000px 700px at 110% 10%, rgba(14,107,78,0.55), transparent 55%),
+    linear-gradient(135deg, var(--tpg-green-800) 0%, var(--tpg-green-600) 55%, var(--tpg-green-700) 100%);
+  background-attachment: fixed;
+}
+
+.tpg-auth-card { max-width: 480px; margin: 0 auto; }
+
+.tpg-auth-header {
+  background: linear-gradient(135deg, var(--tpg-green-700) 0%, var(--tpg-green-600) 100%);
+  border-bottom: 3px solid var(--tpg-gold);
+  padding: 1.6rem 1rem;
+}
+.tpg-auth-logo { height: 56px; max-width: 90%; }
+
+.tpg-auth-title { margin-top: .25rem; font-weight: 700; }
+.tpg-auth-sub { color: var(--tpg-muted); font-size: .9rem; }
+
+.tpg-note {
+  background: var(--tpg-green-50);
+  border-left: 3px solid var(--tpg-green-500);
+  border-radius: 8px;
+  padding: .7rem .9rem;
+  font-size: .82rem;
+  color: var(--tpg-green-800);
+}
+
+/* ---- Footer --------------------------------------------------------- */
+.tpg-footer {
+  text-align: center;
+  padding: 1.25rem 0;
+  color: rgba(255,255,255,0.75);
+  font-size: .82rem;
+}
+.tpg-footer-dark { color: var(--tpg-muted); }
+
+/* =========================================================================
+   APP / SIDEBAR PAGES  (uploads, mark sheet, FAQ, messages)
+   ========================================================================= */
+.left-side-menu {
+  background: linear-gradient(180deg, var(--tpg-green-800) 0%, var(--tpg-green-900) 100%);
+  box-shadow: 2px 0 18px -12px rgba(0,0,0,.5);
+}
+.left-side-menu .logo {
+  display: block;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.side-nav .side-nav-title { color: var(--tpg-gold-soft) !important; letter-spacing: .6px; text-transform: uppercase; font-size: .68rem; }
+.side-nav .side-nav-link { color: rgba(255,255,255,0.78) !important; border-radius: 8px; margin: 2px 10px; transition: background .12s ease; }
+.side-nav .side-nav-link:hover { color: #fff !important; background: rgba(255,255,255,0.08); }
+.side-nav .side-nav-item.mm-active > a,
+.side-nav .side-nav-link.active { color: #fff !important; background: var(--tpg-green-600); }
+.side-nav .side-nav-second-level li a { color: rgba(255,255,255,0.66) !important; }
+.side-nav .side-nav-second-level li a:hover { color: #fff !important; }
+
+.content-page { background: var(--tpg-bg); }
+.navbar-custom { background: #fff; box-shadow: var(--tpg-shadow-sm); }
+.page-title { color: var(--tpg-green-700); font-weight: 700; }
+
+/* tabbed upload sections */
+.nav-tabs .nav-link { border: none; color: var(--tpg-muted); font-weight: 600; }
+.nav-tabs .nav-link.active {
+  color: var(--tpg-green-700);
+  background: transparent;
+  border-bottom: 3px solid var(--tpg-green-600);
+}
+
+/* reference-key highlight box used on China-institution uploads */
+.tpg-refkey { border: 2px solid var(--tpg-green-500) !important; background: var(--tpg-green-50); }
+
+/* declaration block */
+.tpg-declaration {
+  background: #fff;
+  border: 1px solid var(--tpg-line);
+  border-radius: var(--tpg-radius);
+  padding: 1rem 1.1rem;
+}
+
+/* tables (mark sheet) */
+.table thead th { background: var(--tpg-green-50); color: var(--tpg-green-800); border-color: var(--tpg-line); font-weight: 600; }
+
+/* responsive niceties */
+@media (max-width: 575.98px) {
+  .tpg-auth-logo { height: 44px; }
+  .card-body { padding: 1.25rem !important; }
+}

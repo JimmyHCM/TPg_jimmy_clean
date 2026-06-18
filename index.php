@@ -66,7 +66,10 @@
 switch (ENVIRONMENT)
 {
 	case 'development':
-		error_reporting(-1);
+		// Show real errors/warnings, but mute E_DEPRECATED/E_STRICT noise that
+		// CodeIgniter 3 triggers on PHP 8.2 (dynamic properties). Printing those
+		// notices before session start also caused "headers already sent".
+		error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
 		ini_set('display_errors', 1);
 	break;
 
