@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
   <!-- TPg premium redesign layer (must load LAST) -->
-  <link href="<?php echo base_url(); ?>assets/css/tpg-premium.css" rel="stylesheet" type="text/css" />
+  <link href="<?php echo base_url(); ?>assets/css/tpg-premium.css?v=2" rel="stylesheet" type="text/css" />
 
 
 </head>
@@ -1178,7 +1178,7 @@
 
 <!-- App js -->
 <script src="<?php echo base_url(); ?>assets/js/app.min.js"></script>
-  <script src="<?php echo base_url(); ?>assets/js/tpg-premium.js"></script>
+  <script src="<?php echo base_url(); ?>assets/js/tpg-premium.js?v=2"></script>
 
 <!-- File upload js -->
 <script src="<?php echo base_url(); ?>assets/js/ui/component.fileupload.js"></script>

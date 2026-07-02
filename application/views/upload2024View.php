@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
   <!-- TPg premium redesign layer (must load LAST) -->
-  <link href="<?php echo base_url(); ?>assets/css/tpg-premium.css" rel="stylesheet" type="text/css" />
+  <link href="<?php echo base_url(); ?>assets/css/tpg-premium.css?v=2" rel="stylesheet" type="text/css" />
 
   <!-- App css -->
   <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
@@ -207,7 +207,7 @@ if (!function_exists('tpItemState'))
     switch ($state['status'])
     {
       case 'verified':
-        echo '<div class="tp-status tp-status-verified"><i class="mdi mdi-check-decagram"></i> Verified &amp; accepted</div>';
+        echo '<div class="tp-status tp-status-verified"><i class="mdi mdi-checkbox-marked-circle"></i> Verified &amp; accepted</div>';
         echo '<p class="tp-status-note">Already verified by the department &mdash; no further upload needed.</p>';
         break;
       case 'uploaded':
@@ -219,7 +219,7 @@ if (!function_exists('tpItemState'))
         echo '<p class="tp-status-note tp-status-note-error">'.$state['msg'].'</p>';
         break;
       default:
-        echo '<div class="tp-status tp-status-pending"><i class="mdi mdi-tray-arrow-up"></i> Not uploaded yet</div>';
+        echo '<div class="tp-status tp-status-pending"><i class="mdi mdi-upload"></i> Not uploaded yet</div>';
     }
   }
 
@@ -232,7 +232,7 @@ if (!function_exists('tpItemState'))
   {
     ?>
     <div class="tp-declare mt-4">
-      <h6 class="tp-declare-title"><i class="mdi mdi-file-sign"></i> Declaration</h6>
+      <h6 class="tp-declare-title"><i class="mdi mdi-square-edit-outline"></i> Declaration</h6>
       <div class="tp-declare-text">
         I make the declaration as follows:
         <ul>
@@ -247,8 +247,8 @@ if (!function_exists('tpItemState'))
         <input type="checkbox" class="custom-control-input" name="declaration<?php echo $sfx; ?>" id="declaration<?php echo $sfx; ?>" onclick="tpDeclare('<?php echo $sfx; ?>')" value="tick"/>
         <label class="custom-control-label" for="declaration<?php echo $sfx; ?>"><strong>I have read and agree to the declaration above.</strong></label>
       </div>
-      <p class="tp-declare-hint" id="hint<?php echo $sfx; ?>"><i class="mdi mdi-arrow-up-thin"></i> Tick the declaration to enable the upload button.</p>
-      <button class="btn btn-primary btn-lg tpg-btn-block mt-2" type="submit" name="submit" id="submit<?php echo $sfx; ?>" style="display:none" value="<?php echo $buttonLabel; ?>"><i class="mdi mdi-cloud-upload-outline"></i> <?php echo $buttonLabel; ?><span class="tp-file-counter"></span></button>
+      <p class="tp-declare-hint" id="hint<?php echo $sfx; ?>"><i class="mdi mdi-arrow-up"></i> Tick the declaration to enable the upload button.</p>
+      <button class="btn btn-primary btn-lg tpg-btn-block mt-2" type="submit" name="submit" id="submit<?php echo $sfx; ?>" style="display:none" value="<?php echo $buttonLabel; ?>"><i class="mdi mdi-cloud-upload"></i> <?php echo $buttonLabel; ?><span class="tp-file-counter"></span></button>
     </div>
     <?php
   }
@@ -334,14 +334,14 @@ $tpDash  = round (213.6 * $tpPct / 100, 1);   // donut circumference 2*pi*34
         <div class="col-xl-8 d-flex">
           <div class="card tp-rules-card flex-fill">
             <div class="card-body">
-              <h5 class="tp-card-heading"><i class="mdi mdi-shield-check-outline"></i> Key rules at a glance</h5>
+              <h5 class="tp-card-heading"><i class="mdi mdi-shield-outline"></i> Key rules at a glance</h5>
               <div class="tp-rules">
                 <div class="tp-rule"><i class="mdi mdi-file-pdf-box"></i><span><strong>PDF preferred</strong><br>max 3MB, not password-protected</span></div>
                 <div class="tp-rule"><i class="mdi mdi-package-variant-closed"></i><span><strong>8MB per upload</strong><br>split large batches into rounds</span></div>
                 <div class="tp-rule"><i class="mdi mdi-timer-sand"></i><span><strong>30-min session</strong><br>per upload section, then re-login</span></div>
-                <div class="tp-rule"><i class="mdi mdi-file-replace-outline"></i><span><strong>Re-upload = replace</strong><br>the newest file always wins</span></div>
+                <div class="tp-rule"><i class="mdi mdi-autorenew"></i><span><strong>Re-upload = replace</strong><br>the newest file always wins</span></div>
                 <div class="tp-rule"><i class="mdi mdi-translate"></i><span><strong>English required</strong><br>certified translation if original isn't</span></div>
-                <div class="tp-rule"><i class="mdi mdi-gesture-tap-button"></i><span><strong>Submit per section</strong><br>each tab has its own upload button</span></div>
+                <div class="tp-rule"><i class="mdi mdi-gesture-tap"></i><span><strong>Submit per section</strong><br>each tab has its own upload button</span></div>
               </div>
               <div class="mt-3">
                 <a class="tp-collapse-link" data-toggle="collapse" href="#tpFullRules" role="button" aria-expanded="false">
@@ -518,7 +518,7 @@ $tpDash  = round (213.6 * $tpPct / 100, 1);   // donut circumference 2*pi*34
                                     </div>
                                     <?php if (UPLOAD_ITEMS[$i][4] != "") { ?>
                                       <a class="tp-sample-link" data-toggle="collapse" href="#cardCollapse<?php echo UPLOAD_ITEMS[$i][0]; ?>" role="button" aria-expanded="false">
-                                        <i class="mdi mdi-image-search-outline"></i> View sample
+                                        <i class="mdi mdi-eye-outline"></i> View sample
                                       </a>
                                       <div id="cardCollapse<?php echo UPLOAD_ITEMS[$i][0] ?>" class="collapse pt-2">
                                         <img class="img-fluid mb-1 tp-sample-img" src="<?php echo base_url().UPLOAD_ITEMS[$i][4]; ?>" alt="">
@@ -566,7 +566,7 @@ $tpDash  = round (213.6 * $tpPct / 100, 1);   // donut circumference 2*pi*34
                             </div>
                             <?php if (UPLOAD_ITEMS[$eng][4] != "") { ?>
                               <a class="tp-sample-link" data-toggle="collapse" href="#cardCollapse<?php echo UPLOAD_ITEMS[$eng][0]; ?>" role="button" aria-expanded="false">
-                                <i class="mdi mdi-image-search-outline"></i> View sample
+                                <i class="mdi mdi-eye-outline"></i> View sample
                               </a>
                               <div id="cardCollapse<?php echo UPLOAD_ITEMS[$eng][0] ?>" class="collapse pt-2">
                                 <img class="img-fluid mb-1 tp-sample-img" src="<?php echo base_url().UPLOAD_ITEMS[$eng][4]; ?>" alt="">
@@ -673,7 +673,7 @@ $tpDash  = round (213.6 * $tpPct / 100, 1);   // donut circumference 2*pi*34
                         <div class="col-lg-5 tp-doc-action">
                           <?php tpStatusChip ($st); ?>
                           <?php if ($st['show']) { ?>
-                            <button type="button" class="btn btn-light" data-toggle="modal" data-target="#otherUploadForm<?php echo $other+1; ?>"><i class="mdi mdi-tray-arrow-up"></i> upload file</button>
+                            <button type="button" class="btn btn-light" data-toggle="modal" data-target="#otherUploadForm<?php echo $other+1; ?>"><i class="mdi mdi-upload"></i> upload file</button>
                           <?php } ?>
                         </div>
                       </div>
@@ -711,7 +711,7 @@ $tpDash  = round (213.6 * $tpPct / 100, 1);   // donut circumference 2*pi*34
 
   <!-- App js -->
   <script src="<?php echo base_url(); ?>assets/js/app.min.js"></script>
-  <script src="<?php echo base_url(); ?>assets/js/tpg-premium.js"></script>
+  <script src="<?php echo base_url(); ?>assets/js/tpg-premium.js?v=2"></script>
   <script>
 
   $("[data-toggle=popover]").popover({trigger:"hover", html:"true"});

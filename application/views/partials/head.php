@@ -32,7 +32,7 @@ $bodyId    = isset($bodyId) ? $bodyId : '';
   <!-- TPg fresh theme layer (must load after app.min.css) -->
   <link href="<?php echo base_url(); ?>assets/css/tpg-theme.css" rel="stylesheet" type="text/css" />
   <!-- TPg premium redesign layer (must load LAST) -->
-  <link href="<?php echo base_url(); ?>assets/css/tpg-premium.css" rel="stylesheet" type="text/css" />
+  <link href="<?php echo base_url(); ?>assets/css/tpg-premium.css?v=2" rel="stylesheet" type="text/css" />
 </head>
 
 <body<?php echo $bodyId ? ' id="'.$bodyId.'"' : ''; ?><?php echo $bodyClass ? ' class="'.$bodyClass.'"' : ''; ?>>
