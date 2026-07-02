@@ -11,6 +11,8 @@
   <!-- App css -->
   <link href="<?php echo base_url(); ?>assets/css/icons.min.css" rel="stylesheet" />
   <link href="<?php echo base_url(); ?>assets/css/app.min.css" rel="stylesheet" />
+  <!-- Dell 1996 redesign layer (must load LAST) -->
+  <link href="<?php echo base_url(); ?>assets/css/dell-1996.css" rel="stylesheet" type="text/css" />
 
   <!-- App js -->
   <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
