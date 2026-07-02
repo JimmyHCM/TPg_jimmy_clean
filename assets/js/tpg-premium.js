@@ -1,12 +1,13 @@
 /* =========================================================================
-   TPg Admission — premium micro-interactions
+   TPg Admission — premium micro-interactions (v3 — gallery-calm edition)
    Progressive enhancement only: everything here is cosmetic.
+   Interactions are color/opacity only — no transforms, no ripples.
    No form fields, names, actions or submit behaviour are touched.
    ========================================================================= */
 (function () {
   'use strict';
 
-  /* ---- 1. Staggered scroll-reveal ----------------------------------- */
+  /* Staggered fade-in as content enters the viewport */
   function initReveal() {
     if (!('IntersectionObserver' in window)) return;
 
@@ -26,49 +27,18 @@
 
     var stagger = 0;
     targets.forEach(function (el) {
-      // never hide elements already on screen for long — only prep + observe
       el.classList.add('tp-reveal');
-      el.style.setProperty('--tp-delay', (Math.min(stagger, 6) * 60) + 'ms');
+      el.style.setProperty('--tp-delay', (Math.min(stagger, 5) * 50) + 'ms');
       stagger++;
       io.observe(el);
     });
 
-    // safety net: if anything is still hidden after 1.6s, show it
+    // safety net: if anything is still hidden after 1.5s, show it
     setTimeout(function () {
       document.querySelectorAll('.tp-reveal:not(.tp-in)').forEach(function (el) {
         el.classList.add('tp-in');
       });
-    }, 1600);
-  }
-
-  /* ---- 2. Button ripple ---------------------------------------------- */
-  function initRipple() {
-    document.addEventListener('pointerdown', function (e) {
-      var btn = e.target.closest('.btn');
-      if (!btn || btn.disabled) return;
-
-      var rect = btn.getBoundingClientRect();
-      var size = Math.max(rect.width, rect.height);
-      var ripple = document.createElement('span');
-      ripple.className = 'tp-ripple';
-      ripple.style.width = ripple.style.height = size + 'px';
-      ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
-      ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
-      btn.appendChild(ripple);
-      setTimeout(function () { ripple.remove(); }, 650);
-    }, { passive: true });
-  }
-
-  /* ---- 3. Sidebar link press feedback -------------------------------- */
-  function initSidebar() {
-    document.querySelectorAll('.side-nav-link').forEach(function (link) {
-      link.addEventListener('pointerdown', function () {
-        link.style.transform = 'translateX(3px) scale(.98)';
-      }, { passive: true });
-      link.addEventListener('pointerup', function () {
-        link.style.transform = '';
-      }, { passive: true });
-    });
+    }, 1500);
   }
 
   var reduceMotion = window.matchMedia &&
@@ -76,8 +46,6 @@
 
   function boot() {
     if (!reduceMotion) initReveal();
-    initRipple();
-    initSidebar();
   }
 
   if (document.readyState === 'loading') {
