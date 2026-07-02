@@ -11,5 +11,6 @@ $footYear = isset($currentYear) ? $currentYear : date('Y');
 
   <!-- App js -->
   <script src="<?php echo base_url(); ?>assets/js/app.min.js"></script>
+  <script src="<?php echo base_url(); ?>assets/js/tpg-premium.js"></script>
 </body>
 </html>

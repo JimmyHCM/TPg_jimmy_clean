@@ -10,8 +10,13 @@
   <!-- App css -->
   <link href="<?php echo base_url(); ?>assets/css/icons.min.css" rel="stylesheet" type="text/css" />
   <link href="<?php echo base_url(); ?>assets/css/app.min.css" rel="stylesheet" type="text/css" />
-  <!-- Dell 1996 redesign layer (must load LAST) -->
-  <link href="<?php echo base_url(); ?>assets/css/dell-1996.css" rel="stylesheet" type="text/css" />
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <!-- TPg premium redesign layer (must load LAST) -->
+  <link href="<?php echo base_url(); ?>assets/css/tpg-premium.css" rel="stylesheet" type="text/css" />
+
 
 </head>
 
@@ -190,5 +195,6 @@
 
   <!-- App js -->
   <script src="<?php echo base_url(); ?>assets/js/app.min.js"></script>
+  <script src="<?php echo base_url(); ?>assets/js/tpg-premium.js"></script>
 </body>
 </html>
