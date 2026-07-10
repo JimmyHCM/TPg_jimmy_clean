@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
   <!-- TPg premium redesign layer (must load LAST) -->
-  <link href="<?php echo base_url(); ?>assets/css/tpg-premium.css?v=3" rel="stylesheet" type="text/css" />
+  <link href="<?php echo base_url(); ?>assets/css/tpg-premium.css?v=4" rel="stylesheet" type="text/css" />
 
   <!-- App css -->
   <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
@@ -40,18 +40,96 @@
       if (hint) hint.style.display = (checkBox.checked == true) ? "none" : "block";
     }
 
+    function tpHumanSize(bytes)
+    {
+      if (bytes >= 1048576) return (bytes / 1048576).toFixed(1) + " MB";
+      if (bytes >= 1024) return Math.round(bytes / 1024) + " KB";
+      return bytes + " B";
+    }
+
     $(document).ready(function()
     {
+      // file selected → update the drop tile + per-form counters.
+      // Inputs keep their original names/ids; this is presentation only.
       $(":file").change(function()
       {
-        $(this).toggleClass("fileAdded", !!this.value);
+        var input = this;
+        $(input).toggleClass("fileAdded", !!input.value);
 
-        // live counter of selected-but-not-yet-uploaded files per form
-        var form = $(this).closest("form");
+        var drop = $('label.tp-drop[for="' + input.id + '"]');
+        if (drop.length)
+        {
+          if (input.files && input.files.length)
+          {
+            var f = input.files[0];
+            drop.addClass("tp-filled");
+            drop.find("[data-name]").text(f.name);
+            var over = f.size > 3145728; // 3MB soft warning — server still validates
+            drop.find("[data-size]")
+                .text(tpHumanSize(f.size) + (over ? " — over 3MB, may be rejected" : ""))
+                .toggleClass("tp-oversize", over);
+          }
+          else
+            drop.removeClass("tp-filled");
+        }
+
+        var form = $(input).closest("form");
         var n = form.find(":file").filter(function() { return !!this.value; }).length;
         form.find(".tp-file-counter").text(n > 0 ? " (" + n + " file" + (n > 1 ? "s" : "") + " selected)" : "");
         var badge = form.find(".tp-ready-badge");
         if (n > 0) { badge.show().find("b").text(n); } else { badge.hide(); }
+      });
+
+      // drag & drop onto a tile assigns the file to that tile's own input
+      $(document).on("dragover dragenter", "label.tp-drop", function(e)
+      {
+        e.preventDefault();
+        $(this).addClass("tp-drag");
+      });
+      $(document).on("dragleave dragend", "label.tp-drop", function(e)
+      {
+        e.preventDefault();
+        $(this).removeClass("tp-drag");
+      });
+      $(document).on("drop", "label.tp-drop", function(e)
+      {
+        e.preventDefault();
+        $(this).removeClass("tp-drag");
+        var files = e.originalEvent.dataTransfer ? e.originalEvent.dataTransfer.files : null;
+        if (!files || !files.length) return;
+
+        var input = document.getElementById($(this).attr("for"));
+        if (!input) return;
+
+        var f = files[0];
+        var accept = (input.getAttribute("accept") || "").toLowerCase();
+        var ext = "." + f.name.split(".").pop().toLowerCase();
+        if (accept && accept.split(",").indexOf(ext) === -1)
+        {
+          alert("This item only accepts " + accept + " files.");
+          return;
+        }
+        try
+        {
+          var dt = new DataTransfer();
+          dt.items.add(f);
+          input.files = dt.files;
+        }
+        catch (err) { return; }   // very old browsers: click-to-browse still works
+        $(input).trigger("change");
+      });
+
+      // remove selected file (before upload)
+      $(document).on("click", ".tp-drop-clear", function(e)
+      {
+        e.preventDefault();
+        e.stopPropagation();
+        var drop = $(this).closest("label.tp-drop");
+        var input = document.getElementById(drop.attr("for"));
+        if (!input) return;
+        input.value = "";
+        try { input.files = new DataTransfer().files; } catch (err) {}
+        $(input).trigger("change");
       });
     });
   </script>
@@ -207,25 +285,76 @@ if (!function_exists('tpItemState'))
     switch ($state['status'])
     {
       case 'verified':
-        echo '<div class="tp-status tp-status-verified"><i class="mdi mdi-checkbox-marked-circle"></i> Verified &amp; accepted</div>';
-        echo '<p class="tp-status-note">Already verified by the department &mdash; no further upload needed.</p>';
+        echo '<span class="tp-status tp-status-verified"><i class="mdi mdi-checkbox-marked-circle"></i> Verified</span>';
         break;
       case 'uploaded':
-        echo '<div class="tp-status tp-status-uploaded"><i class="mdi mdi-cloud-check"></i> Uploaded</div>';
-        echo '<p class="tp-status-note">Uploading again will replace the previous file.</p>';
+        echo '<span class="tp-status tp-status-uploaded"><i class="mdi mdi-cloud-check"></i> Uploaded</span>';
         break;
       case 'error':
-        echo '<div class="tp-status tp-status-error"><i class="mdi mdi-alert-circle"></i> Upload error</div>';
-        echo '<p class="tp-status-note tp-status-note-error">'.$state['msg'].'</p>';
+        echo '<span class="tp-status tp-status-error"><i class="mdi mdi-alert-circle"></i> Upload error</span>';
         break;
       default:
-        echo '<div class="tp-status tp-status-pending"><i class="mdi mdi-upload"></i> Not uploaded yet</div>';
+        echo '<span class="tp-status tp-status-pending"><i class="mdi mdi-upload"></i> Not uploaded</span>';
     }
   }
 
-  function tpFileInput ($item)
+  function tpStatusNote ($state)
   {
-    echo '<input name="'.$item[0].'" type="file" id="'.$item[0].'" accept="'.$item[3].'" />';
+    switch ($state['status'])
+    {
+      case 'verified':
+        echo '<p class="tp-status-note">Verified and accepted by the department &mdash; no further upload needed.</p>';
+        break;
+      case 'uploaded':
+        echo '<p class="tp-status-note">Uploading again will replace the previous file.</p>';
+        break;
+      case 'error':
+        echo '<p class="tp-status-note tp-status-note-error">'.$state['msg'].'</p>';
+        break;
+    }
+  }
+
+  /* drop-zone bound to the document's own (hidden) native input —
+     same name / id / accept as the original plain file input */
+  function tpDrop ($item)
+  {
+    ?>
+    <input class="tp-file-hidden" name="<?php echo $item[0]; ?>" type="file" id="<?php echo $item[0]; ?>" accept="<?php echo $item[3]; ?>" />
+    <label class="tp-drop" for="<?php echo $item[0]; ?>">
+      <span class="tp-drop-empty">
+        <i class="mdi mdi-cloud-upload"></i>
+        <span class="tp-drop-text">Drop file here or <u>browse</u></span>
+        <span class="tp-drop-hint"><?php echo $item[3]; ?></span>
+      </span>
+      <span class="tp-drop-file">
+        <i class="mdi mdi-file-check"></i>
+        <span class="tp-drop-meta"><b data-name></b><small data-size></small></span>
+        <button type="button" class="tp-drop-clear" aria-label="Remove selected file" title="Remove">&#10005;</button>
+      </span>
+    </label>
+    <?php
+  }
+
+  /* one document tile */
+  function tpDocTile ($item, $num, $st)
+  {
+    ?>
+    <div class="tp-tile tp-tile-<?php echo $st['status']; ?>">
+      <div class="tp-tile-top">
+        <span class="tp-doc-num"><?php echo $num; ?></span>
+        <?php tpStatusChip ($st); ?>
+      </div>
+      <h5 class="tp-tile-title"><?php echo $item[1]; ?>
+        <?php if ($item[2] != "") { ?>
+          <span data-toggle="popover" html="true" data-trigger="hover" data-placement="top" data-content="<?php echo $item[2]; ?>"> <i class="mdi mdi-information-outline"></i></span><?php } ?>
+      </h5>
+      <?php if ($item[4] != "") { ?>
+        <a class="tp-sample-link" href="<?php echo base_url().$item[4]; ?>" target="_blank"><i class="mdi mdi-eye-outline"></i> View sample</a>
+      <?php } ?>
+      <?php tpStatusNote ($st); ?>
+      <?php if ($st['show']) tpDrop ($item); ?>
+    </div>
+    <?php
   }
 
   function tpDeclaration ($sfx, $buttonLabel)
@@ -356,7 +485,7 @@ $tpDash  = round (213.6 * $tpPct / 100, 1);   // donut circumference 2*pi*34
                 <div class="tp-collapse-body">
                   <ul>
                     <li>You have 30 minutes for each upload section. Please login again if the page expires.</li>
-                    <li>Each <strong>Choose File</strong> option allows the selection of only one file for upload.</li>
+                    <li>Each document accepts the selection of only one file for upload.</li>
                     <li>You can always replace an uploaded file by uploading another file for the same item. The previously uploaded document will be automatically replaced by the new one.</li>
                     <li>Each page has its own <strong>Upload documents</strong> submission button. Clicking another tab without clicking <strong>Upload documents</strong> will reset any file sections that have not yet been uploaded.</li>
                     <li>Each upload action is limited to a total of 8MB. For larger files, it is suggested to break them into multiple uploads.</li>
@@ -499,41 +628,16 @@ $tpDash  = round (213.6 * $tpPct / 100, 1);   // donut circumference 2*pi*34
                             </div>
                           </div>
 
-                          <ul class="list-group tp-doc-list mt-3">
+                          <div class="tp-tile-grid mt-3">
                             <?php $isChina = (isset ($degInfo['isChina'][$qq]) && $degInfo['isChina'][$qq] == 'Y'); ?>
                             <?php if ($isChina) $endLoop = ($qq+1)*12; else $endLoop = $qq*12+7; ?>
                             <?php $tpRowNum = 0; ?>
                             <?php for ($i=$qq*12; $i<$endLoop; $i++) { ?>
                               <?php if (UPLOAD_ITEMS[$i][1] == "") continue; ?>
                               <?php $tpRowNum++; $st = tpItemState (UPLOAD_ITEMS[$i][0], $verified, $uploaded, $tpErr, $tpErrCount); ?>
-                              <li class="list-group-item tp-doc-row tp-doc-<?php echo $st['status']; ?>">
-                                <div class="row">
-                                  <div class="col-lg-7">
-                                    <div class="tp-doc-title">
-                                      <span class="tp-doc-num"><?php echo $tpRowNum; ?></span>
-                                      <h5><?php echo UPLOAD_ITEMS[$i][1]; ?>
-                                        <?php if (UPLOAD_ITEMS[$i][2] != "") { ?>
-                                          <span data-toggle="popover" html="true" data-trigger="hover" data-placement="right" data-content="<?php echo UPLOAD_ITEMS[$i][2]; ?>"> <i class="mdi mdi-information-outline"></i></span><?php } ?>
-                                      </h5>
-                                    </div>
-                                    <?php if (UPLOAD_ITEMS[$i][4] != "") { ?>
-                                      <a class="tp-sample-link" data-toggle="collapse" href="#cardCollapse<?php echo UPLOAD_ITEMS[$i][0]; ?>" role="button" aria-expanded="false">
-                                        <i class="mdi mdi-eye-outline"></i> View sample
-                                      </a>
-                                      <div id="cardCollapse<?php echo UPLOAD_ITEMS[$i][0] ?>" class="collapse pt-2">
-                                        <img class="img-fluid mb-1 tp-sample-img" src="<?php echo base_url().UPLOAD_ITEMS[$i][4]; ?>" alt="">
-                                      </div>
-                                    <?php } ?>
-                                  </div>
-
-                                  <div class="col-lg-5 tp-doc-action">
-                                    <?php tpStatusChip ($st); ?>
-                                    <?php if ($st['show']) tpFileInput (UPLOAD_ITEMS[$i]); ?>
-                                  </div>
-                                </div>
-                              </li>
+                              <?php tpDocTile (UPLOAD_ITEMS[$i], $tpRowNum, $st); ?>
                             <?php } ?>
-                          </ul>
+                          </div>
 
                           <div class="tp-ready-badge alert alert-success mt-3" style="display:none">
                             <i class="mdi mdi-paperclip"></i> <b>0</b> file(s) selected &mdash; tick the declaration and click <strong>Upload documents</strong> below to submit them.
@@ -552,64 +656,36 @@ $tpDash  = round (213.6 * $tpPct / 100, 1);   // donut circumference 2*pi*34
                       <p class="mb-0">Applicants seeking admission based on qualification from a university or comparable institution outside of Hong Kong, where the language of instruction and/or examination is not English, is required to submit TOEFL / IELTS official score report. Click <a href="https://aal.hku.hk/tpg/english-language-requirements" target="_blank"><strong>here</strong></a> for detailed requirements from HKU.</p>
                     </div>
                     <?php $eng=36; ?>
-                    <ul class="list-group tp-doc-list mt-3">
-                      <?php $st = tpItemState (UPLOAD_ITEMS[$eng][0], $verified, $uploaded, $tpErr, $tpErrCount); ?>
-                      <li class="list-group-item tp-doc-row tp-doc-<?php echo $st['status']; ?>">
-                        <div class="row">
-                          <div class="col-lg-7">
-                            <div class="tp-doc-title">
-                              <span class="tp-doc-num">1</span>
-                              <h5><?php echo UPLOAD_ITEMS[$eng][1]; ?>
-                                <?php if (UPLOAD_ITEMS[$eng][2] != "") { ?>
-                                <span data-toggle="popover" data-trigger="hover" data-placement="right" data-content="<?php echo UPLOAD_ITEMS[$eng][2]; ?>"> <i class="mdi mdi-information-outline"></i></span><?php } ?>
-                              </h5>
-                            </div>
-                            <?php if (UPLOAD_ITEMS[$eng][4] != "") { ?>
-                              <a class="tp-sample-link" data-toggle="collapse" href="#cardCollapse<?php echo UPLOAD_ITEMS[$eng][0]; ?>" role="button" aria-expanded="false">
-                                <i class="mdi mdi-eye-outline"></i> View sample
-                              </a>
-                              <div id="cardCollapse<?php echo UPLOAD_ITEMS[$eng][0] ?>" class="collapse pt-2">
-                                <img class="img-fluid mb-1 tp-sample-img" src="<?php echo base_url().UPLOAD_ITEMS[$eng][4]; ?>" alt="">
-                              </div>
-                            <?php } ?>
-                          </div>
+                    <div class="tp-tile-grid tp-tile-grid-2 mt-3">
 
-                          <div class="col-lg-5 tp-doc-action">
-                            <?php tpStatusChip ($st); ?>
-                            <?php if ($st['show']) tpFileInput (UPLOAD_ITEMS[$eng]); ?>
-                          </div>
-                        </div>
-                      </li>
+                      <?php $st = tpItemState (UPLOAD_ITEMS[$eng][0], $verified, $uploaded, $tpErr, $tpErrCount); ?>
+                      <?php tpDocTile (UPLOAD_ITEMS[$eng], 1, $st); ?>
 
                       <?php $st = tpItemState (UPLOAD_ITEMS[$eng+1][0], $verified, $uploaded, $tpErr, $tpErrCount); ?>
-                      <li class="list-group-item tp-doc-row tp-doc-<?php echo $st['status']; ?>">
-                        <div class="row">
-                          <div class="col-lg-7">
-                            <div class="tp-doc-title">
-                              <span class="tp-doc-num">2</span>
-                              <h5><?php echo UPLOAD_ITEMS[$eng+1][1]; ?>
-                                <?php if (UPLOAD_ITEMS[$eng+1][2] != "") { ?>
-                                  <span data-toggle="popover" data-trigger="hover" data-placement="right" data-content="<?php echo UPLOAD_ITEMS[$eng+1][2]; ?>"> <i class="mdi mdi-information-outline"></i></span><?php } ?>
-                              </h5>
-                            </div>
+                      <div class="tp-tile tp-tile-<?php echo $st['status']; ?>">
+                        <div class="tp-tile-top">
+                          <span class="tp-doc-num">2</span>
+                          <?php tpStatusChip ($st); ?>
+                        </div>
+                        <h5 class="tp-tile-title"><?php echo UPLOAD_ITEMS[$eng+1][1]; ?>
+                          <?php if (UPLOAD_ITEMS[$eng+1][2] != "") { ?>
+                            <span data-toggle="popover" data-trigger="hover" data-placement="top" data-content="<?php echo UPLOAD_ITEMS[$eng+1][2]; ?>"> <i class="mdi mdi-information-outline"></i></span><?php } ?>
+                        </h5>
+                        <div class="tp-tile-options">
+                          <p class="tp-radio-label mb-1">Select the test you are submitting:</p>
+                          <div class="custom-control custom-radio">
+                            <input type="radio" name="customRadio" class="custom-control-input" id="toefl" value="TOEFL">
+                            <label class="custom-control-label" for="toefl">TOEFL (Test of English as a Foreign Language)</label>
                           </div>
-
-                          <div class="col-lg-5 tp-doc-action">
-                            <p class="tp-radio-label">Select the test you are submitting:</p>
-                            <div class="custom-control custom-radio">
-                              <input type="radio" name="customRadio" class="custom-control-input" id="toefl" value="TOEFL">
-                              <label class="custom-control-label" for="toefl">TOEFL (Test of English as a Foreign Language)</label>
-                            </div>
-                            <div class="custom-control custom-radio mb-2">
-                              <input type="radio" name="customRadio" class="custom-control-input" id="ielts" value="IELTS" checked>
-                              <label class="custom-control-label" for="ielts">IELTS (International English Language Testing System)</label>
-                            </div>
-                            <?php tpStatusChip ($st); ?>
-                            <?php if ($st['show']) tpFileInput (UPLOAD_ITEMS[$eng+1]); ?>
+                          <div class="custom-control custom-radio">
+                            <input type="radio" name="customRadio" class="custom-control-input" id="ielts" value="IELTS" checked>
+                            <label class="custom-control-label" for="ielts">IELTS (International English Language Testing System)</label>
                           </div>
                         </div>
-                      </li>
-                    </ul>
+                        <?php tpStatusNote ($st); ?>
+                        <?php if ($st['show']) tpDrop (UPLOAD_ITEMS[$eng+1]); ?>
+                      </div>
+                    </div>
 
                     <div class="tp-ready-badge alert alert-success mt-3" style="display:none">
                       <i class="mdi mdi-paperclip"></i> <b>0</b> file(s) selected &mdash; tick the declaration and click <strong>Upload documents</strong> below to submit them.
@@ -621,10 +697,10 @@ $tpDash  = round (213.6 * $tpPct / 100, 1);   // donut circumference 2*pi*34
 
                 <div class="tab-pane" id="info-4">
                   <div class="tp-section-intro mt-3">
-                    <p class="mb-0">Use this section to upload other documents requested by departmental administration. If in doubt, please check with department before upload.</p>
+                    <p class="mb-0">Use this section to upload other documents requested by departmental administration. If in doubt, please check with department before upload. Each item is submitted individually with its own short description.</p>
                   </div>
 
-                  <ul class="list-group tp-doc-list mt-3">
+                  <div class="tp-tile-grid mt-3">
                   <?php for ($other = 0; $other < 3; $other++) {
                     $i = 38 + $other;
                     $st = tpItemState (UPLOAD_ITEMS[$i][0], $verified, $uploaded, $tpErr, $tpErrCount); ?>
@@ -645,8 +721,8 @@ $tpDash  = round (213.6 * $tpPct / 100, 1);   // donut circumference 2*pi*34
                                   <input class="form-control" type="text" name="other<?php echo UPLOAD_ITEMS[$i][0]; ?>" id="other<?php echo UPLOAD_ITEMS[$i][0]; ?>" required="yes" placeholder="description" maxlength="12">
 
                                   <div class="mt-3"> <!-- file upload -->
-                                    <?php tpStatusChip ($st); ?>
-                                    <?php if ($st['show']) tpFileInput (UPLOAD_ITEMS[$i]); ?>
+                                    <?php tpStatusNote ($st); ?>
+                                    <?php if ($st['show']) tpDrop (UPLOAD_ITEMS[$i]); ?>
                                   </div> <!-- end file upload -->
                                 </div>
 
@@ -658,29 +734,23 @@ $tpDash  = round (213.6 * $tpPct / 100, 1);   // donut circumference 2*pi*34
                       </div><!-- /.modal-dialog -->
                     </div><!-- /.modal -->
 
-                    <li class="list-group-item tp-doc-row tp-doc-<?php echo $st['status']; ?>">
-                      <div class="row">
-                        <div class="col-lg-7">
-                          <div class="tp-doc-title">
-                            <span class="tp-doc-num"><?php echo $other+1; ?></span>
-                            <h5><?php echo UPLOAD_ITEMS[$i][1]; ?>
-                            <?php if (UPLOAD_ITEMS[$i][2] != "") { ?>
-                              <span data-toggle="popover" data-trigger="hover" data-placement="right" data-content="<?php echo UPLOAD_ITEMS[$i][2]; ?>"> <i class="mdi mdi-information-outline"></i></span><?php } ?>
-                            </h5>
-                          </div>
-                        </div>
-
-                        <div class="col-lg-5 tp-doc-action">
-                          <?php tpStatusChip ($st); ?>
-                          <?php if ($st['show']) { ?>
-                            <button type="button" class="btn btn-light" data-toggle="modal" data-target="#otherUploadForm<?php echo $other+1; ?>"><i class="mdi mdi-upload"></i> upload file</button>
-                          <?php } ?>
-                        </div>
+                    <div class="tp-tile tp-tile-<?php echo $st['status']; ?>">
+                      <div class="tp-tile-top">
+                        <span class="tp-doc-num"><?php echo $other+1; ?></span>
+                        <?php tpStatusChip ($st); ?>
                       </div>
-                    </li>
+                      <h5 class="tp-tile-title"><?php echo UPLOAD_ITEMS[$i][1]; ?>
+                        <?php if (UPLOAD_ITEMS[$i][2] != "") { ?>
+                          <span data-toggle="popover" data-trigger="hover" data-placement="top" data-content="<?php echo UPLOAD_ITEMS[$i][2]; ?>"> <i class="mdi mdi-information-outline"></i></span><?php } ?>
+                      </h5>
+                      <?php tpStatusNote ($st); ?>
+                      <?php if ($st['show']) { ?>
+                        <button type="button" class="btn btn-light tp-tile-open" data-toggle="modal" data-target="#otherUploadForm<?php echo $other+1; ?>"><i class="mdi mdi-upload"></i> Add file</button>
+                      <?php } ?>
+                    </div>
 
                   <?php } ?>
-                  </ul>
+                  </div>
 
                 </div>
               </div> <!-- end tab-content -->
@@ -711,7 +781,7 @@ $tpDash  = round (213.6 * $tpPct / 100, 1);   // donut circumference 2*pi*34
 
   <!-- App js -->
   <script src="<?php echo base_url(); ?>assets/js/app.min.js"></script>
-  <script src="<?php echo base_url(); ?>assets/js/tpg-premium.js?v=3"></script>
+  <script src="<?php echo base_url(); ?>assets/js/tpg-premium.js?v=4"></script>
   <script>
 
   $("[data-toggle=popover]").popover({trigger:"hover", html:"true"});
