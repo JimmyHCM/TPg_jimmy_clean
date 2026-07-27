@@ -55,6 +55,15 @@ class Captcha extends CI_Controller
     $this->session->unset_userdata('otpCodePrefix');
     $this->session->set_userdata('otpCodePrefix', $data['otpCodePrefix']);
 
+    // local dev has no mail transport: skip SMTP (it hangs then fatals) and
+    // reveal the OTP on screen so login can proceed
+    // (same hostname guard as config/database.php - never true on production)
+    if (($_SERVER['HTTP_HOST'] ?? '') !== 'tpgadmission.engg.hku.hk')
+    {
+      $this->session->set_flashdata("info", "[local dev] OTP is <strong>" . $data['otpCodePrefix'] . "-" . $data['otpCode'] . "</strong> (enter the 6 digits below)");
+      return;
+    }
+
     $result = $this->AppAuthModel->sendOtpCode($data['otpCodePrefix'], $data['otpCode'], $recipientEmail);
 
     if ($result)

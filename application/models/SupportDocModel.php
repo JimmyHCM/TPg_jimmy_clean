@@ -361,6 +361,47 @@ class SupportDocModel extends CI_Model {
     }
   }
 
+  // 2026: academic qualification form is saved directly, no more generated txt to re-upload
+  function saveMarkSheetData ($markSheet)
+  {
+    ini_set('display_errors', 0);     // do not display errors
+    $appNo = $_SESSION['appNo'];
+
+    // map the selected reference key to institution slot 1..3 via titleP1..P3
+    $slot = 1;
+    $supportDocRow = array();
+    if ($this->getRecord ('supportDoc', $appNo, $supportDocRow))
+    {
+      for ($i=1; $i<=MAX_fileDNO; $i++)
+      {
+        $titleKey = 'titleP'.$i;
+        if (isset ($supportDocRow->$titleKey) && $supportDocRow->$titleKey == $markSheet['key'])
+        {
+          $slot = $i;
+          break;
+        }
+      }
+    }
+
+    $tobeUpdatedAvgMark = array ();
+    $tobeUpdatedAvgMark['appNo'] = $appNo;
+    $tobeUpdatedAvgMark['createDate'] = mdate('%Y-%m-%d %H:%i:%s', now());
+    $tobeUpdatedAvgMark['avgMarkByStud'.$slot] = $markSheet['avgMarkByStudent'];
+    $tobeUpdatedAvgMark['awardClass'.$slot] = $markSheet['awardClass'];
+
+    $this->db->set($tobeUpdatedAvgMark);
+    $this->db->insert('avgMark');
+
+    //write SQLlog if TRUE
+    $log = array(
+      'sqlDetails'  => TRUE,
+      'oldData'     => '',
+      'newData'     => '',
+      'sqlAction'   => 'save academic qualification',
+    );
+    $this->AppAuthModel->writeSQLlog($log);
+  }
+
   function performUpload ($fieldNames)
   {
     //echo nl2br("fieldNames:\n");

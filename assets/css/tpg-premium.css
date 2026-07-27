@@ -940,6 +940,36 @@ body.tpg-auth-body {
 .tp-status-note-error { color: #A5271B; }
 .tp-radio-label { font-size: .78rem; font-weight: 500; color: var(--tp-ink); margin-bottom: .4rem; }
 
+/* academic qualification form (fill mark sheet page) */
+.tp-form-label {
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--tp-ink);
+  margin-bottom: .35rem;
+}
+.tp-form-label small {
+  font-weight: 400;
+  color: var(--tp-pewter);
+}
+.tp-gpa-row {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+.tp-gpa-row .form-control { flex: 1; min-width: 0; }
+.tp-gpa-of {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--tp-pewter);
+  text-transform: lowercase;
+  letter-spacing: .04em;
+}
+.tp-form-static {
+  background: var(--tp-ash) !important;
+  color: var(--tp-graphite);
+  font-weight: 500;
+}
+
 /* section intro strip */
 .tp-section-intro {
   padding: .8rem 1rem;

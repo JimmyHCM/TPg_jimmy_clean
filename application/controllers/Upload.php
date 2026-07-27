@@ -598,37 +598,19 @@ class Upload extends CI_Controller
         $markSheet['key'] = $_POST['key'];
         if (isset($_POST['u985']))
           $markSheet['u985'] = 'Y';
-        else 
+        else
           $markSheet['u985'] = 'N';
         if (isset($_POST['u211']))
           $markSheet['u211'] = 'Y';
-        else 
+        else
           $markSheet['u211'] = 'N';
-        $markSheet['passing'] = $_POST['passing'];
-        $markSheet['avgMarkByStudent'] = $_POST['avgMarkByStudent'];
+        $markSheet['avgMarkByStudent'] = $_POST['avgMarkObtained'] . '/' . $_POST['avgMarkMax'];
+        $markSheet['awardClass'] = $_POST['awardClass'];
         $markSheet['calcDate'] = date ('Y-m-d');
-      
-        $len = $_POST['counter'];
-        $lenMS = 0;
-        for ($i=0; $i<$len; $i++)
-        {
-          if (isset($_POST['year'.$i]))
-          {
-            //fwrite ($outfile, "writing year ".$i."\n");
-            $markSheet['row'][$lenMS][0] = $_POST['year'.$i];
-            $markSheet['row'][$lenMS][1] = $_POST['semester'.$i];
-            $markSheet['row'][$lenMS][2] = $_POST['courseCode'.$i];
-            $markSheet['row'][$lenMS][3] = $_POST['courseTitle'.$i];
-            $markSheet['row'][$lenMS][4] = $_POST['creditUnit'.$i];
-            $markSheet['row'][$lenMS][5] = $_POST['mark'.$i];
-            $markSheet['row'][$lenMS][6] = $_POST['gpa'.$i];
-            $markSheet['row'][$lenMS][7] = $_POST['grade'.$i];
-            $lenMS++;
-          }
-        }
 
-        $markSheet['courseTotal'] = $lenMS;
-        $this->CSVModel->genMStxt ($markSheet);
+        $this->SupportDocModel->saveMarkSheetData ($markSheet);
+        $this->session->set_flashdata("info", "Academic qualification for <strong>" . htmlspecialchars($markSheet['key'], ENT_QUOTES) . "</strong> submitted.");
+        redirect("display/fillMarkSheet");
       }
     }
   }
