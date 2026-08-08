@@ -5,10 +5,12 @@
  *   $pageTitle  — browser title (string)
  *   $bodyClass  — class applied to <body> (e.g. 'tpg-auth-body')
  *   $bodyId     — id applied to <body>
+ *   $bodyAttrs  — extra raw attributes for <body> (e.g. 'onload="noBack();"')
  */
 $pageTitle = isset($pageTitle) ? $pageTitle : 'TPg Admission';
 $bodyClass = isset($bodyClass) ? $bodyClass : '';
 $bodyId    = isset($bodyId) ? $bodyId : '';
+$bodyAttrs = isset($bodyAttrs) ? $bodyAttrs : '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +34,7 @@ $bodyId    = isset($bodyId) ? $bodyId : '';
   <!-- TPg fresh theme layer (must load after app.min.css) -->
   <link href="<?php echo base_url(); ?>assets/css/tpg-theme.css" rel="stylesheet" type="text/css" />
   <!-- TPg premium redesign layer (must load LAST) -->
-  <link href="<?php echo base_url(); ?>assets/css/tpg-premium.css?v=5" rel="stylesheet" type="text/css" />
+  <link href="<?php echo base_url(); ?>assets/css/tpg-premium.css?v=6" rel="stylesheet" type="text/css" />
 </head>
 
-<body<?php echo $bodyId ? ' id="'.$bodyId.'"' : ''; ?><?php echo $bodyClass ? ' class="'.$bodyClass.'"' : ''; ?>>
+<body<?php echo $bodyId ? ' id="'.$bodyId.'"' : ''; ?><?php echo $bodyClass ? ' class="'.$bodyClass.'"' : ''; ?><?php echo $bodyAttrs ? ' '.$bodyAttrs : ''; ?>>

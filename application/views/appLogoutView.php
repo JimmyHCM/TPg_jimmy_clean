@@ -1,88 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>TPG - admission system - status of applicant</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<?php
+$pageTitle = 'Session Ended';
+$bodyClass = 'tpg-auth-body';
+include(APPPATH.'views/partials/head.php');
+?>
 
-  <!-- App favicon -->
-  <link rel="shortcut icon" href="<?php echo base_url(); ?>assets/images/favicon.ico">
-
-  <!-- App css -->
-  <link href="<?php echo base_url(); ?>assets/css/app.min.css" rel="stylesheet" />
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
-  <!-- TPg premium redesign layer (must load LAST) -->
-  <link href="<?php echo base_url(); ?>assets/css/tpg-premium.css?v=5" rel="stylesheet" type="text/css" />
-
-  <link href="<?php echo base_url(); ?>assets/css/icons.min.css" rel="stylesheet" />
-
-  <style type="text/css">
-    #frontdisplay {
-    background: url("<?php echo base_url(); ?>assets/images/tpgbg.png") no-repeat fixed;
-    background-position: center;
-    background-size: cover;
-    }
-  </style>
-
-  <script type="text/javascript">    
-    window.history.forward();
-    function noBack() { 
-      window.history.forward(); 
-    }
-  </script>
-</head>
-
-<body id="frontdisplay" onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="">
-  <div class="account-pages mt-5 mb-5">
+  <div class="account-pages pt-5 pb-5">
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-lg-5">
-          <div class="card">
+        <div class="col-12">
+          <div class="card tpg-auth-card">
 
-            <!-- Logo -->
-            <div class="card-header pt-4 pb-4 text-center bg-primary">
-              <span><img src="<?php echo base_url(); ?>assets/images/engghkuLogoWhite.png" alt="" height="60"></span>
-            </div>
+            <?php include(APPPATH.'views/partials/auth_brand.php'); ?>
 
-            <div class="card-body p-4">
+            <div class="card-body p-4 p-md-5">
 
-              <div class="text-center w-85 m-auto">
+              <div class="tp-done">
+                <div class="tp-done-icon"><i class="mdi mdi-logout-variant"></i></div>
+                <h4 class="tp-done-title">This session has ended</h4>
+              </div>
 
-                <h4 class="text-dark-50 text-center mt-0 font-weight-bold">This session has ended.</h4>
+              <?php if (isset($_SESSION['error'])) {?>
+                <div class="alert alert-danger mt-3"> <?php echo $_SESSION['error']; ?></div>
+              <?php }?>
 
-                <?php if (isset($_SESSION['error'])) {?>
-                  <div class="alert alert-danger"> <?php echo $_SESSION['error']; ?></div>
-                  <?php 
-                }?>
+              <?php if (isset($_SESSION['info'])) {?>
+                <div class="alert alert-info mt-3"> <?php echo $_SESSION['info']; ?></div>
+              <?php }?>
 
-                <?php if (isset($_SESSION['info'])) {?>
-                  <div class="alert alert-info"> <?php echo $_SESSION['info']; ?></div>
-                  <?php 
-                }?>
+              <div class="text-center mt-4">
+                <a href="<?php echo base_url(); ?>auth" class="btn btn-primary btn-lg tpg-btn-block">Back to sign in</a>
               </div>
 
             </div> <!-- end card-body -->
-          </div>
-          <!-- end card -->
-
+          </div> <!-- end card -->
         </div> <!-- end col -->
-      </div>
-      <!-- end row -->
-    </div>
-    <!-- end container -->
-  </div>
-  <!-- end page -->
+      </div> <!-- end row -->
+    </div> <!-- end container -->
+  </div> <!-- end page -->
 
-
-  <footer class="footer footer-alt">
-    <?php echo $currentYear; ?> © faculty of engineering, HKU
-  </footer>
-
-  <!-- App js -->
-  <script src="<?php echo base_url(); ?>assets/js/app.min.js"></script>
-  <script src="<?php echo base_url(); ?>assets/js/tpg-premium.js?v=4"></script>
-</body>
-</html>
+<?php include(APPPATH.'views/partials/footer.php'); ?>

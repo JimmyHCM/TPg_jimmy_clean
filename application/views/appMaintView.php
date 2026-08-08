@@ -1,85 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>TPG - admission system - maintenance</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<?php
+$pageTitle = 'Under Maintenance';
+$bodyClass = 'tpg-auth-body';
+include(APPPATH.'views/partials/head.php');
+?>
 
-  <!-- App favicon -->
-  <link rel="shortcut icon" href="<?php echo base_url(); ?>assets/images/favicon.ico">
-
-  <!-- App css -->
-  <link href="<?php echo base_url(); ?>assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-  <link href="<?php echo base_url(); ?>assets/css/app.min.css" rel="stylesheet" type="text/css" />
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
-  <!-- TPg premium redesign layer (must load LAST) -->
-  <link href="<?php echo base_url(); ?>assets/css/tpg-premium.css?v=5" rel="stylesheet" type="text/css" />
-
-
-  <style type="text/css">
-    body {
-    background: url("<?php echo base_url(); ?>assets/images/tpgbg.png") no-repeat fixed;
-    background-position: center;
-    background-size: cover;
-    }
-  </style>
-</head>
-
-<body>
-
-  <div class="account-pages mt-5 mb-5">
+  <div class="account-pages pt-5 pb-5">
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-lg-5">
-          <div class="card shadow-sm">
+        <div class="col-12">
+          <div class="card tpg-auth-card">
 
-            <!-- Logo -->
-            <div class="card-header pt-4 pb-4 text-center bg-primary">
-              <span><img src="<?php echo base_url(); ?>assets/images/engghkuLogoWhite.png" alt="" height="60"></span>
-            </div>
+            <?php include(APPPATH.'views/partials/auth_brand.php'); ?>
 
-            <div class="card-body p-4">
+            <div class="card-body p-4 p-md-5">
 
-              <div class="text-center w-75 m-auto">
-                <h4 class="text-uppercase text-danger mt-3">under maintenance</h4>
-
-                <!--
-                <br/><br/>
-                <p class="text-info mb-4">Special maintenance<br/>12:00 30 Nov (UTC+8) to 22:00 1 Dec (UTC+8)</p>
-              -->
-              <!--
-                <br/><br/>
-                <p class="text-info mb-4">Temporary maintenance<br/>system will be available very soon 11:00 16 Mar (UTC+8)</p>
-              -->
-
-                <p class="text-muted mt-3">daily system down time for maintenance or update</p>
-                <p class="text-muted mt-3">
-                2:00-2:59 UTC+8<br/>14:00-14:59 UTC+8</p>
-                
+              <div class="tp-done">
+                <div class="tp-done-icon tp-done-warn"><i class="mdi mdi-wrench-outline"></i></div>
+                <h4 class="tp-done-title">Under maintenance</h4>
+                <p class="tp-done-text">The system is temporarily unavailable for maintenance or update. Please try again later.</p>
               </div>
 
+              <!--
+              <div class="alert alert-info text-center mt-3">Special maintenance<br/>12:00 30 Nov (UTC+8) to 22:00 1 Dec (UTC+8)</div>
+              -->
+              <!--
+              <div class="alert alert-info text-center mt-3">Temporary maintenance<br/>system will be available very soon 11:00 16 Mar (UTC+8)</div>
+              -->
+
+              <p class="tpg-note text-center mt-4 mb-0">
+                Daily system down time for maintenance or update:<br>
+                02:00&ndash;02:59 (UTC+8) &amp; 14:00&ndash;14:59 (UTC+8)
+              </p>
+
             </div> <!-- end card-body -->
-          </div>
-          <!-- end card -->
-
+          </div> <!-- end card -->
         </div> <!-- end col -->
-      </div>
-      <!-- end row -->
-    </div>
-    <!-- end container -->
-  </div>
-  <!-- end page -->
+      </div> <!-- end row -->
+    </div> <!-- end container -->
+  </div> <!-- end page -->
 
-  <footer class="footer footer-alt">
-    <?php echo $currentYear; ?> © faculty of engineering, HKU
-  </footer>
-
-
-  <!-- App js -->
-  <script src="<?php echo base_url(); ?>assets/js/app.min.js"></script>
-  <script src="<?php echo base_url(); ?>assets/js/tpg-premium.js?v=4"></script>
-</body>
-</html>
+<?php include(APPPATH.'views/partials/footer.php'); ?>

@@ -1010,6 +1010,110 @@ body.tpg-auth-body {
 .tp-file-counter { font-weight: 500; opacity: .9; }
 
 /* =========================================================================
+   12b. FLOW & TERMINAL PAGES (captcha, PICS, survey, status, confirmations)
+   ========================================================================= */
+
+/* Wider centered card for document-style content (PICS, survey, offer). */
+.tpg-auth-card-wide { max-width: 780px; }
+
+/* Terminal-state panel: session ended / maintenance / 404 / submitted. */
+.tp-done { text-align: center; padding: .5rem 0 .25rem; }
+.tp-done-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--tp-green-tint);
+  color: var(--tp-green);
+  font-size: 1.9rem;
+}
+.tp-done-icon.tp-done-warn { background: var(--tp-gold-tint); color: var(--tp-gold); }
+.tp-done-icon.tp-done-err  { background: #FBEDEC; color: #B3392F; }
+.tp-done-title { font-family: var(--tp-display); font-weight: 700; }
+.tp-done-text  { color: var(--tp-pewter); max-width: 30rem; margin: .25rem auto 0; }
+
+/* Big 404 numeral */
+.tp-error-code {
+  font-family: var(--tp-display);
+  font-weight: 800;
+  font-size: 4.25rem;
+  line-height: 1;
+  color: var(--tp-green);
+  letter-spacing: .04em;
+}
+
+/* Captcha challenge */
+.tp-captcha-img { text-align: center; margin-bottom: .35rem; }
+.tp-captcha-refresh {
+  display: block;
+  text-align: center;
+  font-size: .8rem;
+  color: var(--tp-pewter);
+  margin-bottom: 1rem;
+}
+.tp-otp-prefix {
+  font-family: var(--tp-display);
+  font-weight: 700;
+  letter-spacing: .08em;
+  background: var(--tp-ash);
+  border: 1px solid var(--tp-pale);
+  color: var(--tp-ink);
+}
+
+/* PICS document frame */
+.tp-pdf-frame {
+  border: 1px solid var(--tp-cloud);
+  border-radius: var(--tp-r-input);
+  overflow: hidden;
+  background: var(--tp-ash);
+}
+
+/* Survey / checkbox option list — one tappable row per option */
+.tp-option-list .custom-control {
+  border: 1px solid var(--tp-cloud);
+  border-radius: var(--tp-r-input);
+  padding: .65rem .9rem .65rem 2.4rem;
+  margin-bottom: .5rem;
+  transition: border-color var(--tp-t) var(--tp-ease), background-color var(--tp-t) var(--tp-ease);
+}
+.tp-option-list .custom-control:hover { border-color: var(--tp-green); }
+.tp-option-list .custom-control-label { display: block; cursor: pointer; }
+.tp-option-list .custom-control-input:checked ~ .custom-control-label { color: var(--tp-green); font-weight: 500; }
+
+/* Status-message letter body */
+.tp-status-letter {
+  background: var(--tp-ash);
+  border-left: 3px solid var(--tp-gold);
+  border-radius: var(--tp-r-input);
+  padding: 1.1rem 1.3rem;
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+}
+
+/* Simple centered form card inside hub pages (check status, summary) */
+.tp-form-card { max-width: 480px; margin: 0 auto; }
+
+/* Chat page */
+.tp-chat-log {
+  background: var(--tp-ash);
+  border: 1px solid var(--tp-cloud);
+  border-radius: var(--tp-r-input);
+  padding: 1rem 1.2rem;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+.tp-chat-log-new { background: var(--tp-gold-tint); border-color: var(--tp-gold-soft); }
+.tp-chat-empty { color: var(--tp-fog); font-style: italic; }
+.tp-chat-count { font-size: .76rem; color: var(--tp-pewter); text-align: right; }
+
+/* Offer notice ("letter" look) on the reply-slip page */
+.tp-letter-card { max-width: 860px; margin: 0 auto; }
+.tp-letter-card table { width: 100%; }
+
+/* =========================================================================
    13. RESPONSIVE & MOTION PREFERENCES
    ========================================================================= */
 

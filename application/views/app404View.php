@@ -1,86 +1,42 @@
-<?php 
+<?php
   defined('BASEPATH') OR exit('No direct script access allowed'); ?>
- 
+
 <?php
   $ci = new CI_Controller();
   $ci =& get_instance();
   $ci->load->helper('url');
 ?>
+<?php
+$pageTitle = 'Page Not Found';
+$bodyClass = 'tpg-auth-body';
+include(APPPATH.'views/partials/head.php');
+?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>TPG - admission system - 404</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- App favicon -->
-  <link rel="shortcut icon" href="<?php echo base_url(); ?>assets/images/favicon.ico">
-
-  <!-- App css -->
-  <link href="<?php echo base_url(); ?>assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-  <link href="<?php echo base_url(); ?>assets/css/app.min.css" rel="stylesheet" type="text/css" />
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
-  <!-- TPg premium redesign layer (must load LAST) -->
-  <link href="<?php echo base_url(); ?>assets/css/tpg-premium.css?v=5" rel="stylesheet" type="text/css" />
-
-
-  <style type="text/css">
-    #frontdisplay {
-    background: url("<?php echo base_url(); ?>assets/images/tpgbg.png") no-repeat fixed;
-    background-position: center;
-    background-size: cover;
-    }
-  </style>
-</head>
-
-<body id="frontdisplay">
-
-  <div class="account-pages mt-5 mb-5">
+  <div class="account-pages pt-5 pb-5">
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-lg-5">
-          <div class="card shadow-sm">
+        <div class="col-12">
+          <div class="card tpg-auth-card">
 
-            <!-- Logo -->
-            <div class="card-header pt-4 pb-4 text-center bg-primary">
-              <span><img src="<?php echo base_url(); ?>assets/images/engghkuLogoWhite.png" alt="" height="60"></span>
-            </div>
+            <?php include(APPPATH.'views/partials/auth_brand.php'); ?>
 
-            <div class="card-body p-4">
+            <div class="card-body p-4 p-md-5">
 
-              <div class="text-center w-75 m-auto">
-                <h1 class="text-error mt-4">404</h1>
-                <h4 class="text-uppercase text-danger mt-3">Page Not Found</h4>
-                <p class="text-muted mt-3">Looks like you may have taken a wrong turn. Don't worry... it happens to the best of us.</p>
+              <div class="tp-done">
+                <div class="tp-error-code">404</div>
+                <h4 class="tp-done-title mt-3">Page not found</h4>
+                <p class="tp-done-text">Looks like you may have taken a wrong turn. Don't worry... it happens to the best of us.</p>
+              </div>
+
+              <div class="text-center mt-4">
+                <a href="<?php echo base_url(); ?>auth" class="btn btn-primary btn-lg tpg-btn-block">Back to sign in</a>
               </div>
 
             </div> <!-- end card-body -->
-          </div>
-          <!-- end card -->
-
+          </div> <!-- end card -->
         </div> <!-- end col -->
-      </div>
-      <!-- end row -->
-    </div>
-    <!-- end container -->
-  </div>
-  <!-- end page -->
+      </div> <!-- end row -->
+    </div> <!-- end container -->
+  </div> <!-- end page -->
 
-  <footer class="footer footer-alt">
-    <script>
-      var CurrentYear = new Date().getFullYear()
-      document.write(CurrentYear)
-    </script>
-     © faculty of engineering, HKU
-  </footer>
-
-
-  <!-- App js -->
-  <script src="<?php echo base_url(); ?>assets/js/app.min.js"></script>
-  <script src="<?php echo base_url(); ?>assets/js/tpg-premium.js?v=4"></script>
-</body>
-</html>
+<?php include(APPPATH.'views/partials/footer.php'); ?>

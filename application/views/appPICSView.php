@@ -1,106 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>TPG - admission system</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- App favicon -->
-  <link rel="shortcut icon" href="<?php echo base_url(); ?>assets/images/favicon.ico">
-
-  <!-- App css -->
-  <link href="<?php echo base_url(); ?>assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-  <link href="<?php echo base_url(); ?>assets/css/app.min.css" rel="stylesheet" type="text/css" />
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
-  <!-- TPg premium redesign layer (must load LAST) -->
-  <link href="<?php echo base_url(); ?>assets/css/tpg-premium.css?v=5" rel="stylesheet" type="text/css" />
-
-
-  <style type="text/css">
-  #frontdisplay {
-    background: url("<?php echo base_url(); ?>assets/images/tpgbg.png") no-repeat fixed;
-    background-position: center;
-    background-size: cover;
-  }
-  </style>
-
-  <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
-  <script>
-    $(document).ready(function()
-    {
-      $(":submit").hide();
-      $("#ok").change(function()
-      {
-        if ($("#ok").is(':checked'))
-        {
-          $(":checkbox").prop("disabled", true);
-          $(":submit").show();
-        }
-      });
-    });
-  </script>
-
-  <script type="text/javascript">    
+<?php
+$pageTitle = 'Personal Information Collection Statement';
+$bodyClass = 'tpg-auth-body';
+$bodyAttrs = 'onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload=""';
+include(APPPATH.'views/partials/head.php');
+?>
+<script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+  window.history.forward();
+  function noBack() {
     window.history.forward();
-    function noBack() { 
-      window.history.forward(); 
-    }
-  </script>
-</head>
+  }
 
-<body id="frontdisplay" onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="">
-  <div class="account-pages mt-5 mb-5">
+  $(document).ready(function()
+  {
+    $(":submit").hide();
+    $("#ok").change(function()
+    {
+      if ($("#ok").is(':checked'))
+      {
+        $(":checkbox").prop("disabled", true);
+        $(":submit").show();
+      }
+    });
+  });
+</script>
+
+  <div class="account-pages pt-5 pb-5">
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-lg-8">
-          <div class="card">
+        <div class="col-12">
+          <div class="card tpg-auth-card tpg-auth-card-wide">
 
-            <!-- Logo -->
-            <div class="card-header pt-4 pb-4 text-center bg-primary">
-              <h3 class="text-white">Personal Information Collection Statement</h3>
-            </div>
+            <?php include(APPPATH.'views/partials/auth_brand.php'); ?>
 
-            <div class="card-body">
-              <div class="box embed-responsive embed-responsive-4by3">
+            <div class="card-body p-4 p-md-5">
+
+              <div class="text-center mb-4">
+                <h4 class="tpg-auth-title mt-0">Personal Information Collection Statement</h4>
+                <p class="tpg-auth-sub mb-0">Please read the statement below before you continue</p>
+              </div>
+
+              <div class="tp-pdf-frame box embed-responsive embed-responsive-4by3 mb-4">
                 <object class="embed-responsive-item" data="<?php echo base_url(); ?>assets/doc/pics.pdf" type="application/pdf" internalinstanceid="9" title="">
-                  <p>Your browser isn't supporting embedded pdf files. You can download the file
+                  <p class="p-3">Your browser isn't supporting embedded pdf files. You can download the file
                     <a href="<?php echo base_url(); ?>assets/doc/pics.pdf">here</a>.</p>
-                  </object>
+                </object>
+              </div>
+
+              <?php echo form_open ('display/start'); ?>
+                <div class="form-group mt-2 mb-0 text-center">
+                  <div class="custom-control custom-checkbox mb-3">
+                    <input type="checkbox" class="custom-control-input" id="ok" />
+                    <label class="custom-control-label" for="ok"><strong>I have read and understood the above.</strong></label>
+                  </div>
+                  <button class="btn btn-primary btn-lg tpg-btn-block" type="submit">Let's start</button>
                 </div>
-                
-                <?php echo form_open ('display/start'); ?>
-                    <div class="form-group mt-2 mb-0 text-center">
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="ok" />
-                        <label class="custom-control-label" for="ok">I have read and understood the above.</label>
-                      </div>
-                      <button class="btn btn-primary" type="submit">Let's start</button>
-                    </div>
-                <?php echo form_close(); ?>
+              <?php echo form_close(); ?>
 
-              </div> <!-- end card-body -->
-            </div>
-            <!-- end card -->
+            </div> <!-- end card-body -->
+          </div> <!-- end card -->
+        </div> <!-- end col -->
+      </div> <!-- end row -->
+    </div> <!-- end container -->
+  </div> <!-- end page -->
 
-          </div> <!-- end col -->
-        </div>
-        <!-- end row -->
-      </div>
-      <!-- end container -->
-    </div>
-    <!-- end page -->
-
-
-    <footer class="footer footer-alt">
-      <?php echo $currentYear; ?> © faculty of engineering, HKU
-    </footer>
-
-    <!-- App js -->
-    <script src="<?php echo base_url(); ?>assets/js/app.min.js"></script>
-  <script src="<?php echo base_url(); ?>assets/js/tpg-premium.js?v=4"></script>
-
-  </body>
-</html>
+<?php include(APPPATH.'views/partials/footer.php'); ?>
