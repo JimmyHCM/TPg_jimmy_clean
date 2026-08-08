@@ -21,8 +21,8 @@ class AppAuthModel extends CI_Model
   {
     ini_set('display_errors', 0);     // do not display errors
     $downTime = false;
-    if (date('H') == 2 || date('H') == 3 || date('H') == 4 || date('H') == 14) 
-      $downTime = true;
+    // if (date('H') == 2 || date('H') == 3 || date('H') == 4 || date('H') == 14) 
+    //   $downTime = true;
 
     // special maintenance
     //if ((date('Ymd') == 20241130 && date('H') >= 12) || (date('Ymd') == 20241201 && date('H') < 22))
