@@ -353,6 +353,23 @@ $applicants[] = [
     'englishTest' => null, 'others' => [null, null, null],
 ];
 
+// 16) "Journey" account — starts completely fresh so a tester can walk the
+//     entire applicant flow themselves: first login (PICS + survey), document
+//     uploads / mark sheet, then — after running
+//         php db/advance_fake_journey.php offer      (issues the offer)
+//         php db/advance_fake_journey.php payment    (requests payment proof)
+//     — the reply-slip and payment stages. `reset` restarts the journey.
+//     statusMsg is empty so the first login lands straight on the upload hub.
+$applicants[] = [
+    'appNo' => 1106900016, 'email' => 'journey.tester@example.test',
+    'status' => 'A', 'appStatus' => 'C', 'studStatus' => 0, 'mediaSurvey' => 'N',
+    'uni' => ['University of British Columbia', '', ''], 'degree' => ['BASc Engineering Physics', '', ''],
+    'isChina' => ['N', 'N', 'N'], 'currCode' => 9001,
+    'statusMsg' => '',
+    'pNo' => 1, 'currStud' => 'N', 'uploadedCount' => 0, 'verifiedIdx' => [],
+    'englishTest' => null, 'others' => [null, null, null],
+];
+
 echo "Seeding " . count($applicants) . " fake applications...\n";
 
 $credentials = [];

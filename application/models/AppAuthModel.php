@@ -496,6 +496,18 @@ class AppAuthModel extends CI_Model
   private function sendEmail($to, $subject, $message, $footer='e', $fileAttach='')
   {
     ini_set('display_errors', 0);     // do not display errors
+
+    // local dev has no mail transport: skip SMTP (it hangs then fails) and
+    // log the email instead so reply-slip / payment flows can be tested.
+    // Guard is web-only (HTTP_HOST present), so CLI tasks are unaffected;
+    // same hostname condition as config/database.php - never true on production.
+    $httpHost = $_SERVER['HTTP_HOST'] ?? '';
+    if ($httpHost != '' && $httpHost !== 'tpgadmission.engg.hku.hk')
+    {
+      log_message('info', '[local dev] email skipped - to: '.$to.', subject: '.$subject.($fileAttach != '' ? ', attachment: '.$fileAttach : ''));
+      return TRUE;
+    }
+
     // Note: no $config param needed if it exists config/email.php
     $this->load->helper('path');
     $this->load->library('email');
