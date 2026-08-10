@@ -817,5 +817,6 @@ $tpDash  = round (213.6 * $tpPct / 100, 1);   // donut circumference 2*pi*34
       notice.slideUp(120);
   });
   </script>
+  <?php include(APPPATH.'views/partials/demo_bar.php'); ?>
   </body>
 </html>

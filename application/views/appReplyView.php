@@ -176,7 +176,11 @@ include_once APPPATH."config/userConstants.php";
                     </div>
                     <div class="form-group">
                       <label for="signature">Signature (English only)</label>
-                      <input class="form-control" type="signature" name="signature" required="yes" id="signature" maxlength="30" placeholder="Enter your name">
+                      <input class="form-control" type="text" name="signature" required="yes" id="signature"
+                             minlength="2" maxlength="30" pattern="[A-Za-z][A-Za-z .'\-]{1,29}"
+                             title="English letters, spaces, . ' - only (2-30 characters)"
+                             oninput="this.value = this.value.replace(/[^A-Za-z .'\-]/g, '')"
+                             placeholder="Enter your name in English">
                     </div>
                     <div class="form-group">
                       <label for="myEmail">Email address</label>
@@ -218,6 +222,20 @@ include_once APPPATH."config/userConstants.php";
         {
           $("#paymentSlip").prop('required', false);
           $("#uploadPslip").hide();
+        }
+      });
+
+      // enforce the stated payment-slip size window before submission
+      $("#paymentSlip").change(function()
+      {
+        if (this.files && this.files.length)
+        {
+          var mb = this.files[0].size / 1048576;
+          if (mb < 1 || mb > 2)
+          {
+            alert("Payment slip must be between 1MB and 2MB - yours is " + mb.toFixed(2) + "MB. Please choose another file.");
+            this.value = "";
+          }
         }
       });
 

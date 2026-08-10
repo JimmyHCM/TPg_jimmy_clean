@@ -13,6 +13,12 @@
  *   php db/advance_fake_journey.php reset     wipe progress, restart the journey
  *
  * Touches only appNo 1106900016. Safe to re-run any action.
+ *
+ * For quick client demos there is an easier tool: sign in via
+ * http://localhost/TPg_jimmy_clean/demo/login (account 1106900014, no
+ * captcha/OTP) and use the floating DEMO bar to jump between stages
+ * instantly. This CLI script is for walking the journey "for real" on the
+ * fully fresh account 1106900016 instead.
  */
 
 $APPNO = 1106900016;

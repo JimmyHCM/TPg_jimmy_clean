@@ -449,8 +449,9 @@
     return true;
 
     return false;
-  } 
+  }
 
   </script>
+  <?php include(APPPATH.'views/partials/demo_bar.php'); ?>
   </body>
 </html>

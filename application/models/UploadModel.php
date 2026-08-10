@@ -213,6 +213,15 @@ class UploadModel extends CI_Model {
     $this->sftpClose();
   }
 
+  // TRUE on local dev web requests (no SFTP backend / mail transport there);
+  // same hostname condition as config/database.php - never true on production,
+  // and FALSE for CLI so offline tasks keep their real behaviour.
+  private function isLocalDev ()
+  {
+    $httpHost = $_SERVER['HTTP_HOST'] ?? '';
+    return ($httpHost != '' && $httpHost !== 'tpgadmission.engg.hku.hk');
+  }
+
   function uploadFile($rawName, $fileExt, $cleanUp=true)
   {
     ini_set('display_errors', 0);     // do not display errors
@@ -220,12 +229,15 @@ class UploadModel extends CI_Model {
     $hashDir = substr($fileNameHash, 0, 2);
 
     $destFileExt = strtolower($fileExt);
-      
+
     $source = UPLOAD_DIR . $_SESSION['appNo'] . "/".$rawName.".".$fileExt;
-    
+
     //echo nl2br("calling sftpToBackend -- source: ".$source."\n\n");
-    
+
     $this->UploadModel->sftpToBackend ($source, $fileNameHash, $destFileExt);
+
+    if ($this->isLocalDev())
+      $cleanUp = false;   // no backend copy exists - keep the local file
 
     if ($cleanUp)
     {
@@ -280,9 +292,14 @@ class UploadModel extends CI_Model {
   }
 
   // connect to sftp (do once)
-  function sftpOpen () 
+  function sftpOpen ()
   {
     ini_set('display_errors', 0);     // do not display errors
+    if ($this->isLocalDev())
+    {
+      log_message('info', '[local dev] sftpOpen skipped - no backend');
+      return;
+    }
     $this->load->library('sftp');
 
     //SFTP configuration
@@ -297,9 +314,11 @@ class UploadModel extends CI_Model {
   }
 
   // disconnect sftp (do once)
-  function sftpClose () 
+  function sftpClose ()
   {
     ini_set('display_errors', 0);     // do not display errors
+    if ($this->isLocalDev())
+      return;
     $this->sftp->close();
   }
 
@@ -317,9 +336,12 @@ class UploadModel extends CI_Model {
     $destination = SFTP_BASE_DIR.$hashDir.'/'.substr($fileNameHash, 2).".".$fileNameExt;
 
     //echo nl2br("start sftp upload: ".$source." to ".$destination."\n");
-    
+
     //upload file
-    $this->sftp->upload($source, $destination);
+    if ($this->isLocalDev())
+      log_message('info', '[local dev] sftp upload skipped - '.$source.' would go to '.$destination);
+    else
+      $this->sftp->upload($source, $destination);
 
     if ($skip)
     {

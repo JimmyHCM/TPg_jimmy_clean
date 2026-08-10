@@ -1045,8 +1045,18 @@ body.tpg-auth-body {
   letter-spacing: .04em;
 }
 
-/* Captcha challenge */
+/* Captcha challenge — the image is the hero of the card */
 .tp-captcha-img { text-align: center; margin-bottom: .35rem; }
+.tp-captcha-img img {
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+  border: 1px solid var(--tp-cloud);
+  border-bottom: 2px solid var(--tp-gold);
+  border-radius: var(--tp-r-input);
+  box-shadow: var(--tp-shadow-hint);
+  background: var(--tp-ash);
+}
 .tp-captcha-refresh {
   display: block;
   text-align: center;

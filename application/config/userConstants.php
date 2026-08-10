@@ -786,7 +786,12 @@ define ('UPLOAD_ITEMS', array (
 */
 
 // for storing pdf files (abs path is needed)
-define ('PDF_DIR', '/var/www/html/app/wwwUploads/');
+// production keeps its fixed path; local dev resolves to this project's own
+// wwwUploads/ (same hostname guard as config/database.php)
+if (($_SERVER['HTTP_HOST'] ?? '') === 'tpgadmission.engg.hku.hk')
+  define ('PDF_DIR', '/var/www/html/app/wwwUploads/');
+else
+  define ('PDF_DIR', FCPATH.'wwwUploads/');
 
 // for display
 define ('PARA_SPACE', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');

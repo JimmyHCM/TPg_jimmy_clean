@@ -102,4 +102,25 @@ include(APPPATH.'views/partials/head.php');
         </div>
       </div> <!-- content -->
 
+  <script>
+    // enforce the stated payment-slip size window before submission
+    (function()
+    {
+      var input = document.getElementById('paymentSlip');
+      if (!input) return;
+      input.addEventListener('change', function()
+      {
+        if (this.files && this.files.length)
+        {
+          var mb = this.files[0].size / 1048576;
+          if (mb < 1 || mb > 2)
+          {
+            alert("Payment slip must be between 1MB and 2MB - yours is " + mb.toFixed(2) + "MB. Please choose another file.");
+            this.value = "";
+          }
+        }
+      });
+    })();
+  </script>
+
 <?php include(APPPATH.'views/partials/hub_foot.php'); ?>
