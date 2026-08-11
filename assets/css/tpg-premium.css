@@ -1081,6 +1081,72 @@ body.tpg-auth-body {
   background: var(--tp-ash);
 }
 
+/* PICS consent page — ceremonial document treatment */
+.tp-pics-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  font-size: .7rem;
+  font-weight: 600;
+  color: var(--tp-pewter);
+}
+.tp-pics-title {
+  font-family: var(--tp-display);
+  font-weight: 700;
+  font-size: 1.45rem;
+  margin: .35rem 0 0;
+}
+.tp-ornament {
+  width: 56px;
+  height: 2px;
+  background: var(--tp-gold);
+  border-radius: 1px;
+  margin: 1rem auto;
+}
+.tp-pics-doc {
+  border: 1px solid var(--tp-cloud);
+  border-radius: var(--tp-r-surface);
+  overflow: hidden;
+  box-shadow: var(--tp-shadow-card);
+}
+.tp-pics-doc-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: .7rem 1.1rem;
+  background: var(--tp-deep-2);
+  border-bottom: 2px solid var(--tp-gold);
+  color: rgba(255, 255, 255, .88);
+  font-size: .8rem;
+}
+.tp-pics-doc-head .mdi { color: var(--tp-gold); margin-right: .35rem; }
+.tp-pics-doc-head a {
+  color: var(--tp-gold-soft);
+  white-space: nowrap;
+}
+.tp-pics-doc-head a:hover { color: #fff; text-decoration: none; }
+.tp-pics-doc object {
+  display: block;
+  width: 100%;
+  height: 64vh;
+  min-height: 430px;
+  background: var(--tp-ash);
+}
+.tp-consent {
+  background: var(--tp-ash);
+  border: 1px solid var(--tp-cloud);
+  border-left: 3px solid var(--tp-gold);
+  border-radius: var(--tp-r-input);
+  padding: 1.1rem 1.3rem;
+  margin-top: 1.5rem;
+  text-align: left;
+}
+.tp-consent-hint {
+  font-size: .76rem;
+  color: var(--tp-pewter);
+  margin: .6rem 0 0;
+}
+
 /* Survey / checkbox option list — one tappable row per option */
 .tp-option-list .custom-control {
   border: 1px solid var(--tp-cloud);

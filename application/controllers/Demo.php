@@ -61,6 +61,16 @@ class Demo extends CI_Controller
     redirect("display/start");
   }
 
+  // Personal Information Collection Statement page - normally shown only
+  // once, right after the captcha on a first login
+  public function pics ()
+  {
+    $this->requireDemoSession();
+    $data = array ();
+    $data['currentYear'] = getDate()['year'];
+    $this->load->view('appPICSView', $data);
+  }
+
   // first-login state: PICS + survey pending. Stays signed in and lands on
   // the survey; use the Logout menu item to demo PICS/captcha from scratch.
   public function fresh ()

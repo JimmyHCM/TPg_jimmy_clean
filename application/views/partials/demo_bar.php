@@ -47,6 +47,7 @@ if (empty($_SESSION['user_logged']) || ($_SESSION['appNo'] ?? '') != '1106900014
   </style>
   <div class="tp-demo-bar" title="Local-dev demo: jump the account to any stage">
     <b>DEMO</b>
+    <a href="<?php echo base_url(); ?>demo/pics">0&middot;PICS</a>
     <a href="<?php echo base_url(); ?>demo/fresh">1&middot;First login</a>
     <a href="<?php echo base_url(); ?>demo/upload">2&middot;Documents</a>
     <a href="<?php echo base_url(); ?>demo/offer">3&middot;Offer</a>
