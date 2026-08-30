@@ -906,6 +906,16 @@ body.tpg-auth-body {
 }
 .tp-drop-meta small { font-size: .7rem; color: var(--tp-pewter); }
 .tp-drop-meta small.tp-oversize { color: #A5271B; font-weight: 600; }
+/* page-count reminder under the file name */
+.tp-pagenote {
+  display: block;
+  margin-top: .15rem;
+  font-size: .7rem;
+  line-height: 1.35;
+  color: var(--tp-pewter);
+}
+.tp-pagenote:empty { display: none; }
+.tp-pagenote.tp-pagenote-warn { color: #A5271B; font-weight: 600; }
 .tp-drop-clear {
   border: none;
   background: transparent;

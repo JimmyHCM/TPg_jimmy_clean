@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
   <!-- TPg premium redesign layer (must load LAST) -->
-  <link href="<?php echo base_url(); ?>assets/css/tpg-premium.css?v=5" rel="stylesheet" type="text/css" />
+  <link href="<?php echo base_url(); ?>assets/css/tpg-premium.css?v=6" rel="stylesheet" type="text/css" />
 
   <!-- App css -->
   <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
@@ -47,6 +47,57 @@
       return bytes + " B";
     }
 
+    /* ---- page-count reminder (DEMO) ----------------------------------
+       key = the upload item's field name, value = pages we normally expect.
+       Items not listed here get no reminder at all. Once the wording is
+       settled this map can move into UPLOAD_ITEMS as one extra column. */
+    var tpPageHint = {
+      fileD11a: 3,   // Institution #1 - academic transcript
+      fileD11b: 3    // Institution #1 - English translation of the transcript
+    };
+
+    // rough page count read straight off the pdf bytes - no extra library.
+    // returns 0 when the file keeps its page objects in a compressed stream;
+    // in that case we stay quiet rather than show a wrong number.
+    function tpCountPdfPages(buffer)
+    {
+      var bytes = new Uint8Array(buffer);
+      var text = "";
+      for (var i = 0; i < bytes.length; i += 8192)
+        text += String.fromCharCode.apply(null, bytes.subarray(i, i + 8192));
+      var found = text.match(/\/Type\s*\/Page[^s]/g);   // /Pages is the tree node, not a page
+      return found ? found.length : 0;
+    }
+
+    // soft reminder only - nothing is blocked, the server still decides.
+    function tpPageNote(input, drop)
+    {
+      var note = drop.find("[data-pagenote]").text("").removeClass("tp-pagenote-warn");
+      var expected = tpPageHint[input.id];
+      if (!expected || !input.files || !input.files.length) return;
+
+      var f = input.files[0];
+      if (!/\.pdf$/i.test(f.name) || !window.FileReader) return;
+
+      var reader = new FileReader();
+      reader.onload = function()
+      {
+        var n = 0;
+        try { n = tpCountPdfPages(reader.result); } catch (err) { return; }
+        if (!n) return;                                  // could not tell - say nothing
+
+        if (n <= expected)
+        {
+          note.text(n + " page" + (n > 1 ? "s" : ""));
+          return;
+        }
+        note.addClass("tp-pagenote-warn")
+            .text(n + " pages detected. A transcript is normally about " + expected +
+                  " pages — please upload the transcript pages only, not your whole document package.");
+      };
+      reader.readAsArrayBuffer(f);
+    }
+
     $(document).ready(function()
     {
       // file selected → update the drop tile + per-form counters.
@@ -71,6 +122,8 @@
           }
           else
             drop.removeClass("tp-filled");
+
+          tpPageNote(input, drop);
         }
 
         var form = $(input).closest("form");
@@ -328,7 +381,7 @@ if (!function_exists('tpItemState'))
       </span>
       <span class="tp-drop-file">
         <i class="mdi mdi-file-check"></i>
-        <span class="tp-drop-meta"><b data-name></b><small data-size></small></span>
+        <span class="tp-drop-meta"><b data-name></b><small data-size></small><small class="tp-pagenote" data-pagenote></small></span>
         <button type="button" class="tp-drop-clear" aria-label="Remove selected file" title="Remove">&#10005;</button>
       </span>
     </label>
