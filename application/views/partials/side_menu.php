@@ -39,12 +39,6 @@
                 </li>
               </ul>
             </li>
-            <li class="side-nav-item">
-              <a href="<?php echo base_url(); ?>display/fillMarkSheet" class="side-nav-link">
-                <i class="mdi mdi-grid-large"></i>
-                <span>Fill mark sheet</span>
-              </a>
-            </li>
           <?php } ?>
 
           <?php if (strpos ($menu, 'R') !== false) { ?>

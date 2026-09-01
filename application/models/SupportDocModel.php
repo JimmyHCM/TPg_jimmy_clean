@@ -361,33 +361,20 @@ class SupportDocModel extends CI_Model {
     }
   }
 
-  // 2026: academic qualification form is saved directly, no more generated txt to re-upload
-  function saveMarkSheetData ($markSheet)
+  // 2026: the academic qualification is entered next to the transcript of the
+  // institution it belongs to, so the slot (1..3) is known from the form itself
+  // and no reference-key lookup is needed. avgMark is insert-only, same as the
+  // rest of this table's history.
+  function saveAcadQual ($slot, $avgMarkByStudent, $awardClass)
   {
     ini_set('display_errors', 0);     // do not display errors
     $appNo = $_SESSION['appNo'];
 
-    // map the selected reference key to institution slot 1..3 via titleP1..P3
-    $slot = 1;
-    $supportDocRow = array();
-    if ($this->getRecord ('supportDoc', $appNo, $supportDocRow))
-    {
-      for ($i=1; $i<=MAX_fileDNO; $i++)
-      {
-        $titleKey = 'titleP'.$i;
-        if (isset ($supportDocRow->$titleKey) && $supportDocRow->$titleKey == $markSheet['key'])
-        {
-          $slot = $i;
-          break;
-        }
-      }
-    }
-
     $tobeUpdatedAvgMark = array ();
     $tobeUpdatedAvgMark['appNo'] = $appNo;
     $tobeUpdatedAvgMark['createDate'] = mdate('%Y-%m-%d %H:%i:%s', now());
-    $tobeUpdatedAvgMark['avgMarkByStud'.$slot] = $markSheet['avgMarkByStudent'];
-    $tobeUpdatedAvgMark['awardClass'.$slot] = $markSheet['awardClass'];
+    $tobeUpdatedAvgMark['avgMarkByStud'.$slot] = $avgMarkByStudent;
+    $tobeUpdatedAvgMark['awardClass'.$slot] = $awardClass;
 
     $this->db->set($tobeUpdatedAvgMark);
     $this->db->insert('avgMark');
@@ -400,6 +387,44 @@ class SupportDocModel extends CI_Model {
       'sqlAction'   => 'save academic qualification',
     );
     $this->AppAuthModel->writeSQLlog($log);
+  }
+
+  // latest academic qualification per institution slot, used to pre-fill the
+  // upload page. Each avgMark row only carries the slot(s) touched by that
+  // submission, so walk the rows newest first and keep the first value found.
+  function getLatestAcadQual (&$acadQual)
+  {
+    ini_set('display_errors', 0);     // do not display errors
+    $appNo = $_SESSION['appNo'];
+
+    for ($i=1; $i<=MAX_fileDNO; $i++)
+      $acadQual[$i] = array ('obtained' => '', 'max' => '', 'awardClass' => '');
+
+    $this->db->select('*');
+    $this->db->where('appNo', $appNo);
+    $this->db->order_by('id', 'DESC');
+    $query = $this->db->get('avgMark');
+
+    foreach ($query->result() as $row)
+    {
+      for ($i=1; $i<=MAX_fileDNO; $i++)
+      {
+        $markKey = 'avgMarkByStud'.$i;
+        $classKey = 'awardClass'.$i;
+
+        // stored as "obtained/max". Rows written before 2026 kept other things
+        // in this column, so anything that is not a pair of numbers is skipped
+        // rather than pre-filled back into the form.
+        if ($acadQual[$i]['obtained'] == '' && isset ($row->$markKey) &&
+            preg_match ('/^([0-9.]+)\/([0-9.]+)$/', $row->$markKey, $parts))
+        {
+          $acadQual[$i]['obtained'] = $parts[1];
+          $acadQual[$i]['max'] = $parts[2];
+        }
+        if ($acadQual[$i]['awardClass'] == '' && isset ($row->$classKey) && $row->$classKey != '')
+          $acadQual[$i]['awardClass'] = $row->$classKey;
+      }
+    }
   }
 
   function performUpload ($fieldNames)

@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
   <!-- TPg premium redesign layer (must load LAST) -->
-  <link href="<?php echo base_url(); ?>assets/css/tpg-premium.css?v=6" rel="stylesheet" type="text/css" />
+  <link href="<?php echo base_url(); ?>assets/css/tpg-premium.css?v=7" rel="stylesheet" type="text/css" />
 
   <!-- App css -->
   <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
@@ -227,12 +227,6 @@
                 </li>
               </ul>
             </li>
-            <li class="side-nav-item">
-              <a href="<?php echo base_url(); ?>display/fillMarkSheet" class="side-nav-link">
-                <i class="mdi mdi-grid-large"></i>
-                <span>Fill mark sheet</span>
-              </a>
-            </li>
           <?php } ?>
 
           <?php if (strpos ($menu, 'R') !== false) { ?>
@@ -431,6 +425,59 @@ if (!function_exists('tpItemState'))
       </div>
       <p class="tp-declare-hint" id="hint<?php echo $sfx; ?>"><i class="mdi mdi-arrow-up"></i> Tick the declaration to enable the upload button.</p>
       <button class="btn btn-primary btn-lg tpg-btn-block mt-2" type="submit" name="submit" id="submit<?php echo $sfx; ?>" style="display:none" value="<?php echo $buttonLabel; ?>"><i class="mdi mdi-cloud-upload"></i> <?php echo $buttonLabel; ?><span class="tp-file-counter"></span></button>
+    </div>
+    <?php
+  }
+
+  /* 2026: academic qualification of one institution — entered next to the
+     transcript it is read from and submitted with that section's documents,
+     so no reference key has to be matched up afterwards */
+  function tpAcadQual ($qset, $qual)
+  {
+    $obtained = isset ($qual['obtained']) ? $qual['obtained'] : '';
+    $max      = isset ($qual['max']) ? $qual['max'] : '';
+    $awarded  = isset ($qual['awardClass']) ? $qual['awardClass'] : '';
+    $filled   = ($obtained != '' && $max != '' && $awarded != '');
+
+    $classes = array ('1st Class Honours',
+                      '2nd Class Honours (Division One)',
+                      '2nd Class Honours (Division Two)',
+                      'Third Class Honours',
+                      'Pass',
+                      'Fail');
+    // keep a value saved before this list existed selectable
+    if ($awarded != '' && !in_array ($awarded, $classes))
+      $classes[] = $awarded;
+    ?>
+    <div class="tp-acadqual-box mt-3">
+      <div class="tp-acadqual-head">
+        <h6 class="tp-acadqual-title"><i class="mdi mdi-school-outline"></i> Academic qualification of this institution</h6>
+        <?php if ($filled) { ?>
+          <span class="tp-status tp-status-uploaded"><i class="mdi mdi-checkbox-marked-circle"></i> Saved</span>
+        <?php } else { ?>
+          <span class="tp-status tp-status-pending"><i class="mdi mdi-pencil-outline"></i> Not filled in</span>
+        <?php } ?>
+      </div>
+      <p class="tp-acadqual-note">Read these off the transcript you upload below. They are submitted together with this institution's documents &mdash; what you save here stays filled in for later uploads.</p>
+      <div class="form-row">
+        <div class="form-group col-md-6 mb-3 mb-md-0">
+          <label class="tp-form-label" for="avgMarkObtained<?php echo $qset; ?>">Overall GPA / mark <small>(sample: 85.6 of 100, or 3.85 of 4.0)</small></label>
+          <div class="tp-gpa-row">
+            <input class="form-control" type="text" required="yes" name="avgMarkObtained<?php echo $qset; ?>" id="avgMarkObtained<?php echo $qset; ?>" maxlength="5" placeholder="GPA / mark obtained" onkeypress="return isRealNum(event)" value="<?php echo htmlspecialchars ($obtained, ENT_QUOTES); ?>">
+            <span class="tp-gpa-of">of</span>
+            <input class="form-control" type="text" required="yes" name="avgMarkMax<?php echo $qset; ?>" id="avgMarkMax<?php echo $qset; ?>" maxlength="4" placeholder="maximum GPA / full mark" onkeypress="return isRealNum(event)" value="<?php echo htmlspecialchars ($max, ENT_QUOTES); ?>">
+          </div>
+        </div>
+        <div class="form-group col-md-6 mb-0">
+          <label class="tp-form-label" for="awardClass<?php echo $qset; ?>">Classification of award</label>
+          <select class="form-control" name="awardClass<?php echo $qset; ?>" id="awardClass<?php echo $qset; ?>" required="yes">
+            <option value="" disabled <?php if ($awarded == '') echo 'selected'; ?>>Please select</option>
+            <?php foreach ($classes as $c) { ?>
+              <option value="<?php echo htmlspecialchars ($c, ENT_QUOTES); ?>" <?php if ($awarded == $c) echo 'selected'; ?>><?php echo $c; ?></option>
+            <?php } ?>
+          </select>
+        </div>
+      </div>
     </div>
     <?php
   }
@@ -681,6 +728,8 @@ $tpDash  = round (213.6 * $tpPct / 100, 1);   // donut circumference 2*pi*34
                             </div>
                           </div>
 
+                          <?php tpAcadQual ($qset, isset ($acadQual[$qset]) ? $acadQual[$qset] : array ()); ?>
+
                           <div class="tp-tile-grid mt-3">
                             <?php $isChina = (isset ($degInfo['isChina'][$qq]) && $degInfo['isChina'][$qq] == 'Y'); ?>
                             <?php if ($isChina) $endLoop = ($qq+1)*12; else $endLoop = $qq*12+7; ?>
@@ -846,6 +895,16 @@ $tpDash  = round (213.6 * $tpPct / 100, 1);   // donut circumference 2*pi*34
     if ((charCode >= 65 && charCode <= 90) ||
         (charCode >=97 && charCode <= 122) ||
         (charCode >=48 && charCode <= 57) || charCode == 95)
+    return true;
+
+    return false;
+  }
+
+  function isRealNum(evt) // allowed: 0-9, .
+  {
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+
+    if ((charCode >= 48 && charCode <= 57) || charCode == 46)
     return true;
 
     return false;

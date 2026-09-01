@@ -1218,3 +1218,32 @@ body.tpg-auth-body {
   }
   .tp-reveal { opacity: 1; }
 }
+
+/* academic qualification box — sits in the institution's own upload section,
+   directly above the transcript it is read from */
+.tp-acadqual-box {
+  border: 1px solid var(--tp-cloud);
+  border-left: 3px solid var(--tp-gold);
+  background: var(--tp-white);
+  border-radius: var(--tp-r-input);
+  padding: .9rem 1.1rem 1rem;
+}
+.tp-acadqual-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .6rem;
+  flex-wrap: wrap;
+}
+.tp-acadqual-title {
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--tp-ink);
+  margin: 0;
+}
+.tp-acadqual-title i { color: var(--tp-gold); margin-right: .25rem; }
+.tp-acadqual-note {
+  font-size: .8rem;
+  color: var(--tp-pewter);
+  margin: .35rem 0 .9rem;
+}

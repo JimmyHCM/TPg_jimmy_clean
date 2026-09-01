@@ -56,6 +56,13 @@ class Display extends CI_Controller
     $_SESSION['uploaded'] = $alreadyUploaded;
 
     $data['titleArray'] = $titleArray;
+
+    // 2026: academic qualification is filled next to the transcript on the
+    // upload page, so every hub page prepares the values it already has.
+    $acadQual = array ();
+    $this->SupportDocModel->getLatestAcadQual ($acadQual);
+    $data['acadQual'] = $acadQual;
+
     $_SESSION['lastAction'] = time();
   }
 
@@ -270,28 +277,13 @@ class Display extends CI_Controller
     //  $this->load->view('uploadViewWorking', $data);  // 2023
   }
 
+  // 2026: the separate mark sheet page is gone -- the academic qualification is
+  // now filled in the institution's own section of the upload page. Kept as a
+  // redirect so old links and bookmarks still land somewhere useful.
   public function fillMarkSheet()
   {
     ini_set('display_errors', 0);     // do not display errors
-    $data = array ();
-
-    $this->preparePage ($data);
-    $this->prepareMenu ($data['menu']);
-    $timenow = date_create (date('H:i'));
-    date_add ($timenow, date_interval_create_from_date_string('2 hours'));
-    $data['endTime'] = date_format ($timenow, 'H:i');
-
-    $data['noKey'] = true;
-    $data['noKeyString'] = "T";
-    for ($i=0; $i<4; $i++)
-      if ($data['titleArray'][$i] != '')
-      {
-        $data['noKey'] = false;
-        $data['noKeyString'] = "F";
-      }
-    
-    $data['currentYear'] = getDate()['year'];
-    $this->load->view('markSheetView', $data);
+    redirect ("display/upload");
   }
 
   public function summary ()
