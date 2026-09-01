@@ -127,7 +127,34 @@ class Upload extends CI_Controller
     }
   }
 
-  public function uploadAll() 
+  // 2026: each institution section of the upload page carries its own academic
+  // qualification (GPA / mark + classification of award). The field names are
+  // suffixed with the institution slot, so the slot needs no reference key
+  // lookup -- it is whatever section the applicant submitted.
+  private function saveAcadQual ()
+  {
+    ini_set('display_errors', 0);     // do not display errors
+    $saved = 0;
+
+    for ($p=1; $p<=MAX_fileDNO; $p++)
+    {
+      $obtained   = trim ((string) $this->input->post('avgMarkObtained'.$p));
+      $max        = trim ((string) $this->input->post('avgMarkMax'.$p));
+      $awardClass = trim ((string) $this->input->post('awardClass'.$p));
+
+      if ($obtained == '' || $max == '' || $awardClass == '')
+        continue;   // section not submitted, or fields left empty
+
+      // avgMarkByStudN is varchar(20), awardClassN is varchar(40)
+      $avgMarkByStudent = substr ($obtained, 0, 5) . '/' . substr ($max, 0, 4);
+      $this->SupportDocModel->saveAcadQual ($p, $avgMarkByStudent, substr ($awardClass, 0, 40));
+      log_message('debug', 'upload/saveAcadQual: slot '.$p.' '.$avgMarkByStudent);
+      $saved++;
+    }
+    return $saved;
+  }
+
+  public function uploadAll()
   {
     ini_set('display_errors', 0);     // do not display errors
     // for storing all errors
@@ -136,6 +163,7 @@ class Upload extends CI_Controller
     $successMsg = "";
     $fileStatus = array ();
     $uploadOK = FALSE;          // check if first level upload is ok
+    $qualSaved = 0;             // academic qualification sections submitted
 
     //print_r($_POST);
 
@@ -163,6 +191,10 @@ class Upload extends CI_Controller
           $this->input->post('submit') == "Upload document")
       {
         $_SESSION['fileErrCount'] = 0;
+
+        // saved first, so a rejected file never costs the applicant the marks
+        // they just typed in that section
+        $qualSaved = $this->saveAcadQual ();
 
         //Upload to the local server
         if (!is_dir(UPLOAD_DIR . $_SESSION['appNo'])) 
@@ -304,10 +336,16 @@ class Upload extends CI_Controller
       }
     }
 
-    if (!$uploadOK)
+    if (!$uploadOK && $errorMsg == "")
     {
-      $errorMsg = "Problem with file upload, therefore no file was uploaded. Either no file was selected or total upload size had exceeded system limit. You may try to upload one file to view detail error message.<br/>";
-      log_message('debug', 'upload/uploadAll: problem with file upload, no file was uploaded.');
+      // no file failed -- the applicant simply submitted the section without
+      // choosing a file, which is fine when the academic qualification is what
+      // they came to save
+      if ($qualSaved == 0)
+      {
+        $errorMsg = "Problem with file upload, therefore no file was uploaded. Either no file was selected or total upload size had exceeded system limit. You may try to upload one file to view detail error message.<br/>";
+        log_message('debug', 'upload/uploadAll: problem with file upload, no file was uploaded.');
+      }
     }
 
     if ($errorMsg != "")
@@ -316,14 +354,20 @@ class Upload extends CI_Controller
       $this->session->set_flashdata("error", $errorMsg);
       $errorMsg = "";
     }
+
+    $infoMsg = "";
     if ($counter > 0)
+      $infoMsg = $counter . " file(s) uploaded ... ".$successMsg;
+    if ($qualSaved > 0)
+      $infoMsg = $infoMsg . ($infoMsg == "" ? "" : "<br/>") . "Academic qualification saved.";
+    if ($infoMsg != "")
     {
-      //echo nl2br ("ok: ".$successMsg."\n\n");
-      $this->session->set_flashdata("info", $counter . " file(s) uploaded ... ".$successMsg);
+      //echo nl2br ("ok: ".$infoMsg."\n\n");
+      $this->session->set_flashdata("info", $infoMsg);
       $successMsg = "";
     }
 
-    $_SESSION['lastAction'] = time();    
+    $_SESSION['lastAction'] = time();
     redirect ("display/upload");     // with flashdata
   }
 
@@ -578,60 +622,6 @@ class Upload extends CI_Controller
     $this->load->view('uploadView', $data);
   }
 
-  // time limit: 2 hours
-  function uploadMarkSheet ()
-  {
-    ini_set('display_errors', 0);     // do not display errors
-    if ($this->AppAuthModel->sessionExpired(7200)) 
-    {
-      $errorMsg = "This page expired, please login again.";
-      redirect("auth");
-    }
-    else
-    {
-      if ($this->input->post('submit') == "Submit mark sheet")
-      {
-        $markSheet['appNo'] = $_POST['appNo'];
-        $markSheet['name'] = $_POST['name'];
-        $markSheet['deg'] = $_POST['deg'];
-        $markSheet['uni'] = $_POST['uni'];
-        $markSheet['key'] = $_POST['key'];
-        if (isset($_POST['u985']))
-          $markSheet['u985'] = 'Y';
-        else 
-          $markSheet['u985'] = 'N';
-        if (isset($_POST['u211']))
-          $markSheet['u211'] = 'Y';
-        else 
-          $markSheet['u211'] = 'N';
-        $markSheet['passing'] = $_POST['passing'];
-        $markSheet['avgMarkByStudent'] = $_POST['avgMarkByStudent'];
-        $markSheet['calcDate'] = date ('Y-m-d');
-      
-        $len = $_POST['counter'];
-        $lenMS = 0;
-        for ($i=0; $i<$len; $i++)
-        {
-          if (isset($_POST['year'.$i]))
-          {
-            //fwrite ($outfile, "writing year ".$i."\n");
-            $markSheet['row'][$lenMS][0] = $_POST['year'.$i];
-            $markSheet['row'][$lenMS][1] = $_POST['semester'.$i];
-            $markSheet['row'][$lenMS][2] = $_POST['courseCode'.$i];
-            $markSheet['row'][$lenMS][3] = $_POST['courseTitle'.$i];
-            $markSheet['row'][$lenMS][4] = $_POST['creditUnit'.$i];
-            $markSheet['row'][$lenMS][5] = $_POST['mark'.$i];
-            $markSheet['row'][$lenMS][6] = $_POST['gpa'.$i];
-            $markSheet['row'][$lenMS][7] = $_POST['grade'.$i];
-            $lenMS++;
-          }
-        }
-
-        $markSheet['courseTotal'] = $lenMS;
-        $this->CSVModel->genMStxt ($markSheet);
-      }
-    }
-  }
 }
 
 ?>

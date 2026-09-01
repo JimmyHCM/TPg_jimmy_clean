@@ -11,8 +11,13 @@
   <!-- App css -->
   <link href="<?php echo base_url(); ?>assets/css/icons.min.css" rel="stylesheet" />
   <link href="<?php echo base_url(); ?>assets/css/app.min.css" rel="stylesheet" />
-  <!-- Dell 1996 redesign layer (must load LAST) -->
-  <link href="<?php echo base_url(); ?>assets/css/dell-1996.css" rel="stylesheet" type="text/css" />
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <!-- TPg premium redesign layer (must load LAST) -->
+  <link href="<?php echo base_url(); ?>assets/css/tpg-premium.css?v=5" rel="stylesheet" type="text/css" />
+
 
   <!-- App js -->
   <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
@@ -34,10 +39,8 @@
       formSubmitting = true; 
     }
 
-    $(document).ready(function () 
+    $(document).ready(function ()
     {
-      var counter = 1;    
-      $("#counter").val(counter);
       noKeyString = "<?php echo $noKeyString; ?>";
       var noKey = "<?php echo $noKey; ?>";
 
@@ -55,120 +58,27 @@
         var nameField = document.getElementById('name');
         var degField = document.getElementById('deg');
         var uniField = document.getElementById('uni');
-        var passingField = document.getElementById('passing');
-        var avgMarkField = document.getElementById('avgMarkByStudent');
+        var avgMarkField = document.getElementById('avgMarkObtained');
+        var avgMarkMaxField = document.getElementById('avgMarkMax');
 
         checkField (nameField);
         checkField (degField);
         checkField (uniField);
-        checkField (passingField);
         checkField (avgMarkField);
-
-        if (!formDirty)
-        {
-          var i;
-          var done = false;
-          for (i=0; i<counter && !done; i++)
-          {
-            var yearID = 'year' + i;
-            var year = document.getElementById(yearID);
-            var markID = 'mark' + i;
-            var mark = document.getElementById(markID);
-            var gpaID = 'gpa' + i;
-            var gpa = document.getElementById(gpaID);
-            var gradeID = 'grade' + i;
-            var grade = document.getElementById(gradeID);
-            var courseCode = 'courseCode' + i;
-            var code = document.getElementById(courseCode);
-            var courseTitle = 'courseTitle' + i;
-            var title = document.getElementById(courseTitle);
-            var creditUnit = 'creditUnit' + i;
-            var credit = document.getElementById(creditUnit);
-
-            checkField (year);
-            checkField (mark);
-            checkField (gpa);
-            checkField (grade);
-            checkField (code);
-            checkField (title);
-            checkField (credit);
-            if (formDirty)
-              done = true;
-          }
-        }
+        checkField (avgMarkMaxField);
       };
 
-      window.addEventListener('beforeunload', (event) => 
+      window.addEventListener('beforeunload', (event) =>
       {
         testForm ();
 
         if (noKeyString == "F")
         {
-          if (!formSubmitting && formDirty) 
+          if (!formSubmitting && formDirty)
           {
             event.returnValue = 'Warning: all filled data will be lost after leaving this page!';
           }
         }
-      });
-
-      $("#addrow").on("click", function () 
-      {
-        var newRow = $("<tr>");
-        var cols = "";
-
-        cols += '<td><input class="form-control" type="text" pattern=".{4,}" required title="4 digits for year" name="year' + counter + '" id="year' + counter + '" required="yes" onkeypress="return isNumericSpaceKey(event)"></td>';
-        cols += '<td><select name="semester' + counter + '" id="semester' + counter + '"><option value="Fall">Fall</option><option value="Spring">Spring</option><option value="Summer">Summer</option><option value="Winter">Winter</option><option value="First">First</option><option value="Second">Second</option><option value="Third">Third</option></select></td>';
-        cols += '<td><input class="form-control" type="text" name="courseCode' + counter + '" id="courseCode' + counter + '" required="yes" onkeypress="return isAlphaNumCapKey(event)"></td>';
-        cols += '<td><input class="form-control" type="text" name="courseTitle' + counter + '" id="courseTitle' + counter + '" required="yes" onkeypress="return isAlphaNumericSpaceKey(event)"></td>';
-        cols += '<td><input class="form-control" type="text" name="creditUnit' + counter + '" id="creditUnit' + counter + ' onkeypress="return isRealNum(event)"></td>';
-        cols += '<td><input class="form-control" type="text" name="mark' + counter + '" id="mark' + counter + '" onkeypress="return isRealNum(event)"></td>';
-        cols += '<td><input class="form-control" type="text" name="gpa' + counter + '" id="gpa' + counter + '" onkeypress="return isRealNum(event)"></td>';
-        cols += '<td><input class="form-control" type="text" name="grade' + counter + '" id="grade' + counter + '" onkeypress="return isGrade(event)"></td>';
-        cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
-        newRow.append(cols);
-
-        $("table.order-list").append(newRow);
-        counter++;
-        $("#counter").val(counter);
-      });
-
-      $("table.order-list").on("click", ".ibtnDel", function (event) 
-      {
-        $(this).closest("tr").remove();    
-        $("#counter").val(counter);
-      });
-
-      $("#checkMS").on("click", function () 
-      {
-        var i;
-        var done = false;
-        for (i=0; i<counter && !done; i++)
-        {
-          var yearID = 'year' + i;
-          var year = document.getElementById(yearID);
-          if (year != null)
-          {
-            var markID = 'mark' + i;
-            var mark = document.getElementById(markID);
-            var gpaID = 'gpa' + i;
-            var gpa = document.getElementById(gpaID);
-            var gradeID = 'grade' + i;
-            var grade = document.getElementById(gradeID);
-            
-            var ok = false;
-            if (mark.value != '' || gpa.value != '' || grade.value != '')
-              ok = true;
-            if (!ok)
-            {
-              var codeID = 'courseCode' + i;
-              var code = document.getElementById(codeID);
-              alert ('Missing mark / gpa / grade for the course ' + code.value);
-              done = true;
-            }
-          }
-        }
-        if (!done)
-          alert ('All marks look good!');
       });
 
     });
@@ -296,14 +206,12 @@
       <div class="row m-2">
         <div class="col-12">
           <div class="page-title-box">
-            <h4 class="page-title text-primary">TPG admission - mark sheet for all courses you have taken in your institution</h4>
-            <div class="alert alert-info" role="alert">
-              If your transcript does not indicate an overall average mark / CGPA, please follow the instructions to enter the mark / GPA for all courses you have taken in your institution, then submit. Please upload supporting document(s) in <strong>upload documents</strong> page before filling mark sheet here. Please note, refreshing this page will reset the form. Remember to <strong>Submit mark sheet</strong> when done.<br/><br/>You have 120 minutes (until <?php echo $endTime; ?>) to fill in the mark sheet. When you submit the mark sheet, a file will be generated. If you are applying for more than one curriculum, you can upload the same generated file for another application instead of filling in the mark sheet again.
-            </div>
+            <h4 class="page-title">TPG admission - Academic qualification of your institution</h4>
+            <p class="lead mb-0">Select the reference tag of the institution, fill in the qualification details and submit. Repeat for each institution you have entered in <strong>upload documents</strong>.</p>
           </div>
         </div>
-      </div>     
-      <!-- end page title --> 
+      </div>
+      <!-- end page title -->
 
       <div class="row m-2">
         <div class="col-12">
@@ -329,15 +237,19 @@
               <?php if ($noKey) { ?>
                 <h4 class="text-primary">Please upload supporting document(s) in <strong>upload documents</strong> page before filling mark sheet here.</h4>
               <?php } else { ?>
+              <h5 class="tp-card-heading"><i class="mdi mdi-school-outline"></i> Academic qualification</h5>
               <form id="markSheetForm" name="markSheet" method="post" action="<?php echo base_url().'upload/uploadMarkSheet'; ?>" onsubmit="setFormSubmitting()">
-                    
-                <div class="row">
-                  <div class="col-12">
-                    <div class="input-group mt-2 mb-1">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">Reference key (select the short name you have entered in
-                           <strong>upload documents</strong>)</span>
-                      </div>
+
+                <div class="tp-refkey-box mt-2">
+                  <div class="row align-items-center">
+                    <div class="col-lg-8">
+                      <label for="key" class="mb-lg-0">
+                        <i class="mdi mdi-tag-outline"></i>
+                        Reference key
+                        <small class="d-block text-muted">select the short name you have entered in <strong>upload documents</strong></small>
+                      </label>
+                    </div>
+                    <div class="col-lg-4">
                       <select class="form-control" name="key" id="key" required="yes">
                         <?php for ($i=0; $i<4; $i++) { ?>
                           <?php if ($titleArray[$i] != '') { ?>
@@ -347,153 +259,67 @@
                       </select>
                     </div>
                   </div>
-                  <div class="col-12">
-                    <div class="input-group mb-1">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">Application number</span>
-                      </div>
-                      <input class="form-control" disabled value="<?php echo $_SESSION['userID'];?>">
-                    </div>
+                </div>
+
+                <div class="form-row mt-3">
+                  <div class="form-group col-md-4">
+                    <label class="tp-form-label" for="appNoShow">Application number</label>
+                    <input class="form-control tp-form-static" id="appNoShow" disabled value="<?php echo $_SESSION['userID'];?>">
                   </div>
-                  <div class="col-12">
-                    <div class="input-group mb-1">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">Name</span>
-                      </div>
-                      <input class="form-control" type="text" required="yes" name="name" id="name" onkeypress="return isName(event)">
-                    </div>
+                  <div class="form-group col-md-8">
+                    <label class="tp-form-label" for="name">Name</label>
+                    <input class="form-control" type="text" required="yes" name="name" id="name" placeholder="name as shown on your transcript" onkeypress="return isName(event)">
                   </div>
-                  <div class="col-12">
-                    <div class="input-group mb-1">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">Degree / Qualification obtained / to be obtained</span>
-                      </div>
-                      <input class="form-control" type="text" required="yes" name="deg" id="deg" onkeypress="return isAlphaNumericSpaceKey(event)">
-                    </div>
+                  <div class="form-group col-md-6">
+                    <label class="tp-form-label" for="deg">Degree / Qualification obtained / to be obtained</label>
+                    <input class="form-control" type="text" required="yes" name="deg" id="deg" placeholder="e.g. BEng Computer Science" onkeypress="return isAlphaNumericSpaceKey(event)">
                   </div>
-                  <div class="col-12">
-                    <div class="input-group mb-1">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">Institution</span>
-                      </div>
-                      <input class="form-control" type="text" required="yes" name="uni" id="uni" onkeypress="return isAlphaNumericSpaceKey(event)">
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="input-group mb-1">
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="u985" id="u985" value="985"/>
-                        <label class="custom-control-label" for="u985"><strong>For institution in Mainland China</strong>: tick if this institution is 985 Project Universities</label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="input-group mb-1">
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="u211" id="u211" value="211"/>
-                        <label class="custom-control-label" for="u211"><strong>For institution in Mainland China</strong>: tick if this institution is 211 Project Universities</label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="input-group mb-1">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">Passing mark</span>
-                      </div>
-                      <input class="form-control" type="tel" required="yes" name="passing" id="passing">
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="input-group mb-4">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">Average mark or GPA (sample: 85.6/100 or 3.85/4.0)</span>
-                      </div>
-                      <input class="form-control" type="text" required="yes" name="avgMarkByStudent" id="avgMarkByStudent" onkeypress="return isNumericDotSlashKey(event)">
-                    </div>
+                  <div class="form-group col-md-6">
+                    <label class="tp-form-label" for="uni">Institution</label>
+                    <input class="form-control" type="text" required="yes" name="uni" id="uni" placeholder="full name of the awarding institution" onkeypress="return isAlphaNumericSpaceKey(event)">
                   </div>
                 </div>
 
-                <div class="row d-none">
-                  <input type="text" name="counter" id="counter">
+                <div class="form-group">
+                  <p class="tp-radio-label mb-1">For institution in Mainland China:</p>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" name="u985" id="u985" value="985"/>
+                    <label class="custom-control-label" for="u985">tick if this institution is 985 Project Universities</label>
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" name="u211" id="u211" value="211"/>
+                    <label class="custom-control-label" for="u211">tick if this institution is 211 Project Universities</label>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label class="tp-form-label" for="avgMarkObtained">GPA/Mark <small>(Sample: 85.6/100 or 3.85/4.0)</small></label>
+                    <div class="tp-gpa-row">
+                      <input class="form-control" type="text" required="yes" name="avgMarkObtained" id="avgMarkObtained" maxlength="5" placeholder="GPA / mark obtained" onkeypress="return isRealNum(event)">
+                      <span class="tp-gpa-of">of</span>
+                      <input class="form-control" type="text" required="yes" name="avgMarkMax" id="avgMarkMax" maxlength="4" placeholder="maximum GPA / full mark" onkeypress="return isRealNum(event)">
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label class="tp-form-label" for="awardClass">Classification of award</label>
+                    <select class="form-control" name="awardClass" id="awardClass" required="yes">
+                      <option value="" disabled selected>Please select</option>
+                      <option value="1st Class Honours">1st Class Honours</option>
+                      <option value="2nd Class Honours (Division One)">2nd Class Honours (Division One)</option>
+                      <option value="2nd Class Honours (Division Two)">2nd Class Honours (Division Two)</option>
+                      <option value="Third Class Honours">Third Class Honours</option>
+                      <option value="Pass">Pass</option>
+                      <option value="Fail">Fail</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="d-none">
                   <input type="text" name="appNo" id="appNo" value="<?php echo $_SESSION['userID'];?>">
                 </div>
 
-                <div class="row">
-                  <div class="col-12">
-                    <div class="alert alert-info" role="alert">
-                      Marks of ALL courses taken in the qualification specified above should be included below. For other qualification(s), please fill in the mark sheet in another tab.
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <table id="myMarkTable" class="table order-list">
-                      <thead>
-                        <tr>
-                          <td>Year of attendance (4 digits for year)</td>
-                          <td>Semester</td>
-                          <td>Course code<br/>(A-Z,0-9 only)</td>
-                          <td>Course title<br/>(no puncuation mark)</td>
-                          <td>Credit units of course (if applicable)</td>
-                          <td>Mark / score obtained (if applicable)</td>
-                          <td>Grade points obtained (if applicable)</td>
-                          <td>Letter grade (if applicable. UPPERCASE, +, - only)</td>
-                          <td></td>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <input class="form-control" type="text" pattern=".{4,}" required title="4 digits for year" name="year0" id="year0" required="yes" onkeypress="return isNumericSpaceKey(event)">
-                          </td>
-                          <td>
-                            <select name="semester0" id="semester0">
-                              <option value="Fall">Fall</option>
-                              <option value="Spring">Spring</option>
-                              <option value="Summer">Summer</option>
-                              <option value="Winter">Winter</option>
-                              <option value="First">First</option>
-                              <option value="Second">Second</option>
-                              <option value="Third">Third</option>
-                            </select>
-                          </td>
-                          <td>
-                            <input class="form-control" type="text" name="courseCode0" id="courseCode0" required="yes" onkeypress="return isAlphaNumCapKey(event)">
-                          </td>
-                          <td>
-                            <input class="form-control" type="text" name="courseTitle0" id="courseTitle0" required="yes" onkeypress="return isAlphaNumericSpaceKey(event)">
-                          </td>
-                          <td>
-                            <input class="form-control" type="text" name="creditUnit0" id="creditUnit0" onkeypress="return isRealNum(event)">
-                          </td>
-                          <td>
-                            <input class="form-control" type="text" name="mark0" id="mark0" onkeypress="return isRealNum(event)">
-                          </td>
-                          <td>
-                            <input class="form-control" type="text" name="gpa0" id="gpa0" onkeypress="return isRealNum(event)">
-                          </td>
-                          <td>
-                            <input class="form-control" type="text" name="grade0" id="grade0" onkeypress="return isGrade(event)">
-                          </td>
-                          <td><a class="deleteRow"></a>
-                          </td>
-                        </tr>
-                      </tbody>
-                      <tfoot>
-                        <tr>
-                          <td colspan="9" style="text-align: left;">
-                            <input type="button" class="btn btn-sm btn-block " id="addrow" value="add row" />
-                          </td>
-                        </tr>
-                      </tfoot>
-                    </table>
-                  </div>
-                </div>
-
-                <div class="row mb-4">
-                  <div class="col-12">
-                    <input type="button" class="btn btn-sm btn-block btn-outline-primary" id="checkMS" value="Validate mark sheet" />
-                    <input type="submit" name="submit" class="btn btn-block btn-sm btn-primary" value="Submit mark sheet"></input>
-                  </div>
-                </div>
+                <button class="btn btn-primary btn-lg tpg-btn-block mt-2" type="submit" name="submit" value="Submit mark sheet"><i class="mdi mdi-check-circle-outline"></i> Submit mark sheet</button>
               </form>
             <?php } ?>
 
@@ -523,6 +349,7 @@
 
   <!-- App js -->
   <script src="<?php echo base_url(); ?>assets/js/app.min.js"></script>
+  <script src="<?php echo base_url(); ?>assets/js/tpg-premium.js?v=4"></script>
   <script>
   
   $("[data-toggle=popover]").popover({trigger:"hover", html:"true"});
@@ -622,8 +449,9 @@
     return true;
 
     return false;
-  } 
+  }
 
   </script>
+  <?php include(APPPATH.'views/partials/demo_bar.php'); ?>
   </body>
 </html>

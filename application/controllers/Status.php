@@ -78,11 +78,13 @@ class Status extends CI_Controller
       $config['overwrite'] = TRUE;  // old file will be overwritten
       $this->upload->initialize($config);
 
-      if($this->upload->do_upload($keyfile)) 
+      if($this->upload->do_upload($keyfile))
       {
         //Get uploaded file information
         $uploadData = $this->upload->data();
-        if ($this->UploadModel->isImage ($uploadData))
+        // file_size is in KB - enforce the stated limit: min 1MB, max 2MB
+        if ($this->UploadModel->isImage ($uploadData)
+            && $uploadData['file_size'] >= 1024 && $uploadData['file_size'] <= 2048)
         {
           $fileExt = $uploadData['file_ext'];
           $fileOK = true;
@@ -132,11 +134,19 @@ class Status extends CI_Controller
 
       if ($this->input->post('submit') == "Submit reply slip")
       {
-        if ($this->AppAuthModel->isAppNoEmailCorrect($appNo, $recipientEmail))
+        // signature goes onto the official reply slip - English letters,
+        // spaces, . ' - only, 2-30 characters (mirrors the form's pattern)
+        $signature = trim($this->input->post('signature'));
+        if (!preg_match("/^[A-Za-z][A-Za-z .'\-]{1,29}$/", $signature))
+        {
+          $msgErr = "Signature must be in English letters only (2-30 characters), process terminated. Please login and submit again.";
+          $error = true;
+        }
+        else if ($this->AppAuthModel->isAppNoEmailCorrect($appNo, $recipientEmail))
         {
           $this->AppAuthModel->getAppReplySlipDetails ($appNo, $RS);
-          
-          $RS['signature'] = $_POST['signature'];
+
+          $RS['signature'] = $signature;
           $RS['replyDate'] = date('F j, Y');
           $RS['reply'] = '';
           if ($_POST['myReply'] == 'acceptO')

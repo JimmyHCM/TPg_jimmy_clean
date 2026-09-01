@@ -82,20 +82,20 @@ define ('UPLOAD_ITEMS', array (
       'assets/images/grading.png',
       'Institution #1',
       'Grading system'),
-  array('fileD14', 
-      'Mark sheet for all courses you have taken in your institution, if an overall mark/ CGPA is not shown on your transcript (txt)',
-      'Navigate to the "Fill mark sheet" session in the left panel, follow the instructions to enter the mark or GPA for all courses you have taken by the awarding institution. A file will be generated, please upload it here.', 
+  array('fileD14',   // removed for 2026 - keep placeholder so index positions of UPLOAD_ITEMS stay unchanged
+      '',
+      '',
       '.txt',
       '',
       'Institution #1',
-      'Mark sheet'),
+      ''),
   array('fileD15',
-      'Average mark for all courses you have taken in your institution, if an overall mark or CGPA is not shown on your transcript (pdf)',
-      'This serves as an equivalent to the mark sheet mentioned above. Please submit a formal letter issued by the awarding institution that indicates your overall average mark or CGPA for the degree you have obtained. You may upload either this letter or the previously mentioned mark sheet.',
+      'Rank Certificate issued by your institution (pdf)',
+      'Please submit a Rank Certificate (排名證明) issued by the awarding institution, indicating your rank among the students of your cohort / major.',
       '.pdf',
       '',
       'Institution #1',
-      'Average mark statement'),
+      'Rank certificate'),
   array('fileD16a', 
       'Graduation certificate, if applicable (pdf)',
       'A certificate confirming that you graduated on or before 31 Aug 2025 issued and certified by the awarding institution is required.', 
@@ -166,20 +166,20 @@ define ('UPLOAD_ITEMS', array (
       'assets/images/grading.png',
       'Institution #2',
       'Grading system'),
-  array('fileD24', 
-      'Mark sheet for all courses you have taken in your institution, if an overall mark/ CGPA is not shown on your transcript (txt)',
-      'Navigate to the "Fill mark sheet" session in the left panel, follow the instructions to enter the mark or GPA for all courses you have taken by the awarding institution. A file will be generated, please upload it here.', 
+  array('fileD24',   // removed for 2026 - keep placeholder so index positions of UPLOAD_ITEMS stay unchanged
+      '',
+      '',
       '.txt',
       '',
       'Institution #2',
-      'Mark sheet'),
+      ''),
   array('fileD25',
-      'Average mark for all courses you have taken in your institution, if an overall mark or CGPA is not shown on your transcript (pdf)',
-      'This serves as an equivalent to the mark sheet mentioned above. Please submit a formal letter issued by the awarding institution that indicates your overall average mark or CGPA for the degree you have obtained. You may upload either this letter or the previously mentioned mark sheet.',
+      'Rank Certificate issued by your institution (pdf)',
+      'Please submit a Rank Certificate (排名證明) issued by the awarding institution, indicating your rank among the students of your cohort / major.',
       '.pdf',
       '',
       'Institution #2',
-      'Average mark statement'),
+      'Rank certificate'),
   array('fileD26a', 
       'Graduation certificate, if applicable (pdf)',
       'A certificate confirming that you graduated on or before 31 Aug 2025 issued and certified by the awarding institution is required.', 
@@ -250,20 +250,20 @@ define ('UPLOAD_ITEMS', array (
       'assets/images/grading.png',
       'Institution #3',
       'Grading system'),
-  array('fileD34', 
-      'Mark sheet for all courses you have taken in your institution, if an overall mark/ CGPA is not shown on your transcript (txt)',
-      'Navigate to the "Fill mark sheet" session in the left panel, follow the instructions to enter the mark or GPA for all courses you have taken by the awarding institution. A file will be generated, please upload it here.', 
+  array('fileD34',   // removed for 2026 - keep placeholder so index positions of UPLOAD_ITEMS stay unchanged
+      '',
+      '',
       '.txt',
       '',
       'Institution #3',
-      'Mark sheet'),
+      ''),
   array('fileD35',
-      'Average mark for all courses you have taken in your institution, if an overall mark or CGPA is not shown on your transcript (pdf)',
-      'This serves as an equivalent to the mark sheet mentioned above. Please submit a formal letter issued by the awarding institution that indicates your overall average mark or CGPA for the degree you have obtained. You may upload either this letter or the previously mentioned mark sheet.',
+      'Rank Certificate issued by your institution (pdf)',
+      'Please submit a Rank Certificate (排名證明) issued by the awarding institution, indicating your rank among the students of your cohort / major.',
       '.pdf',
       '',
       'Institution #3',
-      'Average mark statement'),
+      'Rank certificate'),
   array('fileD36a', 
       'Graduation certificate, if applicable (pdf)',
       'A certificate confirming that you graduated on or before 31 Aug 2025 issued and certified by the awarding institution is required.', 
@@ -786,7 +786,12 @@ define ('UPLOAD_ITEMS', array (
 */
 
 // for storing pdf files (abs path is needed)
-define ('PDF_DIR', '/var/www/html/app/wwwUploads/');
+// production keeps its fixed path; local dev resolves to this project's own
+// wwwUploads/ (same hostname guard as config/database.php)
+if (($_SERVER['HTTP_HOST'] ?? '') === 'tpgadmission.engg.hku.hk')
+  define ('PDF_DIR', '/var/www/html/app/wwwUploads/');
+else
+  define ('PDF_DIR', FCPATH.'wwwUploads/');
 
 // for display
 define ('PARA_SPACE', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');

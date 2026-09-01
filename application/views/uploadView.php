@@ -10,6 +10,12 @@
 
   <link href="<?php echo base_url(); ?>assets/css/icons.min.css" rel="stylesheet" />
   <link href="<?php echo base_url(); ?>assets/css/app.css" rel="stylesheet" />
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <!-- TPg premium redesign layer (must load LAST) -->
+  <link href="<?php echo base_url(); ?>assets/css/tpg-premium.css?v=5" rel="stylesheet" type="text/css" />
 
   <!-- App css -->
   <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
@@ -757,6 +763,7 @@
 
   <!-- App js -->
   <script src="<?php echo base_url(); ?>assets/js/app.min.js"></script>
+  <script src="<?php echo base_url(); ?>assets/js/tpg-premium.js?v=4"></script>
   <script>
   
   $("[data-toggle=popover]").popover({trigger:"hover", html:"true"});

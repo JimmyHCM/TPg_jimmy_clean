@@ -64,6 +64,7 @@ class Auth extends CI_Controller
       $data = array();
 
       $data['uploaded'] = array();
+      $_SESSION['appNo'] = $appNo;
       $_SESSION['uploaded'] = array();
       $data['verified'] = array();
       $data['Pno'] = 1;

@@ -1,78 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>TPG - display status</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- App favicon -->
-  <link rel="shortcut icon" href="<?php echo base_url(); ?>assets/images/favicon.ico">
-
-  <!-- App css -->
-  <link href="<?php echo base_url(); ?>assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-  <link href="<?php echo base_url(); ?>assets/css/app.min.css" rel="stylesheet" type="text/css" />
-  <!-- Dell 1996 redesign layer (must load LAST) -->
-  <link href="<?php echo base_url(); ?>assets/css/dell-1996.css" rel="stylesheet" type="text/css" />
-
-  <style type="text/css">
-  #frontdisplay {
-    background: url("<?php echo base_url(); ?>assets/images/tpgbg.png") no-repeat fixed;
-    background-position: center;
-    background-size: cover;
-  }
-  </style>
-
-  <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
-
-  <script type="text/javascript">    
+<?php
+$pageTitle = 'Application Status';
+$bodyClass = 'tpg-auth-body';
+$bodyAttrs = 'onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload=""';
+include(APPPATH.'views/partials/head.php');
+?>
+<script type="text/javascript">
+  window.history.forward();
+  function noBack() {
     window.history.forward();
-    function noBack() { 
-      window.history.forward(); 
-    }
-  </script>
-</head>
+  }
+</script>
 
-<body id="frontdisplay" onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="">
-  <div class="account-pages mt-5 mb-5">
+  <div class="account-pages pt-5 pb-5">
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-lg-8">
-          <div class="card">
+        <div class="col-12">
+          <div class="card tpg-auth-card tpg-auth-card-wide">
 
-            <!-- Logo -->
-            <div class="card-header pt-4 pb-4 text-center bg-primary">
-              <h3 class="text-white">Application status update for <?php echo $appNo;?></h3>
-            </div>
+            <?php include(APPPATH.'views/partials/auth_brand.php'); ?>
 
-            <div class="card-body">
+            <div class="card-body p-4 p-md-5">
+
+              <div class="text-center mb-4">
+                <h4 class="tpg-auth-title mt-0">Application status update</h4>
+                <p class="tpg-auth-sub mb-0">Application number <?php echo $appNo; ?></p>
+              </div>
+
               <?php echo form_open ('display/statusShown'); ?>
-                <p class="text-muted mb-4">
+
+                <div class="tp-status-letter">
                   <?php if ($statusMsg != '') { ?>
                     <?php echo $statusMsg; ?>
-                  <?php } ?>                    
-                </p>
-                <div class="text-right">
-                  <button class="btn btn-primary" type="submit">Next</button>
+                  <?php } ?>
                 </div>
+
+                <button class="btn btn-primary btn-lg tpg-btn-block" type="submit">Next</button>
+
               <?php echo form_close(); ?>
-              </div> <!-- end card-body -->
-            </div>
-            <!-- end card -->
 
-          </div> <!-- end col -->
-        </div>
-        <!-- end row -->
-      </div>
-      <!-- end container -->
-    </div>
-    <!-- end page -->
+            </div> <!-- end card-body -->
+          </div> <!-- end card -->
+        </div> <!-- end col -->
+      </div> <!-- end row -->
+    </div> <!-- end container -->
+  </div> <!-- end page -->
 
-
-    <footer class="footer footer-alt">
-      <?php echo $currentYear; ?> © faculty of engineering, HKU
-    </footer>
-
-    <!-- App js -->
-    <script src="<?php echo base_url(); ?>assets/js/app.min.js"></script>
-
-  </body>
-</html>
+<?php include(APPPATH.'views/partials/footer.php'); ?>
