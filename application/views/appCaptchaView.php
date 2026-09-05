@@ -35,7 +35,8 @@ include(APPPATH.'views/partials/head.php');
                 <div class="tp-captcha-img" id="captImg"><?php if (isset($captchaImg)) echo $captchaImg; ?></div>
                 <span class="tp-captcha-refresh">
                   Can't read the image [CAPITALS and digits]?
-                  Click <a href="<?php echo base_url().'captcha'; ?>">here</a> to refresh.
+                  Click <a href="<?php echo base_url().'captcha/refresh'; ?>">here</a> for a new one
+                  &mdash; your emailed OTP code stays the same.
                 </span>
 
                 <div class="form-group">

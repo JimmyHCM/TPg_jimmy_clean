@@ -93,6 +93,7 @@ class Captcha extends CI_Controller
           $captcha = $this->CodeModel->createCaptcha();
           $data = $this->setupCaptcha($captcha);
           $_SESSION['capRefresh']++;
+          $_SESSION['imgRefresh'] = 0;
 
           $_SESSION['lastAction'] = time();
 
@@ -124,6 +125,13 @@ class Captcha extends CI_Controller
     {
       $errorMsg = "";
 
+      // one-shot codes: read them, then burn them straight away, so the same
+      // pair can never be replayed by re-posting the form
+      $sessCaptcha = (string) $this->session->userdata('captchaCode');
+      $sessOtpCode = (string) $this->session->userdata('otpCode');
+      $this->session->unset_userdata('captchaCode');
+      $this->session->unset_userdata('otpCode');
+
       if ($this->AppAuthModel->sessionExpired(180))
       {
         $_SESSION['attempt']--;
@@ -135,13 +143,13 @@ class Captcha extends CI_Controller
       {
         $recipientEmail = $_SESSION['temp'];
 
-        $inputCaptcha = $this->input->post('captcha');
-        $sessCaptcha = $this->session->userdata('captchaCode');
-        $inputOtpCode = $this->input->post('otpCode');
-        $sessOtpCode = $this->session->userdata('otpCode');
-        $sessOtpCodePrefix = $this->session->userdata('otpCodePrefix');
+        $inputCaptcha = (string) $this->input->post('captcha');
+        $inputOtpCode = (string) $this->input->post('otpCode');
 
-        if (($inputCaptcha === $sessCaptcha) && ($inputOtpCode === $sessOtpCode))
+        // constant-time compare; a burnt/missing session code never matches
+        if ($sessCaptcha !== '' && $sessOtpCode !== ''
+            && hash_equals($sessCaptcha, $inputCaptcha)
+            && hash_equals($sessOtpCode, $inputOtpCode))
         {
           redirect("captcha/done","refresh");
         }
@@ -178,6 +186,7 @@ class Captcha extends CI_Controller
     $data = array ();
     $_SESSION['captcha'] = NULL;
     $_SESSION['capRefresh'] = NULL;
+    $_SESSION['imgRefresh'] = NULL;
     $_SESSION['temp'] = NULL;
     $_SESSION['lastAction'] = time();
     $_SESSION['attempt'] = NULL;
@@ -203,6 +212,38 @@ class Captcha extends CI_Controller
       $this->load->view('appPICSView', $data);
     else
       redirect("display/start");
+  }
+
+  // Re-draw the picture only. The emailed OTP, the remaining attempts and the
+  // 3-minute window are all deliberately left alone, so asking for a more
+  // readable image can never be used to buy extra time or extra tries.
+  // (The view used to link at captcha/index for this, which just bounced the
+  // applicant back to the login page.)
+  public function refresh()
+  {
+    ini_set('display_errors', 0);     // do not display errors
+
+    if (empty($_SESSION['captcha']) || empty($_SESSION['temp'])
+        || empty($_SESSION['attempt']) || $_SESSION['attempt'] < 1
+        || $this->AppAuthModel->sessionExpired(180))
+    {
+      $this->session->set_flashdata("error", "Security codes have expired, please login again.");
+      redirect("auth");
+    }
+
+    $_SESSION['imgRefresh'] = isset($_SESSION['imgRefresh']) ? $_SESSION['imgRefresh'] + 1 : 1;
+
+    if ($_SESSION['imgRefresh'] > 3)
+    {
+      $this->session->set_flashdata("error", "Too many image refreshes, please login again.");
+      redirect("auth");
+    }
+
+    $data = $this->setupCaptcha($this->CodeModel->createCaptcha());
+    $data['currentYear'] = getDate()['year'];
+
+    $this->session->set_flashdata("info", "A new image code has been generated. Your emailed OTP code is unchanged.");
+    $this->load->view('appCaptchaView', $data);
   }
 
   public function start()

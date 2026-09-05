@@ -1062,7 +1062,9 @@ body.tpg-auth-body {
   max-width: 360px;
   height: auto;
   border: 1px solid var(--tp-cloud);
-  border-bottom: 2px solid var(--tp-gold);
+  /* soft gold, not the full-strength rule: the frame should not out-shout
+     the deliberately gentle artwork inside it */
+  border-bottom: 2px solid var(--tp-gold-soft);
   border-radius: var(--tp-r-input);
   box-shadow: var(--tp-shadow-hint);
   background: var(--tp-ash);
