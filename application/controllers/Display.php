@@ -190,9 +190,10 @@ class Display extends CI_Controller
           $this->load->view('statusMsgView', $data);
         else    // no status msg
         {
-          $data['Pno'] = 3;
           $data['degInfo'] = array();
           $this->SupportDocModel->getDegreeInfo ($data['degInfo']);
+          // 2026: one institution section per degree imported from TOLA
+          $data['Pno'] = $data['degInfo']['count'];
 
           //print_r($data);
           $this->load->view('upload2024View', $data);
@@ -232,9 +233,10 @@ class Display extends CI_Controller
 
     if ($_SESSION['appNo'] > '1105000000')
     {
-      $data['Pno'] = 3;
       $data['degInfo'] = array();
       $this->SupportDocModel->getDegreeInfo ($data['degInfo']);
+      // 2026: one institution section per degree imported from TOLA
+      $data['Pno'] = $data['degInfo']['count'];
       $this->load->view('upload2024View', $data);
     }
     //else
@@ -268,9 +270,10 @@ class Display extends CI_Controller
 
     if ($_SESSION['appNo'] > '2200000000')
     {
-      $data['Pno'] = 3;
       $data['degInfo'] = array();
       $this->SupportDocModel->getDegreeInfo ($data['degInfo']);
+      // 2026: one institution section per degree imported from TOLA
+      $data['Pno'] = $data['degInfo']['count'];
       $this->load->view('uploadTest2024View', $data);
     }
     //else
@@ -467,9 +470,10 @@ class Display extends CI_Controller
 
     if ($_SESSION['appNo'] > '1106000000')
     {
-      $data['Pno'] = 3;
       $data['degInfo'] = array();
       $this->SupportDocModel->getDegreeInfo ($data['degInfo']);
+      // 2026: one institution section per degree imported from TOLA
+      $data['Pno'] = $data['degInfo']['count'];
 
       //print_r($data);
       $this->load->view('upload2024View', $data);
@@ -508,9 +512,10 @@ class Display extends CI_Controller
         $this->load->view('statusMsgView', $data);
       else
       {
-        $data['Pno'] = 3;
         $data['degInfo'] = array();
         $this->SupportDocModel->getDegreeInfo ($data['degInfo']);
+        // 2026: one institution section per degree imported from TOLA
+        $data['Pno'] = $data['degInfo']['count'];
 
         //print_r($data);
         $this->load->view('upload2024View', $data);

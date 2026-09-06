@@ -470,6 +470,13 @@ class SupportDocModel extends CI_Model {
   {
     ini_set('display_errors', 0);     // do not display errors
     $appNo = $_SESSION['appNo'];
+
+    // defaults, so a caller always gets a usable shape even with no record
+    $info['degree'] = array ('', '', '');
+    $info['uni'] = array ('', '', '');
+    $info['isChina'] = array ('N', 'N', 'N');
+    $info['count'] = 1;
+
     $this->db->select("appNo, uni1, uni2, uni3, degree1, degree2, degree3, isChina1, isChina2, isChina3");
     $this->db->where('appNo', $appNo);
     $query = $this->db->get('application');
@@ -491,6 +498,20 @@ class SupportDocModel extends CI_Model {
       $info['degree'] = array ($degree1, $degree2, $degree3);
       $info['uni'] = array ($uni1, $uni2, $uni3);
       $info['isChina'] = array ($isChina1, $isChina2, $isChina3);
+
+      // 2026: TOLA carries only the degrees the applicant actually entered, so
+      // the number of institution sections follows the imported record rather
+      // than MAX_fileDNO. Take the last filled slot rather than stopping at the
+      // first empty one -- slots normally fill in order, but a gap must not
+      // hide a degree the applicant still has to upload documents for. A blank
+      // record still leaves one section to work with.
+      $count = 0;
+      for ($i = 0; $i < MAX_fileDNO; $i++)
+      {
+        if (trim ((string) $info['uni'][$i]) != '' ||
+            trim ((string) $info['degree'][$i]) != '') $count = $i + 1;
+      }
+      $info['count'] = ($count > 0) ? $count : 1;
     }
   }
 

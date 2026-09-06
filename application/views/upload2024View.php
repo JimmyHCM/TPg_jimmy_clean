@@ -694,18 +694,22 @@ $tpDash  = round (213.6 * $tpPct / 100, 1);   // donut circumference 2*pi*34
 
                 <div class="tab-pane show active" id="info-2">
 
+                  <?php /* 2026: one tab per degree imported from TOLA -- a single
+                          degree needs no tab bar at all. */ ?>
+                  <?php if ($Pno > 1) { ?>
                   <ul class="nav nav-pills bg-light tp-subtabs" role="tablist">
-                    <?php for ($qset = 1; $qset <= MAX_fileDNO; $qset++) { ?>
+                    <?php for ($qset = 1; $qset <= $Pno; $qset++) { ?>
                       <li class="nav-item">
-                        <a href="#info-2<?php echo $qset; ?>" data-toggle="tab" role="tab" aria-expanded="<?php if ($qset == 1) echo 'true'; else echo 'false' ?>" class="nav-link <?php if ($qset == 1) echo 'active'; ?> <?php if ($qset > $Pno) echo 'disabled'; ?>">
-                          <span class="<?php if ($qset > $Pno) echo 'text-muted'; ?>">Institution #<?php echo $qset; ?></span>
-                          <?php if ($qset <= $Pno && isset ($tpSections[$qset-1])) { ?>
+                        <a href="#info-2<?php echo $qset; ?>" data-toggle="tab" role="tab" aria-expanded="<?php if ($qset == 1) echo 'true'; else echo 'false' ?>" class="nav-link <?php if ($qset == 1) echo 'active'; ?>" title="<?php echo isset ($degInfo['uni'][$qset-1]) ? htmlspecialchars ($degInfo['uni'][$qset-1], ENT_QUOTES) : ''; ?>">
+                          <span>Institution #<?php echo $qset; ?></span>
+                          <?php if (isset ($tpSections[$qset-1])) { ?>
                             <span class="tp-step-count"><?php echo $tpSections[$qset-1]['d']; ?>/<?php echo $tpSections[$qset-1]['t']; ?></span>
                           <?php } ?>
                         </a>
                       </li>
                     <?php } ?>
                   </ul>
+                  <?php } ?>
                   <div class="tab-content">
 
                     <?php for ($qq = 0; $qq < $Pno; $qq++) { ?>
